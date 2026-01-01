@@ -8,14 +8,14 @@
           <% end %>
         </div>
         <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-          <% if current_user.weaver? && current_user.residence.present? %>
-            <%= nav_link_to t("nav.activities"), residence_activities_path(current_user.residence) %>
-            <%= nav_link_to t("nav.residents"), residence_residents_path(current_user.residence) %>
-          <% end %>
-          <%= nav_link_to t("nav.residences"), residences_path %>
           <% if current_user.admin? %>
             <%= nav_link_to t("nav.stats"), stats_path %>
             <%= nav_link_to t("nav.users"), admin_users_path %>
+            <%= nav_link_to t("nav.residences"), residences_path %>
+          <% elsif current_user.weaver? && current_user.residence.present? %>
+            <%= nav_link_to t("nav.activities"), residence_activities_path(current_user.residence) %>
+            <%= nav_link_to t("nav.residents"), residence_residents_path(current_user.residence) %>
+            <%= nav_link_to t("nav.residences"), residences_path %>
           <% end %>
         </div>
       </div>
@@ -48,14 +48,14 @@
 
   <div class="hidden sm:hidden" data-mobile-menu-target="menu">
     <div class="space-y-1 pt-2 pb-3">
-      <% if current_user.weaver? && current_user.residence.present? %>
-        <%= mobile_nav_link_to t("nav.activities"), residence_activities_path(current_user.residence) %>
-        <%= mobile_nav_link_to t("nav.residents"), residence_residents_path(current_user.residence) %>
-      <% end %>
-      <%= mobile_nav_link_to t("nav.residences"), residences_path %>
       <% if current_user.admin? %>
         <%= mobile_nav_link_to t("nav.stats"), stats_path %>
         <%= mobile_nav_link_to t("nav.users"), admin_users_path %>
+        <%= mobile_nav_link_to t("nav.residences"), residences_path %>
+      <% elsif current_user.weaver? && current_user.residence.present? %>
+        <%= mobile_nav_link_to t("nav.activities"), residence_activities_path(current_user.residence) %>
+        <%= mobile_nav_link_to t("nav.residents"), residence_residents_path(current_user.residence) %>
+        <%= mobile_nav_link_to t("nav.residences"), residences_path %>
       <% end %>
     </div>
     <div class="border-t border-gray-200 pt-4 pb-3">
