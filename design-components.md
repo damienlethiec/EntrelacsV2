@@ -307,3 +307,218 @@ Templates de référence pour le développement. Adapter les couleurs `indigo` v
   </div>
 </div>
 ```
+
+---
+
+## Header de page
+
+```html
+<div class="md:flex md:items-center md:justify-between">
+  <div class="min-w-0 flex-1">
+    <h2 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Activités</h2>
+  </div>
+  <div class="mt-4 flex md:mt-0 md:ml-4">
+    <button type="button" class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50">Exporter</button>
+    <a href="#" class="ml-3 inline-flex items-center rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal">Nouvelle activité</a>
+  </div>
+</div>
+```
+
+---
+
+## Tabs
+
+```html
+<div>
+  <!-- Mobile -->
+  <div class="grid grid-cols-1 sm:hidden">
+    <select aria-label="Sélectionner un onglet" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-2 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal">
+      <option selected>À venir</option>
+      <option>Passées</option>
+    </select>
+    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end fill-gray-500">
+      <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+    </svg>
+  </div>
+  <!-- Desktop -->
+  <div class="hidden sm:block">
+    <div class="border-b border-gray-200">
+      <nav aria-label="Tabs" class="-mb-px flex space-x-8">
+        <!-- Current: "border-tisseurs-teal text-tisseurs-teal", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
+        <a href="#" aria-current="page" class="border-b-2 border-tisseurs-teal px-1 py-4 text-sm font-medium whitespace-nowrap text-tisseurs-teal">À venir</a>
+        <a href="#" class="border-b-2 border-transparent px-1 py-4 text-sm font-medium whitespace-nowrap text-gray-500 hover:border-gray-300 hover:text-gray-700">Passées</a>
+      </nav>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## Pagination (Pagy)
+
+```html
+<div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+  <!-- Mobile -->
+  <div class="flex flex-1 justify-between sm:hidden">
+    <a href="#" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Précédent</a>
+    <a href="#" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Suivant</a>
+  </div>
+  <!-- Desktop -->
+  <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+    <div>
+      <p class="text-sm text-gray-700">
+        Affichage de <span class="font-medium">1</span> à <span class="font-medium">20</span> sur <span class="font-medium">97</span> résultats
+      </p>
+    </div>
+    <div>
+      <nav aria-label="Pagination" class="isolate inline-flex -space-x-px rounded-md shadow-xs">
+        <a href="#" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+          <span class="sr-only">Précédent</span>
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5">
+            <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
+          </svg>
+        </a>
+        <!-- Current: "z-10 bg-tisseurs-teal text-white", Default: "text-gray-900 inset-ring inset-ring-gray-300 hover:bg-gray-50" -->
+        <a href="#" aria-current="page" class="relative z-10 inline-flex items-center bg-tisseurs-teal px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal">1</a>
+        <a href="#" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">2</a>
+        <a href="#" class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex">3</a>
+        <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 inset-ring inset-ring-gray-300 focus:outline-offset-0">...</span>
+        <a href="#" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">5</a>
+        <a href="#" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+          <span class="sr-only">Suivant</span>
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5">
+            <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+          </svg>
+        </a>
+      </nav>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## Flash messages (Toast)
+
+```html
+<!-- Placer à la fin du body -->
+<div aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6">
+  <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
+
+    <!-- Success -->
+    <div class="pointer-events-auto w-full max-w-sm rounded-lg bg-white shadow-lg outline-1 outline-black/5">
+      <div class="p-4">
+        <div class="flex items-start">
+          <div class="shrink-0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 text-green-400">
+              <path d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="ml-3 w-0 flex-1 pt-0.5">
+            <p class="text-sm font-medium text-gray-900">Enregistré avec succès</p>
+            <p class="mt-1 text-sm text-gray-500">L'activité a été créée.</p>
+          </div>
+          <div class="ml-4 flex shrink-0">
+            <button type="button" class="inline-flex rounded-md text-gray-400 hover:text-gray-500 focus:outline-2 focus:outline-offset-2 focus:outline-tisseurs-teal">
+              <span class="sr-only">Fermer</span>
+              <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5">
+                <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div class="pointer-events-auto w-full max-w-sm rounded-lg bg-white shadow-lg outline-1 outline-black/5">
+      <div class="p-4">
+        <div class="flex items-start">
+          <div class="shrink-0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 text-red-400">
+              <path d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="ml-3 w-0 flex-1 pt-0.5">
+            <p class="text-sm font-medium text-gray-900">Erreur</p>
+            <p class="mt-1 text-sm text-gray-500">Impossible de sauvegarder les modifications.</p>
+          </div>
+          <div class="ml-4 flex shrink-0">
+            <button type="button" class="inline-flex rounded-md text-gray-400 hover:text-gray-500">
+              <span class="sr-only">Fermer</span>
+              <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5">
+                <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+```
+
+---
+
+## Modal de confirmation
+
+Utilise `@tailwindplus/elements` ou implémentation Stimulus.
+
+```html
+<button command="show-modal" commandfor="confirm-dialog" class="rounded-md bg-tisseurs-coral px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-coral-dark">
+  Supprimer
+</button>
+
+<el-dialog>
+  <dialog id="confirm-dialog" aria-labelledby="dialog-title" class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
+    <el-dialog-backdrop class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
+
+    <div tabindex="0" class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
+      <el-dialog-panel class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+        <div class="sm:flex sm:items-start">
+          <div class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:size-10">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 text-red-600">
+              <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+            <h3 id="dialog-title" class="text-base font-semibold text-gray-900">Supprimer l'activité</h3>
+            <div class="mt-2">
+              <p class="text-sm text-gray-500">Êtes-vous sûr de vouloir supprimer cette activité ? Cette action est irréversible.</p>
+            </div>
+          </div>
+        </div>
+        <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+          <button type="button" command="close" commandfor="confirm-dialog" class="inline-flex w-full justify-center rounded-md bg-tisseurs-coral px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-coral-dark sm:ml-3 sm:w-auto">Supprimer</button>
+          <button type="button" command="close" commandfor="confirm-dialog" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring-1 inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Annuler</button>
+        </div>
+      </el-dialog-panel>
+    </div>
+  </dialog>
+</el-dialog>
+```
+
+---
+
+## Dropdown menu
+
+```html
+<el-dropdown class="inline-block">
+  <button class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring-1 inset-ring-gray-300 hover:bg-gray-50">
+    Actions
+    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="-mr-1 size-5 text-gray-400">
+      <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+    </svg>
+  </button>
+
+  <el-menu anchor="bottom end" popover class="w-56 origin-top-right rounded-md bg-white shadow-lg outline-1 outline-black/5 transition [--anchor-gap:--spacing(2)]">
+    <div class="py-1">
+      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden">Modifier</a>
+      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden">Dupliquer</a>
+      <a href="#" class="block px-4 py-2 text-sm text-tisseurs-coral hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden">Supprimer</a>
+    </div>
+  </el-menu>
+</el-dropdown>
+```
