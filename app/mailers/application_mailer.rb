@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "noreply@entrelacs.fr"
+  default from: "contact@les-tisseurs.fr"
   layout "mailer"
 end

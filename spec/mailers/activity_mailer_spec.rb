@@ -3,16 +3,27 @@ require "rails_helper"
 RSpec.describe ActivityMailer, type: :mailer do
   describe "#daily_notification" do
     let(:residence) { create(:residence, name: "Résidence Test") }
+    let(:weaver) { create(:user, :weaver, residence: residence, email: "tisseur@example.com") }
     let(:resident) { create(:resident, residence: residence, email: "resident@example.com", first_name: "Jean") }
     let(:new_activity) { create(:activity, :upcoming, residence: residence, activity_type: "Repas partagé", notify_residents: true) }
     let(:reminder_activity) { create(:activity, residence: residence, activity_type: "Atelier cuisine", notify_residents: true, email_status: :informed, starts_at: 24.hours.from_now, ends_at: 26.hours.from_now) }
 
     let(:mail) { described_class.daily_notification(resident, [new_activity], [reminder_activity]) }
 
+    before { weaver } # Ensure weaver exists
+
     it "renders the headers" do
       expect(mail.subject).to eq("Activités à venir - Résidence Test")
       expect(mail.to).to eq(["resident@example.com"])
-      expect(mail.from).to eq(["noreply@entrelacs.fr"])
+      expect(mail.from).to eq(["tisseur@example.com"])
+    end
+
+    context "when residence has no weaver" do
+      before { weaver.destroy }
+
+      it "uses default from email" do
+        expect(mail.from).to eq(["contact@les-tisseurs.fr"])
+      end
     end
 
     it "renders the body with resident name" do

@@ -92,9 +92,17 @@ RSpec.describe Activity, type: :model do
       let!(:notifiable) { create(:activity, :upcoming, notify_residents: true, email_status: :none) }
       let!(:already_informed) { create(:activity, :upcoming, notify_residents: true, email_status: :informed) }
       let!(:no_notification) { create(:activity, :upcoming, notify_residents: false, email_status: :none) }
+      let!(:already_sent_today) do
+        create(:activity, :upcoming, notify_residents: true, email_status: :none,
+               email_informed_at: Time.current)
+      end
 
       it "returns only activities needing notification" do
         expect(Activity.needing_notification).to contain_exactly(notifiable)
+      end
+
+      it "excludes activities already notified today" do
+        expect(Activity.needing_notification).not_to include(already_sent_today)
       end
     end
 
@@ -120,10 +128,50 @@ RSpec.describe Activity, type: :model do
           starts_at: 24.hours.from_now,
           ends_at: 26.hours.from_now)
       end
+      let!(:already_sent_today) do
+        create(:activity,
+          notify_residents: true,
+          email_status: :informed,
+          starts_at: 24.hours.from_now,
+          ends_at: 26.hours.from_now,
+          email_reminded_at: Time.current)
+      end
 
       it "returns only activities within 48h that need reminder" do
         expect(Activity.needing_reminder).to contain_exactly(needs_reminder)
       end
+
+      it "excludes activities already reminded today" do
+        expect(Activity.needing_reminder).not_to include(already_sent_today)
+      end
+    end
+  end
+
+  describe "#mark_as_informed!" do
+    let(:activity) { create(:activity, :upcoming, notify_residents: true, email_status: :none) }
+
+    it "updates email_status to informed" do
+      activity.mark_as_informed!
+      expect(activity.reload.email_status).to eq("informed")
+    end
+
+    it "sets email_informed_at timestamp" do
+      activity.mark_as_informed!
+      expect(activity.reload.email_informed_at).to be_within(1.second).of(Time.current)
+    end
+  end
+
+  describe "#mark_as_reminded!" do
+    let(:activity) { create(:activity, :upcoming, notify_residents: true, email_status: :informed) }
+
+    it "updates email_status to reminded" do
+      activity.mark_as_reminded!
+      expect(activity.reload.email_status).to eq("reminded")
+    end
+
+    it "sets email_reminded_at timestamp" do
+      activity.mark_as_reminded!
+      expect(activity.reload.email_reminded_at).to be_within(1.second).of(Time.current)
     end
   end
 

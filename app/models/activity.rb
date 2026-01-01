@@ -38,17 +38,28 @@ class Activity < ApplicationRecord
   scope :completed_in_period, ->(start_date, end_date) { completed.where(starts_at: start_date..end_date) }
 
   # Email notification scopes
+  # Uses timestamps to ensure idempotency - won't re-notify if already sent today
   scope :needing_notification, -> {
     planned.where(notify_residents: true, email_status: :none)
            .where("starts_at > ?", Time.current)
+           .where("email_informed_at IS NULL OR email_informed_at < ?", Time.current.beginning_of_day)
            .order(starts_at: :asc)
   }
   scope :needing_reminder, -> {
     planned.where(notify_residents: true, email_status: :informed)
            .where("starts_at > ?", Time.current)
            .where("starts_at <= ?", 48.hours.from_now)
+           .where("email_reminded_at IS NULL OR email_reminded_at < ?", Time.current.beginning_of_day)
            .order(starts_at: :asc)
   }
+
+  def mark_as_informed!
+    update!(email_status: :informed, email_informed_at: Time.current)
+  end
+
+  def mark_as_reminded!
+    update!(email_status: :reminded, email_reminded_at: Time.current)
+  end
 
   def past?
     starts_at <= Time.current

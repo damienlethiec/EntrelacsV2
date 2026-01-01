@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_01_132235) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_01_134618) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -18,6 +18,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_01_132235) do
     t.string "activity_type", null: false
     t.datetime "created_at", null: false
     t.text "description", null: false
+    t.datetime "email_informed_at"
+    t.datetime "email_reminded_at"
     t.integer "email_status", default: 0, null: false
     t.datetime "ends_at", null: false
     t.boolean "notify_residents", default: false, null: false
