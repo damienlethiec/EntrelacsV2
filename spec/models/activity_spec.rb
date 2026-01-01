@@ -111,6 +111,7 @@ RSpec.describe Activity, type: :model do
         create(:activity,
           notify_residents: true,
           email_status: :informed,
+          email_informed_at: 1.day.ago,
           starts_at: 24.hours.from_now,
           ends_at: 26.hours.from_now)
       end
@@ -118,6 +119,7 @@ RSpec.describe Activity, type: :model do
         create(:activity,
           notify_residents: true,
           email_status: :informed,
+          email_informed_at: 1.day.ago,
           starts_at: 3.days.from_now,
           ends_at: 3.days.from_now + 2.hours)
       end
@@ -125,6 +127,7 @@ RSpec.describe Activity, type: :model do
         create(:activity,
           notify_residents: true,
           email_status: :reminded,
+          email_informed_at: 1.day.ago,
           starts_at: 24.hours.from_now,
           ends_at: 26.hours.from_now)
       end
@@ -132,9 +135,18 @@ RSpec.describe Activity, type: :model do
         create(:activity,
           notify_residents: true,
           email_status: :informed,
+          email_informed_at: 1.day.ago,
           starts_at: 24.hours.from_now,
           ends_at: 26.hours.from_now,
           email_reminded_at: Time.current)
+      end
+      let!(:informed_today) do
+        create(:activity,
+          notify_residents: true,
+          email_status: :informed,
+          email_informed_at: Time.current,
+          starts_at: 24.hours.from_now,
+          ends_at: 26.hours.from_now)
       end
 
       it "returns only activities within 48h that need reminder" do
@@ -143,6 +155,10 @@ RSpec.describe Activity, type: :model do
 
       it "excludes activities already reminded today" do
         expect(Activity.needing_reminder).not_to include(already_sent_today)
+      end
+
+      it "excludes activities informed today (prevents immediate reminder)" do
+        expect(Activity.needing_reminder).not_to include(informed_today)
       end
     end
   end

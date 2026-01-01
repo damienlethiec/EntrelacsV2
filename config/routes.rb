@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   resources :users, except: [:show], path: "admin/users", as: :admin_users
 
+  resources :stats, only: [:index, :show]
+
   resources :residences, except: [:show] do
     member do
       patch :restore

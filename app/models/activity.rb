@@ -45,10 +45,12 @@ class Activity < ApplicationRecord
            .where("email_informed_at IS NULL OR email_informed_at < ?", Time.current.beginning_of_day)
            .order(starts_at: :asc)
   }
+  # Don't send reminder if notification was sent today (prevents immediate reminder after notification)
   scope :needing_reminder, -> {
     planned.where(notify_residents: true, email_status: :informed)
            .where("starts_at > ?", Time.current)
            .where("starts_at <= ?", 48.hours.from_now)
+           .where("email_informed_at < ?", Time.current.beginning_of_day)
            .where("email_reminded_at IS NULL OR email_reminded_at < ?", Time.current.beginning_of_day)
            .order(starts_at: :asc)
   }

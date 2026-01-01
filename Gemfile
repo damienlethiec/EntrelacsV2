@@ -50,6 +50,9 @@ gem "pundit"
 # Pagination
 gem "pagy"
 
+# CSV support (not a default gem since Ruby 3.4)
+gem "csv"
+
 group :development, :test do
   # Testing
   gem "rspec-rails"

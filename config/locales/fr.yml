@@ -366,18 +366,54 @@ fr:
 
   # Stats
   stats:
-    title: "Statistiques"
-    global: "Vue globale"
-    by_residence: "Par résidence"
-    completed_activities: "Activités réalisées"
-    total_participants: "Participants totaux"
-    average_participants: "Moyenne participants"
-    median_participants: "Médiane participants"
-    by_activity_type: "Par type d'activité"
-    period:
-      all_time: "Tout le temps"
-      this_month: "Ce mois"
+    index:
+      title: "Statistiques globales"
+    show:
+      title: "Statistiques - %{name}"
+    export_csv: "Exporter CSV"
+    back_to_global: "Retour aux statistiques globales"
+    metrics:
+      total_activities: "Activités complétées"
+      total_participants: "Participants totaux"
+      average_participants: "Moyenne par activité"
+      median_participants: "Médiane des activités"
+      active_residences: "Résidences actives"
+      most_popular_type: "Activité la plus réalisée"
+    breakdowns:
+      by_type: "Par type d'activité"
+      by_day: "Par jour de la semaine"
+      by_time: "Par créneau horaire"
+      participants_by_type: "Participants par type"
+    time_slots:
+      morning: "Matin (6h-12h)"
+      afternoon: "Après-midi (12h-18h)"
+      evening: "Soir (18h-00h)"
+    filters:
+      start_date: "Date de début"
+      end_date: "Date de fin"
+      apply: "Appliquer"
+      reset: "Réinitialiser"
+      quick: "Raccourcis"
+      last_7_days: "7 derniers jours"
+      last_30_days: "30 derniers jours"
+      last_90_days: "90 derniers jours"
       this_year: "Cette année"
+    residences_list: "Statistiques par résidence"
+    activities_list: "Liste des activités"
+    activities_count: "activités"
+    participants_count: "participants"
+    participants: "participants"
+    no_data: "Aucune donnée pour cette période"
+    no_activities: "Aucune activité complétée pour cette période"
+    legend:
+      activities: "Activités"
+      participants: "Participants"
+    csv:
+      activity_type: "Type d'activité"
+      description: "Description"
+      date: "Date"
+      participants: "Participants"
+      residence: "Résidence"
 
   # Activity Mailer
   activity_mailer:

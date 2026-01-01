@@ -14,9 +14,9 @@ RSpec.describe "Dashboard", type: :request do
 
       before { sign_in user }
 
-      it "returns http success" do
+      it "redirects to stats" do
         get root_path
-        expect(response).to have_http_status(:success)
+        expect(response).to redirect_to(stats_path)
       end
     end
 
