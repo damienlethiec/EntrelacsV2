@@ -1,41 +1,41 @@
-<div class="w-full max-w-md space-y-8">
-  <div class="text-center">
-    <img src="/logo.png" alt="Entrelacs" class="mx-auto h-16 w-auto" />
-    <h2 class="mt-6 text-2xl font-bold tracking-tight text-gray-900">
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+    <img src="/logo.png" alt="Entrelacs" class="mx-auto h-12 w-auto" />
+    <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
       <%= t("devise.invitations.edit.header") %>
     </h2>
-    <p class="mt-2 text-sm text-gray-600">
+    <p class="mt-2 text-center text-sm/6 text-gray-500">
       <%= t("devise.invitations.edit.subtitle") %>
     </p>
   </div>
 
-  <div class="rounded-lg bg-white px-8 py-10 shadow">
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <%= form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put, class: "space-y-6" }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
       <%= f.hidden_field :invitation_token, readonly: true %>
 
       <% if f.object.class.require_password_on_accepting %>
         <div>
-          <%= f.label :password, t("activerecord.attributes.user.password"), class: "block text-sm font-medium text-gray-900" %>
-          <p class="mt-1 text-xs text-gray-500"><%= t("devise.shared.minimum_password_length", count: @minimum_password_length || 6) %></p>
+          <%= f.label :password, t("activerecord.attributes.user.password"), class: "block text-sm/6 font-medium text-gray-900" %>
+          <p class="text-xs text-gray-500"><%= t("devise.shared.minimum_password_length", count: @minimum_password_length || 6) %></p>
           <div class="mt-2">
-            <%= f.password_field :password, autofocus: true, autocomplete: "new-password",
-                class: "block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm" %>
+            <%= f.password_field :password, autofocus: true, autocomplete: "new-password", required: true,
+                class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
           </div>
         </div>
 
         <div>
-          <%= f.label :password_confirmation, t("activerecord.attributes.user.password_confirmation"), class: "block text-sm font-medium text-gray-900" %>
+          <%= f.label :password_confirmation, t("activerecord.attributes.user.password_confirmation"), class: "block text-sm/6 font-medium text-gray-900" %>
           <div class="mt-2">
-            <%= f.password_field :password_confirmation, autocomplete: "new-password",
-                class: "block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm" %>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", required: true,
+                class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
           </div>
         </div>
       <% end %>
 
       <div>
         <%= f.submit t("devise.invitations.edit.submit_button"),
-            class: "flex w-full justify-center rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal cursor-pointer" %>
+            class: "flex w-full justify-center rounded-md bg-tisseurs-teal px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal cursor-pointer" %>
       </div>
     <% end %>
   </div>

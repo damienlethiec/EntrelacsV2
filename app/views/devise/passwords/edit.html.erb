@@ -1,43 +1,43 @@
-<div class="w-full max-w-md space-y-8">
-  <div class="text-center">
-    <img src="/logo.png" alt="Entrelacs" class="mx-auto h-16 w-auto" />
-    <h2 class="mt-6 text-2xl font-bold tracking-tight text-gray-900">
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+    <img src="/logo.png" alt="Entrelacs" class="mx-auto h-12 w-auto" />
+    <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
       <%= t("devise.passwords.edit.change_password") %>
     </h2>
   </div>
 
-  <div class="rounded-lg bg-white px-8 py-10 shadow">
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "space-y-6" }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
       <%= f.hidden_field :reset_password_token %>
 
       <div>
-        <%= f.label :password, t("devise.passwords.edit.new_password"), class: "block text-sm font-medium text-gray-900" %>
+        <%= f.label :password, t("devise.passwords.edit.new_password"), class: "block text-sm/6 font-medium text-gray-900" %>
         <% if @minimum_password_length %>
-          <p class="mt-1 text-xs text-gray-500"><%= t("devise.shared.minimum_password_length", count: @minimum_password_length) %></p>
+          <p class="text-xs text-gray-500"><%= t("devise.shared.minimum_password_length", count: @minimum_password_length) %></p>
         <% end %>
         <div class="mt-2">
-          <%= f.password_field :password, autofocus: true, autocomplete: "new-password",
-              class: "block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm" %>
+          <%= f.password_field :password, autofocus: true, autocomplete: "new-password", required: true,
+              class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
         </div>
       </div>
 
       <div>
-        <%= f.label :password_confirmation, t("devise.passwords.edit.confirm_new_password"), class: "block text-sm font-medium text-gray-900" %>
+        <%= f.label :password_confirmation, t("devise.passwords.edit.confirm_new_password"), class: "block text-sm/6 font-medium text-gray-900" %>
         <div class="mt-2">
-          <%= f.password_field :password_confirmation, autocomplete: "new-password",
-              class: "block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", required: true,
+              class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
         </div>
       </div>
 
       <div>
         <%= f.submit t("devise.passwords.edit.change_my_password"),
-            class: "flex w-full justify-center rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal cursor-pointer" %>
-      </div>
-
-      <div class="text-center">
-        <%= link_to t("devise.shared.links.back_to_sign_in"), new_session_path(resource_name), class: "text-sm font-medium text-tisseurs-teal hover:text-tisseurs-teal-dark" %>
+            class: "flex w-full justify-center rounded-md bg-tisseurs-teal px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal cursor-pointer" %>
       </div>
     <% end %>
+
+    <p class="mt-10 text-center text-sm/6 text-gray-500">
+      <%= link_to t("devise.shared.links.back_to_sign_in"), new_session_path(resource_name), class: "font-semibold text-tisseurs-teal hover:text-tisseurs-teal-dark" %>
+    </p>
   </div>
 </div>

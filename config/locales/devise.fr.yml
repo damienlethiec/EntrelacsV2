@@ -1,0 +1,102 @@
+fr:
+  devise:
+    confirmations:
+      confirmed: "Votre compte a été confirmé avec succès."
+      send_instructions: "Vous allez recevoir un email avec les instructions de confirmation de votre compte."
+      send_paranoid_instructions: "Si votre adresse email existe dans notre base de données, vous allez recevoir un email avec les instructions de confirmation de votre compte."
+    failure:
+      already_authenticated: "Vous êtes déjà connecté."
+      inactive: "Votre compte n'a pas encore été activé."
+      invalid: "Email ou mot de passe incorrect."
+      locked: "Votre compte est verrouillé."
+      last_attempt: "Il vous reste une tentative avant que votre compte ne soit verrouillé."
+      not_found_in_database: "Email ou mot de passe incorrect."
+      timeout: "Votre session a expiré. Veuillez vous reconnecter."
+      unauthenticated: "Veuillez vous connecter pour continuer."
+      unconfirmed: "Vous devez confirmer votre compte avant de continuer."
+    mailer:
+      confirmation_instructions:
+        subject: "Instructions de confirmation"
+      reset_password_instructions:
+        subject: "Instructions de réinitialisation du mot de passe"
+        greeting: "Bonjour %{recipient} !"
+        instruction: "Quelqu'un a demandé un lien pour modifier votre mot de passe. Vous pouvez le faire en cliquant sur le lien ci-dessous."
+        action: "Modifier mon mot de passe"
+        instruction_2: "Si vous n'avez pas fait cette demande, veuillez ignorer cet email."
+        instruction_3: "Votre mot de passe ne sera pas modifié tant que vous n'aurez pas cliqué sur le lien ci-dessus et créé un nouveau mot de passe."
+      unlock_instructions:
+        subject: "Instructions de déverrouillage"
+      email_changed:
+        subject: "Email modifié"
+      password_change:
+        subject: "Mot de passe modifié"
+      invitation_instructions:
+        subject: "Invitation à rejoindre Entrelacs"
+        hello: "Bonjour %{email} !"
+        someone_invited_you: "Vous avez été invité(e) à rejoindre Entrelacs (%{url})."
+        accept: "Accepter l'invitation"
+        accept_until: "Cette invitation expirera le %{due_date}."
+        ignore: "Si vous ne souhaitez pas accepter cette invitation, vous pouvez ignorer cet email."
+    omniauth_callbacks:
+      failure: "L'authentification depuis %{kind} a échoué : %{reason}."
+      success: "Vous êtes connecté via %{kind}."
+    passwords:
+      no_token: "Vous ne pouvez pas accéder à cette page sans passer par un email de réinitialisation du mot de passe. Si vous venez d'un tel email, assurez-vous d'avoir utilisé l'URL complète."
+      send_instructions: "Vous allez recevoir un email avec les instructions de réinitialisation du mot de passe."
+      send_paranoid_instructions: "Si votre adresse email existe dans notre base de données, vous allez recevoir un email avec les instructions de réinitialisation du mot de passe."
+      updated: "Votre mot de passe a été modifié avec succès. Vous êtes maintenant connecté."
+      updated_not_active: "Votre mot de passe a été modifié avec succès."
+      new:
+        forgot_password: "Mot de passe oublié ?"
+        send_instructions: "Entrez votre email pour recevoir les instructions"
+        send_me_reset_password_instructions: "Envoyer les instructions"
+      edit:
+        change_password: "Modifier le mot de passe"
+        new_password: "Nouveau mot de passe"
+        confirm_new_password: "Confirmer le nouveau mot de passe"
+        change_my_password: "Modifier mon mot de passe"
+    registrations:
+      destroyed: "Votre compte a été supprimé avec succès. Nous espérons vous revoir bientôt."
+      signed_up: "Bienvenue ! Vous êtes maintenant inscrit."
+      signed_up_but_inactive: "Vous êtes inscrit. Cependant, votre compte n'est pas encore activé."
+      signed_up_but_locked: "Vous êtes inscrit. Cependant, votre compte est verrouillé."
+      signed_up_but_unconfirmed: "Un email avec un lien de confirmation vous a été envoyé. Veuillez cliquer sur ce lien pour activer votre compte."
+      update_needs_confirmation: "Votre compte a été mis à jour mais nous devons vérifier votre nouvelle adresse email. Veuillez vérifier votre boîte de réception et cliquer sur le lien de confirmation."
+      updated: "Votre compte a été mis à jour avec succès."
+      updated_but_not_signed_in: "Votre compte a été mis à jour mais comme votre mot de passe a été modifié, vous devez vous reconnecter."
+    sessions:
+      signed_in: "Connexion réussie."
+      signed_out: "Déconnexion réussie."
+      already_signed_out: "Vous êtes déjà déconnecté."
+      new:
+        sign_in: "Connexion"
+        remember_me: "Se souvenir de moi"
+    unlocks:
+      send_instructions: "Vous allez recevoir un email avec les instructions de déverrouillage de votre compte."
+      send_paranoid_instructions: "Si votre compte existe, vous allez recevoir un email avec les instructions de déverrouillage."
+      unlocked: "Votre compte a été déverrouillé avec succès. Vous êtes maintenant connecté."
+    invitations:
+      send_instructions: "Une invitation a été envoyée à %{email}."
+      invitation_token_invalid: "Le token d'invitation n'est pas valide."
+      updated: "Votre mot de passe a été défini avec succès. Vous êtes maintenant connecté."
+      updated_not_active: "Votre mot de passe a été défini avec succès."
+      no_invitations_remaining: "Vous n'avez plus d'invitations disponibles."
+      invitation_removed: "L'invitation a été supprimée."
+      new:
+        header: "Inviter un utilisateur"
+        submit_button: "Envoyer l'invitation"
+        residence_hint: "Obligatoire pour les tisseurs"
+      edit:
+        header: "Définir votre mot de passe"
+        subtitle: "Choisissez un mot de passe pour activer votre compte"
+        submit_button: "Activer mon compte"
+    shared:
+      links:
+        sign_in: "Se connecter"
+        forgot_password: "Mot de passe oublié ?"
+        back_to_sign_in: "Retour à la connexion"
+        didn_t_receive_confirmation_instructions: "Vous n'avez pas reçu les instructions de confirmation ?"
+        didn_t_receive_unlock_instructions: "Vous n'avez pas reçu les instructions de déverrouillage ?"
+      minimum_password_length:
+        one: "%{count} caractère minimum"
+        other: "%{count} caractères minimum"
