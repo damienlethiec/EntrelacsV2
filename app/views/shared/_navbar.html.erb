@@ -10,7 +10,7 @@
         <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
           <%= nav_link_to t("nav.residences"), residences_path %>
           <% if current_user.admin? %>
-            <%# TODO: Phase Users - nav_link_to t("nav.users"), users_path %>
+            <%= nav_link_to t("nav.users"), admin_users_path %>
             <%# TODO: Phase Stats - nav_link_to t("nav.stats"), stats_path %>
           <% end %>
         </div>
@@ -46,7 +46,7 @@
     <div class="space-y-1 pt-2 pb-3">
       <%= mobile_nav_link_to t("nav.residences"), residences_path %>
       <% if current_user.admin? %>
-        <%# TODO: Phase Users - mobile_nav_link_to t("nav.users"), users_path %>
+        <%= mobile_nav_link_to t("nav.users"), admin_users_path %>
         <%# TODO: Phase Stats - mobile_nav_link_to t("nav.stats"), stats_path %>
       <% end %>
     </div>

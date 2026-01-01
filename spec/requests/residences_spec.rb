@@ -56,26 +56,6 @@ RSpec.describe "Residences", type: :request do
     end
   end
 
-  describe "GET /residences/:id" do
-    context "when authenticated as admin" do
-      before { sign_in admin }
-
-      it "returns http success" do
-        get residence_path(residence)
-        expect(response).to have_http_status(:success)
-      end
-    end
-
-    context "when authenticated as weaver" do
-      before { sign_in weaver }
-
-      it "returns http success for own residence" do
-        get residence_path(weaver.residence)
-        expect(response).to have_http_status(:success)
-      end
-    end
-  end
-
   describe "GET /residences/new" do
     context "when authenticated as admin" do
       before { sign_in admin }
@@ -105,7 +85,7 @@ RSpec.describe "Residences", type: :request do
           post residences_path, params: { residence: { name: "New Residence", address: "123 Street" } }
         }.to change(Residence, :count).by(1)
 
-        expect(response).to redirect_to(residence_path(Residence.last))
+        expect(response).to redirect_to(residences_path)
       end
 
       it "renders new with invalid params" do
@@ -150,7 +130,7 @@ RSpec.describe "Residences", type: :request do
 
       it "updates residence with valid params" do
         patch residence_path(residence), params: { residence: { name: "Updated Name" } }
-        expect(response).to redirect_to(residence_path(residence))
+        expect(response).to redirect_to(residences_path)
         expect(residence.reload.name).to eq("Updated Name")
       end
 
@@ -205,7 +185,7 @@ RSpec.describe "Residences", type: :request do
       it "restores the residence" do
         patch restore_residence_path(deleted_residence)
         expect(deleted_residence.reload.deleted?).to be false
-        expect(response).to redirect_to(residence_path(deleted_residence))
+        expect(response).to redirect_to(residences_path)
       end
     end
 

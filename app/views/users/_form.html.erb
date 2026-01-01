@@ -1,0 +1,109 @@
+<%= form_with(model: user, url: user.persisted? ? admin_user_path(user) : admin_users_path, class: "space-y-6") do |f| %>
+  <% if user.errors.any? %>
+    <div class="rounded-md bg-red-50 p-4">
+      <div class="flex">
+        <div class="shrink-0">
+          <svg class="size-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">
+            <%= t("errors.messages.not_saved", count: user.errors.count, resource: User.model_name.human.downcase) %>
+          </h3>
+          <div class="mt-2 text-sm text-red-700">
+            <ul role="list" class="list-disc space-y-1 pl-5">
+              <% user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2">
+    <div>
+      <%= f.label :first_name, t("activerecord.attributes.user.first_name"), class: "block text-sm/6 font-medium text-gray-900" %>
+      <div class="mt-2">
+        <%= f.text_field :first_name, autofocus: true,
+            class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
+      </div>
+    </div>
+
+    <div>
+      <%= f.label :last_name, t("activerecord.attributes.user.last_name"), class: "block text-sm/6 font-medium text-gray-900" %>
+      <div class="mt-2">
+        <%= f.text_field :last_name,
+            class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <%= f.label :email, t("activerecord.attributes.user.email"), class: "block text-sm/6 font-medium text-gray-900" %>
+    <div class="mt-2">
+      <%= f.email_field :email, autocomplete: "email",
+          class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2">
+    <div>
+      <%= f.label :role, t("activerecord.attributes.user.role"), class: "block text-sm/6 font-medium text-gray-900" %>
+      <div class="mt-2">
+        <%= f.select :role, User.roles.keys.map { |r| [t("activerecord.enums.user.role.#{r}"), r] },
+            {},
+            class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6",
+            data: { action: "change->user-form#toggleResidence" } %>
+      </div>
+    </div>
+
+    <div id="residence-field" class="<%= 'hidden' if user.admin? || user.new_record? && user.role.nil? %>">
+      <%= f.label :residence_id, t("activerecord.attributes.user.residence"), class: "block text-sm/6 font-medium text-gray-900" %>
+      <div class="mt-2">
+        <%= f.collection_select :residence_id, Residence.active.order(:name), :id, :name,
+            { include_blank: t("helpers.select.prompt") },
+            class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
+      </div>
+    </div>
+  </div>
+
+  <% if user.new_record? %>
+    <div class="rounded-md bg-blue-50 p-4">
+      <div class="flex">
+        <div class="shrink-0">
+          <svg class="size-5 text-blue-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm text-blue-700"><%= t("users.form.invitation_notice") %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="flex items-center justify-end gap-x-4 pt-4 border-t border-gray-200">
+    <%= link_to t("helpers.cancel"), admin_users_path, class: "text-sm font-semibold text-gray-900 hover:text-gray-700" %>
+    <%= f.submit class: "rounded-md bg-tisseurs-teal px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal cursor-pointer" %>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const roleSelect = document.querySelector("select[name='user[role]']");
+    const residenceField = document.getElementById("residence-field");
+
+    if (roleSelect && residenceField) {
+      roleSelect.addEventListener("change", function() {
+        if (this.value === "weaver") {
+          residenceField.classList.remove("hidden");
+        } else {
+          residenceField.classList.add("hidden");
+        }
+      });
+    }
+  });
+</script>

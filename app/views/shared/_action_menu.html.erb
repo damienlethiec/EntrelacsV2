@@ -1,0 +1,16 @@
+<%# Usage: render "shared/action_menu" do |menu| %>
+<%#   menu.with_item { link_to "Edit", edit_path } %>
+<%#   menu.with_item { button_to "Delete", path, method: :delete } %>
+<%# end %>
+
+<div class="relative" data-controller="dropdown">
+  <button type="button" data-action="dropdown#toggle" class="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
+    <span class="sr-only"><%= t("helpers.actions") %></span>
+    <svg class="size-5" viewBox="0 0 20 20" fill="currentColor">
+      <path d="M10 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM10 8.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM11.5 15.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z" />
+    </svg>
+  </button>
+  <div data-dropdown-target="menu" class="hidden absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+    <%= yield %>
+  </div>
+</div>

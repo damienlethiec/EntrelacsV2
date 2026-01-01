@@ -1,13 +1,9 @@
 class ResidencesController < ApplicationController
-  before_action :set_residence, only: [:show, :edit, :update, :destroy, :restore]
+  before_action :set_residence, only: [:edit, :update, :destroy, :restore]
 
   def index
     @residences = policy_scope(Residence).order(:name)
     @residences = @residences.active unless params[:show_deleted] == "true" && current_user.admin?
-  end
-
-  def show
-    authorize @residence
   end
 
   def new
@@ -20,7 +16,7 @@ class ResidencesController < ApplicationController
     authorize @residence
 
     if @residence.save
-      redirect_to @residence, notice: t("flash.actions.create.success", resource_name: Residence.model_name.human)
+      redirect_to residences_path, notice: t("flash.actions.create.success", resource_name: Residence.model_name.human)
     else
       render :new, status: :unprocessable_entity
     end
@@ -34,7 +30,7 @@ class ResidencesController < ApplicationController
     authorize @residence
 
     if @residence.update(residence_params)
-      redirect_to @residence, notice: t("flash.actions.update.success", resource_name: Residence.model_name.human)
+      redirect_to residences_path, notice: t("flash.actions.update.success", resource_name: Residence.model_name.human)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -49,7 +45,7 @@ class ResidencesController < ApplicationController
   def restore
     authorize @residence
     @residence.restore
-    redirect_to @residence, notice: t("residences.flash.restored")
+    redirect_to residences_path, notice: t("residences.flash.restored")
   end
 
   private

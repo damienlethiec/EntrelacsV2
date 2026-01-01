@@ -1,0 +1,76 @@
+<% content_for :page_header do %>
+  <div class="md:flex md:items-center md:justify-between">
+    <div class="min-w-0 flex-1">
+      <h1 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"><%= t("users.index.title") %></h1>
+    </div>
+    <div class="mt-4 flex md:mt-0 md:ml-4">
+      <%= link_to t("users.index.new"), new_admin_user_path,
+          class: "inline-flex items-center rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal" %>
+    </div>
+  </div>
+<% end %>
+
+<% if @users.any? %>
+  <div class="overflow-hidden bg-white shadow ring-1 ring-black/5 sm:rounded-lg">
+    <ul role="list" class="divide-y divide-gray-100">
+      <% @users.each do |user| %>
+        <li class="flex items-center justify-between gap-x-6 py-5 px-4 sm:px-6">
+          <div class="min-w-0">
+            <div class="flex items-start gap-x-3">
+              <p class="text-sm/6 font-semibold text-gray-900"><%= user.full_name %></p>
+              <% if user == current_user %>
+                <span class="mt-0.5 rounded-md bg-tisseurs-cream px-1.5 py-0.5 text-xs font-medium text-tisseurs-teal"><%= t("users.index.you") %></span>
+              <% end %>
+              <% if user.admin? %>
+                <span class="mt-0.5 rounded-md bg-blue-50 px-1.5 py-0.5 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"><%= t("activerecord.enums.user.role.admin") %></span>
+              <% else %>
+                <span class="mt-0.5 rounded-md bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"><%= t("activerecord.enums.user.role.weaver") %></span>
+              <% end %>
+              <% if user.invited_to_sign_up? %>
+                <span class="mt-0.5 rounded-md bg-yellow-50 px-1.5 py-0.5 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20"><%= t("users.status.pending") %></span>
+              <% end %>
+            </div>
+            <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
+              <p class="truncate"><%= user.email %></p>
+              <% if user.residence.present? %>
+                <svg viewBox="0 0 2 2" class="size-0.5 fill-current">
+                  <circle r="1" cx="1" cy="1" />
+                </svg>
+                <p class="truncate"><%= user.residence.name %></p>
+              <% end %>
+            </div>
+          </div>
+          <% if policy(user).edit? || policy(user).destroy? %>
+            <%= render "shared/action_menu" do %>
+              <% if policy(user).edit? %>
+                <%= link_to t("helpers.edit"), edit_admin_user_path(user),
+                    class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50" %>
+              <% end %>
+              <% if policy(user).destroy? %>
+                <%= button_to t("helpers.delete"), admin_user_path(user), method: :delete,
+                    form: { data: { turbo_confirm: t("users.confirm_delete", name: user.full_name) } },
+                    class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-coral hover:bg-gray-50" %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% else %>
+  <div class="text-center py-12">
+    <svg class="mx-auto size-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+    </svg>
+    <h3 class="mt-2 text-sm font-semibold text-gray-900"><%= t("users.index.empty") %></h3>
+    <p class="mt-1 text-sm text-gray-500"><%= t("users.index.empty_hint") %></p>
+    <div class="mt-6">
+      <%= link_to new_admin_user_path, class: "inline-flex items-center rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark" do %>
+        <svg class="-ml-0.5 mr-1.5 size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+        </svg>
+        <%= t("users.index.new") %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

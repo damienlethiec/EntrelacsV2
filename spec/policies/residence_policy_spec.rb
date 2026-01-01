@@ -7,7 +7,7 @@ RSpec.describe ResidencePolicy, type: :policy do
   let(:weaver) { create(:user, :weaver) }
   let(:residence) { create(:residence) }
 
-  permissions :index?, :show? do
+  permissions :index? do
     it "grants access to admin" do
       expect(subject).to permit(admin, residence)
     end

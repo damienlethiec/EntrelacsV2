@@ -189,6 +189,12 @@ fr:
             residence:
               blank: "doit être renseignée pour un tisseur"
 
+    enums:
+      user:
+        role:
+          admin: "Administrateur"
+          weaver: "Tisseur"
+
   # Navigation
   nav:
     dashboard: "Tableau de bord"
@@ -302,6 +308,21 @@ fr:
   users:
     index:
       title: "Utilisateurs"
-      invite: "Inviter un utilisateur"
+      new: "Inviter un utilisateur"
+      name: "Nom"
+      status: "Statut"
+      you: "vous"
+      empty: "Aucun utilisateur pour le moment."
+      empty_hint: "Commencez par inviter un utilisateur."
+    new:
+      title: "Inviter un utilisateur"
+    edit:
+      title: "Modifier l'utilisateur"
     show:
       title: "Détails de l'utilisateur"
+    status:
+      active: "Actif"
+      pending: "Invitation en attente"
+    form:
+      invitation_notice: "Un email d'invitation sera envoyé à cet utilisateur pour qu'il puisse définir son mot de passe."
+    confirm_delete: "Êtes-vous sûr de vouloir supprimer %{name} ?"

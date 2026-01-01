@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  resources :residences do
+  resources :users, except: [:show], path: "admin/users", as: :admin_users
+
+  resources :residences, except: [:show] do
     member do
       patch :restore
     end

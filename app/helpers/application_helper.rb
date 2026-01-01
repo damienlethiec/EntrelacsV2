@@ -13,7 +13,7 @@ module ApplicationHelper
   def mobile_nav_link_to(name, path)
     current = current_page?(path)
     classes = if current
-                "block border-l-4 border-tisseurs-teal bg-tisseurs-cream py-2 pr-4 pl-3 text-base font-medium text-tisseurs-teal"
+                "block border-l-4 border-tisseurs-teal py-2 pr-4 pl-3 text-base font-medium text-tisseurs-teal"
               else
                 "block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800"
               end
