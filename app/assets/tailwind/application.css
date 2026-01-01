@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  /* Couleurs Tisseurs */
+  --color-tisseurs-teal: #0e7c7c;
+  --color-tisseurs-teal-dark: #065e5e;
+  --color-tisseurs-teal-light: #0a9a9a;
+  --color-tisseurs-cream: #fdf6eb;
+  --color-tisseurs-cream-dark: #f5ead8;
+  --color-tisseurs-coral: #f26851;
+  --color-tisseurs-coral-dark: #d9533e;
+  --color-tisseurs-coral-light: #ff8573;
+  --color-tisseurs-white: #ffffff;
+  --color-tisseurs-teal-text: #057c7c;
+  --color-tisseurs-gray: #474747;
+  --color-tisseurs-gray-light: #6b7280;
+
+  /* Police */
+  --font-family-harmattan: 'Harmattan', Helvetica, Arial, Lucida, sans-serif;
+}
+
+/* Classes utilitaires */
+.font-harmattan {
+  font-family: var(--font-family-harmattan);
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html class="h-full">
+  <head>
+    <title><%= content_for(:title) || "Entrelacs" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Entrelacs">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Harmattan:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="h-full bg-tisseurs-cream font-harmattan">
+    <% if user_signed_in? %>
+      <div class="min-h-full">
+        <%= render "shared/navbar" %>
+
+        <div class="py-10">
+          <% if content_for?(:page_header) %>
+            <header>
+              <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <%= yield :page_header %>
+              </div>
+            </header>
+          <% end %>
+
+          <main>
+            <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+              <%= yield %>
+            </div>
+          </main>
+        </div>
+      </div>
+    <% else %>
+      <main class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <%= yield %>
+      </main>
+    <% end %>
+
+    <%= render "shared/flash" %>
+  </body>
+</html>
