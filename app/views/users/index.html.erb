@@ -11,7 +11,7 @@
 <% end %>
 
 <% if @users.any? %>
-  <div class="overflow-hidden bg-white shadow ring-1 ring-black/5 sm:rounded-lg">
+  <div class="bg-white shadow ring-1 ring-black/5 sm:rounded-lg">
     <ul role="list" class="divide-y divide-gray-100">
       <% @users.each do |user| %>
         <li class="flex items-center justify-between gap-x-6 py-5 px-4 sm:px-6">
@@ -32,6 +32,12 @@
             </div>
             <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
               <p class="truncate"><%= user.email %></p>
+              <% if user.phone.present? %>
+                <svg viewBox="0 0 2 2" class="size-0.5 fill-current">
+                  <circle r="1" cx="1" cy="1" />
+                </svg>
+                <p class="truncate"><%= user.phone %></p>
+              <% end %>
               <% if user.residence.present? %>
                 <svg viewBox="0 0 2 2" class="size-0.5 fill-current">
                   <circle r="1" cx="1" cy="1" />
