@@ -23,6 +23,9 @@ Rails.application.routes.draw do
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # Cron endpoint for external scheduler
+  post "cron/send_notifications" => "cron#send_notifications"
+
   # Root - Dashboard (redirects based on role in Phase 3/4)
   root "dashboard#index"
 end

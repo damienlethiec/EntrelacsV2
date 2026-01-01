@@ -63,6 +63,37 @@ class Activity < ApplicationRecord
     update!(email_status: :reminded, email_reminded_at: Time.current)
   end
 
+  # Class method to send daily notifications (called by rake task or cron endpoint)
+  def self.send_daily_notifications
+    total_emails_sent = 0
+
+    Residence.find_each do |residence|
+      new_activities = residence.activities.needing_notification.lock("FOR UPDATE SKIP LOCKED").to_a
+      reminder_activities = residence.activities.needing_reminder.lock("FOR UPDATE SKIP LOCKED").to_a
+
+      next if new_activities.empty? && reminder_activities.empty?
+
+      residents_with_email = residence.residents.active.where.not(email: [ nil, "" ])
+
+      if residents_with_email.any?
+        residents_with_email.find_each do |resident|
+          ActivityMailer.daily_notification(resident, new_activities, reminder_activities).deliver_now
+          total_emails_sent += 1
+        end
+      end
+
+      # Update email statuses with timestamps after sending
+      transaction do
+        new_activities.each(&:mark_as_informed!)
+        reminder_activities.each(&:mark_as_reminded!)
+      end
+
+      Rails.logger.info "Activity notifications: #{residence.name} - #{new_activities.size} new, #{reminder_activities.size} reminders, #{residents_with_email.count} residents notified"
+    end
+
+    total_emails_sent
+  end
+
   def past?
     starts_at <= Time.current
   end
