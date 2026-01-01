@@ -80,13 +80,13 @@ bin/rails db:migrate
 ## Phases de développement
 
 1. **Phase 1** : Setup (Rails, Devise, Pundit, Layout) ✅
-2. **Phase 2** : Gestion des Résidences
+2. **Phase 2** : Gestion des Résidences ✅
 3. **Phase 3** : Gestion des Activités
 4. **Phase 4** : Statistiques
 5. **Phase 5** : Gestion des Habitants
-6. **Phase 6** : Notifications email
-7. **Phase 7** : Tests E2E
-8. **Phase 8** : Optimisation
+6. **Phase 6** : Gestion des Users
+7. **Phase 7** : Notifications email
+8. **Phase 8** : Tests E2E
 9. **Phase 9** : Déploiement
 
 ## Règles de développement
