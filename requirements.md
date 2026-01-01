@@ -95,18 +95,23 @@ Application permettant de gérer une entreprise d'habitat partagé :
 
 ## Phases de développement
 
-### Phase 1 : Setup & Authentification
+### Phase 1 : Setup & Authentification ✅
 
 **Setup projet**
-- [ ] Rails new avec PostgreSQL, Tailwind, RSpec
-- [ ] Configuration Devise
-- [ ] Configuration Pundit
-- [ ] Layout principal avec navbar
-- [ ] Variables CSS custom (voir Design)
+- [x] Rails new avec PostgreSQL, Tailwind, RSpec
+- [x] Configuration Devise + Devise Invitable
+- [x] Configuration Pundit
+- [x] Layout principal avec navbar responsive
+- [x] Variables CSS custom (tisseurs-teal, coral, cream)
+- [x] Police Harmattan (Google Fonts)
+- [x] Configuration i18n français
+- [x] Vues Devise stylisées
 
 **Authentification**
-- [ ] Login email/password
-- [ ] Logout
+- [x] Login email/password
+- [x] Logout
+- [x] Mot de passe oublié
+- [x] Invitation utilisateur (Devise Invitable)
 
 **Routes** : `devise_for :users`
 
