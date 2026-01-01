@@ -1,0 +1,71 @@
+<% content_for :page_header do %>
+  <div class="md:flex md:items-center md:justify-between">
+    <div class="min-w-0 flex-1">
+      <h1 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+        <%= @resident.full_name %>
+      </h1>
+    </div>
+    <% if policy(@resident).edit? %>
+      <div class="mt-4 flex gap-x-2 md:mt-0 md:ml-4">
+        <%= link_to t("helpers.edit"), edit_residence_resident_path(@residence, @resident),
+            class: "inline-flex items-center rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<div class="overflow-hidden bg-white shadow ring-1 ring-black/5 sm:rounded-lg">
+  <div class="px-4 py-6 sm:px-6">
+    <h3 class="text-base font-semibold text-gray-900"><%= t("residents.show.info") %></h3>
+    <p class="mt-1 max-w-2xl text-sm text-gray-500"><%= @residence.name %></p>
+  </div>
+  <div class="border-t border-gray-100">
+    <dl class="divide-y divide-gray-100">
+      <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-900"><%= Resident.human_attribute_name(:first_name) %></dt>
+        <dd class="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0"><%= @resident.first_name %></dd>
+      </div>
+      <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-900"><%= Resident.human_attribute_name(:last_name) %></dt>
+        <dd class="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0"><%= @resident.last_name %></dd>
+      </div>
+      <% if @resident.apartment.present? %>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-900"><%= Resident.human_attribute_name(:apartment) %></dt>
+          <dd class="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0"><%= @resident.apartment %></dd>
+        </div>
+      <% end %>
+      <% if @resident.email.present? %>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-900"><%= Resident.human_attribute_name(:email) %></dt>
+          <dd class="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
+            <%= mail_to @resident.email, @resident.email, class: "text-tisseurs-teal hover:text-tisseurs-teal-dark" %>
+          </dd>
+        </div>
+      <% end %>
+      <% if @resident.phone.present? %>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-900"><%= Resident.human_attribute_name(:phone) %></dt>
+          <dd class="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
+            <%= link_to @resident.phone, "tel:#{@resident.phone}", class: "text-tisseurs-teal hover:text-tisseurs-teal-dark" %>
+          </dd>
+        </div>
+      <% end %>
+      <% if @resident.notes.present? %>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-900"><%= Resident.human_attribute_name(:notes) %></dt>
+          <dd class="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 whitespace-pre-line"><%= @resident.notes %></dd>
+        </div>
+      <% end %>
+    </dl>
+  </div>
+</div>
+
+<div class="mt-6 flex items-center justify-between">
+  <%= link_to t("helpers.back"), residence_residents_path(@residence), class: "text-sm text-gray-500 hover:text-gray-700" %>
+  <% if policy(@resident).destroy? %>
+    <%= button_to t("helpers.delete"), residence_resident_path(@residence, @resident), method: :delete,
+        form: { data: { turbo_confirm: t("residents.confirm_delete", name: @resident.full_name) } },
+        class: "text-sm text-tisseurs-coral hover:text-red-700" %>
+  <% end %>
+</div>

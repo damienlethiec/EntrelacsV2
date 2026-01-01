@@ -141,6 +141,7 @@ fr:
     attributes:
       user:
         email: "Email"
+        phone: "Téléphone"
         password: "Mot de passe"
         password_confirmation: "Confirmation du mot de passe"
         current_password: "Mot de passe actuel"
@@ -162,11 +163,11 @@ fr:
       resident:
         first_name: "Prénom"
         last_name: "Nom"
-        birthdate: "Date de naissance"
-        apartment_number: "Numéro d'appartement"
-        moved_in_at: "Date d'emménagement"
-        moved_out_at: "Date de déménagement"
+        email: "Email"
+        phone: "Téléphone"
+        apartment: "Appartement"
         notes: "Notes"
+        moved_out_at: "Date de déménagement"
 
       activity:
         activity_type: "Type d'activité"
@@ -203,6 +204,13 @@ fr:
           attributes:
             ends_at:
               after_starts_at: "doit être après la date de début"
+            recurrence_end_date:
+              blank: "doit être renseignée pour une activité récurrente"
+              invalid: "n'est pas valide"
+              must_be_after_start: "doit être après la date de début"
+              too_far: "ne peut pas dépasser 1 an à partir de la date de début"
+            recurrence_frequency:
+              invalid: "doit être sélectionnée"
 
     enums:
       user:
@@ -257,6 +265,7 @@ fr:
       weavers: "Tisseurs"
       show_deleted: "Afficher les supprimées"
       hide_deleted: "Masquer les supprimées"
+      view_residents: "Voir les habitants"
     new:
       title: "Nouvelle résidence"
     edit:
@@ -280,12 +289,33 @@ fr:
       title: "Habitants"
       new: "Nouvel habitant"
       empty: "Aucun habitant pour le moment."
+      empty_hint: "Commencez par ajouter un habitant."
+      show_moved_out: "Afficher les déménagés"
+      hide_moved_out: "Masquer les déménagés"
     new:
       title: "Nouvel habitant"
     edit:
       title: "Modifier l'habitant"
     show:
       title: "Détails de l'habitant"
+      info: "Informations de l'habitant"
+    status:
+      moved_out: "Déménagé"
+    fields:
+      apartment_short: "Appt."
+    actions:
+      move_out: "Marquer comme déménagé"
+      move_back_in: "Marquer comme revenu"
+    confirm_move_out: "Êtes-vous sûr de vouloir marquer %{name} comme déménagé ?"
+    confirm_delete: "Êtes-vous sûr de vouloir supprimer %{name} ?"
+    form:
+      email_hint: "Optionnel, pour les notifications d'activités"
+      notes_hint: "Notes privées visibles uniquement par les tisseurs"
+    flash:
+      moved_out: "L'habitant a été marqué comme déménagé."
+      moved_back_in: "L'habitant est de retour."
+      cannot_move_out: "Impossible de marquer l'habitant comme déménagé."
+      cannot_move_back_in: "Impossible de marquer l'habitant comme revenu."
 
   # Activities
   activities:
@@ -321,8 +351,18 @@ fr:
     flash:
       canceled: "L'activité a été annulée."
       completed: "L'activité a été complétée."
+      recurring_created:
+        one: "%{count} activité a été créée."
+        other: "%{count} activités ont été créées."
     form:
       completion_notice: "Le bilan et le nombre de participants pourront être renseignés une fois l'activité passée."
+      recurring: "Activité récurrente"
+      recurrence_frequency: "Fréquence"
+      recurrence_end_date: "Date de fin de récurrence"
+      recurrence_max_hint: "Maximum 1 an à partir de la date de début"
+      frequencies:
+        weekly: "Hebdomadaire"
+        monthly: "Mensuelle"
 
   # Stats
   stats:

@@ -14,6 +14,8 @@ Rails.application.routes.draw do
         patch :complete
       end
     end
+
+    resources :residents
   end
 
   # Health check
