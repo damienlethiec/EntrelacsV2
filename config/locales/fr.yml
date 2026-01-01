@@ -411,11 +411,14 @@ fr:
       activities: "Activités"
       participants: "Participants"
     csv:
+      residence: "Résidence"
       activity_type: "Type d'activité"
       description: "Description"
-      date: "Date"
+      starts_at: "Date de début"
+      ends_at: "Date de fin"
       participants: "Participants"
-      residence: "Résidence"
+      notify_residents: "Notification résidents"
+      review: "Bilan"
 
   # Activity Mailer
   activity_mailer:

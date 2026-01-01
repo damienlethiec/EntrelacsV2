@@ -131,20 +131,26 @@ class StatsController < ApplicationController
 
     CSV.generate(headers: true, col_sep: ";") do |csv|
       csv << [
+        I18n.t("stats.csv.residence"),
         I18n.t("stats.csv.activity_type"),
         I18n.t("stats.csv.description"),
-        I18n.t("stats.csv.date"),
+        I18n.t("stats.csv.starts_at"),
+        I18n.t("stats.csv.ends_at"),
         I18n.t("stats.csv.participants"),
-        I18n.t("stats.csv.residence")
+        I18n.t("stats.csv.notify_residents"),
+        I18n.t("stats.csv.review")
       ]
 
       @activities.includes(:residence).order(starts_at: :desc).each do |activity|
         csv << [
+          activity.residence.name,
           activity.activity_type,
           activity.description,
           I18n.l(activity.starts_at, format: :short),
+          activity.ends_at ? I18n.l(activity.ends_at, format: :short) : "",
           activity.participants_count,
-          activity.residence.name
+          activity.notify_residents ? I18n.t("yes") : I18n.t("no"),
+          activity.review
         ]
       end
     end
