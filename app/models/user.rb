@@ -1,8 +1,8 @@
 class User < ApplicationRecord
   devise :invitable, :database_authenticatable,
-         :recoverable, :rememberable, :validatable
+    :recoverable, :rememberable, :validatable
 
-  enum :role, { admin: 0, weaver: 1 }
+  enum :role, {admin: 0, weaver: 1}
 
   belongs_to :residence, optional: true
 

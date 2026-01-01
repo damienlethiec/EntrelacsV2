@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Activity, type: :model do
   describe "associations" do
@@ -94,7 +94,7 @@ RSpec.describe Activity, type: :model do
       let!(:no_notification) { create(:activity, :upcoming, notify_residents: false, email_status: :none) }
       let!(:already_sent_today) do
         create(:activity, :upcoming, notify_residents: true, email_status: :none,
-               email_informed_at: Time.current)
+          email_informed_at: Time.current)
       end
 
       it "returns only activities needing notification" do
@@ -337,8 +337,7 @@ RSpec.describe Activity, type: :model do
             ends_at: ends_at,
             recurring: true,
             recurrence_frequency: "weekly",
-            recurrence_end_date: starts_at - 1.day
-          )
+            recurrence_end_date: starts_at - 1.day)
           expect(activity).not_to be_valid
           expect(activity.errors[:recurrence_end_date]).to be_present
         end
@@ -349,8 +348,7 @@ RSpec.describe Activity, type: :model do
             ends_at: ends_at,
             recurring: true,
             recurrence_frequency: "weekly",
-            recurrence_end_date: starts_at + 13.months
-          )
+            recurrence_end_date: starts_at + 13.months)
           expect(activity).not_to be_valid
           expect(activity.errors[:recurrence_end_date]).to be_present
         end
@@ -361,8 +359,7 @@ RSpec.describe Activity, type: :model do
             ends_at: ends_at,
             recurring: true,
             recurrence_frequency: "weekly",
-            recurrence_end_date: starts_at + 1.month
-          )
+            recurrence_end_date: starts_at + 1.month)
           expect(activity).to be_valid
         end
       end
@@ -393,8 +390,7 @@ RSpec.describe Activity, type: :model do
             ends_at: ends_at,
             recurring: true,
             recurrence_frequency: "weekly",
-            recurrence_end_date: starts_at + 3.weeks
-          )
+            recurrence_end_date: starts_at + 3.weeks)
 
           occurrences = activity.generate_occurrences
           expect(occurrences.size).to eq(4) # Original + 3 weeks
@@ -416,8 +412,7 @@ RSpec.describe Activity, type: :model do
             notify_residents: true,
             recurring: true,
             recurrence_frequency: "weekly",
-            recurrence_end_date: starts_at + 1.week
-          )
+            recurrence_end_date: starts_at + 1.week)
 
           occurrences = activity.generate_occurrences
           second_occurrence = occurrences[1]
@@ -435,8 +430,7 @@ RSpec.describe Activity, type: :model do
             ends_at: starts_at + 3.hours,
             recurring: true,
             recurrence_frequency: "weekly",
-            recurrence_end_date: starts_at + 1.week
-          )
+            recurrence_end_date: starts_at + 1.week)
 
           occurrences = activity.generate_occurrences
           expect(occurrences[1].ends_at - occurrences[1].starts_at).to eq(3.hours)
@@ -451,8 +445,7 @@ RSpec.describe Activity, type: :model do
             ends_at: ends_at,
             recurring: true,
             recurrence_frequency: "monthly",
-            recurrence_end_date: starts_at + 2.months
-          )
+            recurrence_end_date: starts_at + 2.months)
 
           occurrences = activity.generate_occurrences
           expect(occurrences.size).to eq(3) # Original + 2 months
@@ -470,8 +463,7 @@ RSpec.describe Activity, type: :model do
             activity_type: nil, # Invalid
             recurring: true,
             recurrence_frequency: "weekly",
-            recurrence_end_date: starts_at + 1.month
-          )
+            recurrence_end_date: starts_at + 1.month)
 
           expect(activity.generate_occurrences).to be_empty
         end

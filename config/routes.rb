@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   end
 
   # Health check
-  get "up" => "rails/health#show", as: :rails_health_check
+  get "up" => "rails/health#show", :as => :rails_health_check
 
   # Cron endpoint for external scheduler
   post "cron/send_notifications" => "cron#send_notifications"

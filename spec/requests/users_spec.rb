@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Users", type: :request do
   let(:admin) { create(:user, :admin) }
@@ -100,7 +100,7 @@ RSpec.describe "Users", type: :request do
       end
 
       it "renders new with invalid params" do
-        post admin_users_path, params: { user: { first_name: "", email: "" } }
+        post admin_users_path, params: {user: {first_name: "", email: ""}}
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -110,7 +110,7 @@ RSpec.describe "Users", type: :request do
 
       it "is not authorized" do
         post admin_users_path, params: {
-          user: { first_name: "New", last_name: "User", email: "new@example.com", role: "admin" }
+          user: {first_name: "New", last_name: "User", email: "new@example.com", role: "admin"}
         }
         expect(response).to redirect_to(root_path)
       end
@@ -146,19 +146,19 @@ RSpec.describe "Users", type: :request do
       before { sign_in admin }
 
       it "updates user with valid params" do
-        patch admin_user_path(other_user), params: { user: { first_name: "Updated" } }
+        patch admin_user_path(other_user), params: {user: {first_name: "Updated"}}
         expect(response).to redirect_to(admin_users_path)
         expect(other_user.reload.first_name).to eq("Updated")
       end
 
       it "can change user residence" do
         new_residence = create(:residence)
-        patch admin_user_path(other_user), params: { user: { residence_id: new_residence.id } }
+        patch admin_user_path(other_user), params: {user: {residence_id: new_residence.id}}
         expect(other_user.reload.residence).to eq(new_residence)
       end
 
       it "renders edit with invalid params" do
-        patch admin_user_path(other_user), params: { user: { first_name: "" } }
+        patch admin_user_path(other_user), params: {user: {first_name: ""}}
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -167,7 +167,7 @@ RSpec.describe "Users", type: :request do
       before { sign_in weaver }
 
       it "is not authorized" do
-        patch admin_user_path(other_user), params: { user: { first_name: "Hacked" } }
+        patch admin_user_path(other_user), params: {user: {first_name: "Hacked"}}
         expect(response).to redirect_to(root_path)
       end
     end

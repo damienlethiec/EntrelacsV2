@@ -6,7 +6,7 @@ class CronController < ApplicationController
     # Appeler la même logique que la rake task
     Activity.send_daily_notifications
 
-    render json: { status: "ok", sent_at: Time.current }
+    render json: {status: "ok", sent_at: Time.current}
   end
 
   private
@@ -16,7 +16,7 @@ class CronController < ApplicationController
     provided_token = request.headers["Authorization"]&.remove("Bearer ")
 
     unless expected_token.present? && ActiveSupport::SecurityUtils.secure_compare(expected_token, provided_token.to_s)
-      render json: { error: "Unauthorized" }, status: :unauthorized
+      render json: {error: "Unauthorized"}, status: :unauthorized
     end
   end
 end

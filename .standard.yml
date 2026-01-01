@@ -1,0 +1,9 @@
+# Standard Ruby configuration
+# https://github.com/standardrb/standard
+
+ruby_version: 3.4
+
+ignore:
+  - "db/schema.rb"
+  - "vendor/**/*"
+  - "node_modules/**/*"

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Residences", type: :request do
   let(:admin) { create(:user, :admin) }
@@ -82,14 +82,14 @@ RSpec.describe "Residences", type: :request do
 
       it "creates a residence with valid params" do
         expect {
-          post residences_path, params: { residence: { name: "New Residence", address: "123 Street" } }
+          post residences_path, params: {residence: {name: "New Residence", address: "123 Street"}}
         }.to change(Residence, :count).by(1)
 
         expect(response).to redirect_to(residences_path)
       end
 
       it "renders new with invalid params" do
-        post residences_path, params: { residence: { name: "", address: "" } }
+        post residences_path, params: {residence: {name: "", address: ""}}
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -98,7 +98,7 @@ RSpec.describe "Residences", type: :request do
       before { sign_in weaver }
 
       it "is not authorized" do
-        post residences_path, params: { residence: { name: "New", address: "Addr" } }
+        post residences_path, params: {residence: {name: "New", address: "Addr"}}
         expect(response).to redirect_to(root_path)
       end
     end
@@ -129,13 +129,13 @@ RSpec.describe "Residences", type: :request do
       before { sign_in admin }
 
       it "updates residence with valid params" do
-        patch residence_path(residence), params: { residence: { name: "Updated Name" } }
+        patch residence_path(residence), params: {residence: {name: "Updated Name"}}
         expect(response).to redirect_to(residences_path)
         expect(residence.reload.name).to eq("Updated Name")
       end
 
       it "renders edit with invalid params" do
-        patch residence_path(residence), params: { residence: { name: "" } }
+        patch residence_path(residence), params: {residence: {name: ""}}
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -144,7 +144,7 @@ RSpec.describe "Residences", type: :request do
       before { sign_in weaver }
 
       it "is not authorized" do
-        patch residence_path(weaver.residence), params: { residence: { name: "Hacked" } }
+        patch residence_path(weaver.residence), params: {residence: {name: "Hacked"}}
         expect(response).to redirect_to(root_path)
       end
     end

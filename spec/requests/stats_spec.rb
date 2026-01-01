@@ -6,13 +6,13 @@ RSpec.describe "Stats", type: :request do
   let(:residence) { create(:residence) }
   let!(:completed_activity) do
     create(:activity, :completed, residence: residence,
-           starts_at: 1.week.ago, ends_at: 1.week.ago + 2.hours,
-           participants_count: 10)
+      starts_at: 1.week.ago, ends_at: 1.week.ago + 2.hours,
+      participants_count: 10)
   end
   let!(:another_completed) do
     create(:activity, :completed, residence: residence,
-           starts_at: 2.weeks.ago, ends_at: 2.weeks.ago + 2.hours,
-           participants_count: 20)
+      starts_at: 2.weeks.ago, ends_at: 2.weeks.ago + 2.hours,
+      participants_count: 20)
   end
 
   describe "GET /stats" do
@@ -38,7 +38,7 @@ RSpec.describe "Stats", type: :request do
 
       context "with date filters" do
         it "filters by date range" do
-          get stats_path, params: { start_date: 10.days.ago.to_date, end_date: Date.current }
+          get stats_path, params: {start_date: 10.days.ago.to_date, end_date: Date.current}
           expect(response.body).to include("1") # only 1 activity in last 10 days
         end
       end
@@ -93,7 +93,7 @@ RSpec.describe "Stats", type: :request do
 
       context "with date filters" do
         it "filters by date range" do
-          get stat_path(residence), params: { start_date: 10.days.ago.to_date, end_date: Date.current }
+          get stat_path(residence), params: {start_date: 10.days.ago.to_date, end_date: Date.current}
           expect(response.body).to include("1") # only 1 activity in last 10 days
         end
       end

@@ -11,9 +11,9 @@ puts "Admin créé: #{admin.email}"
 
 # Create residences
 residences_data = [
-  { name: "Les Music'Halles", address: "15 rue de la Musique, 75010 Paris" },
-  { name: "Le Jardin Partagé", address: "42 avenue des Fleurs, 69003 Lyon" },
-  { name: "La Maison Solidaire", address: "8 place de la République, 33000 Bordeaux" }
+  {name: "Les Music'Halles", address: "15 rue de la Musique, 75010 Paris"},
+  {name: "Le Jardin Partagé", address: "42 avenue des Fleurs, 69003 Lyon"},
+  {name: "La Maison Solidaire", address: "8 place de la République, 33000 Bordeaux"}
 ]
 
 residences = residences_data.map do |data|
@@ -26,9 +26,9 @@ end
 
 # Create weavers for each residence
 weavers_data = [
-  { first_name: "Marie", last_name: "Dupont", email: "marie@entrelacs.fr", residence: residences[0] },
-  { first_name: "Jean", last_name: "Martin", email: "jean@entrelacs.fr", residence: residences[1] },
-  { first_name: "Sophie", last_name: "Bernard", email: "sophie@entrelacs.fr", residence: residences[2] }
+  {first_name: "Marie", last_name: "Dupont", email: "marie@entrelacs.fr", residence: residences[0]},
+  {first_name: "Jean", last_name: "Martin", email: "jean@entrelacs.fr", residence: residences[1]},
+  {first_name: "Sophie", last_name: "Bernard", email: "sophie@entrelacs.fr", residence: residences[2]}
 ]
 
 weavers_data.each do |data|

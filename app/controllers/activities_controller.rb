@@ -85,7 +85,7 @@ class ActivitiesController < ApplicationController
 
   def activity_params
     params.require(:activity).permit(:activity_type, :description, :starts_at, :ends_at, :notify_residents,
-                                     :recurring, :recurrence_end_date, :recurrence_frequency)
+      :recurring, :recurrence_end_date, :recurrence_frequency)
   end
 
   def create_single_activity
@@ -109,7 +109,7 @@ class ActivitiesController < ApplicationController
     end
 
     redirect_to residence_activities_path(@residence),
-                notice: t("activities.flash.recurring_created", count: occurrences.size)
+      notice: t("activities.flash.recurring_created", count: occurrences.size)
   rescue ActiveRecord::RecordInvalid
     render :new, status: :unprocessable_entity
   end

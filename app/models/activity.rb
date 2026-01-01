@@ -20,15 +20,15 @@ class Activity < ApplicationRecord
   # Virtual attributes for recurring activities
   attr_accessor :recurring, :recurrence_end_date, :recurrence_frequency
 
-  enum :status, { planned: 0, completed: 1, canceled: 2 }
-  enum :email_status, { none: 0, informed: 1, reminded: 2 }, prefix: :email
+  enum :status, {planned: 0, completed: 1, canceled: 2}
+  enum :email_status, {none: 0, informed: 1, reminded: 2}, prefix: :email
 
   validates :activity_type, presence: true
   validates :description, presence: true
   validates :starts_at, presence: true
   validates :ends_at, presence: true
   validates :review, presence: true, if: :completed?
-  validates :participants_count, presence: true, numericality: { greater_than: 0 }, if: :completed?
+  validates :participants_count, presence: true, numericality: {greater_than: 0}, if: :completed?
   validate :ends_at_after_starts_at
   validate :recurrence_params_valid, if: :recurring?
 
@@ -41,18 +41,18 @@ class Activity < ApplicationRecord
   # Uses timestamps to ensure idempotency - won't re-notify if already sent today
   scope :needing_notification, -> {
     planned.where(notify_residents: true, email_status: :none)
-           .where("starts_at > ?", Time.current)
-           .where("email_informed_at IS NULL OR email_informed_at < ?", Time.current.beginning_of_day)
-           .order(starts_at: :asc)
+      .where("starts_at > ?", Time.current)
+      .where("email_informed_at IS NULL OR email_informed_at < ?", Time.current.beginning_of_day)
+      .order(starts_at: :asc)
   }
   # Don't send reminder if notification was sent today (prevents immediate reminder after notification)
   scope :needing_reminder, -> {
     planned.where(notify_residents: true, email_status: :informed)
-           .where("starts_at > ?", Time.current)
-           .where("starts_at <= ?", 48.hours.from_now)
-           .where("email_informed_at < ?", Time.current.beginning_of_day)
-           .where("email_reminded_at IS NULL OR email_reminded_at < ?", Time.current.beginning_of_day)
-           .order(starts_at: :asc)
+      .where("starts_at > ?", Time.current)
+      .where("starts_at <= ?", 48.hours.from_now)
+      .where("email_informed_at < ?", Time.current.beginning_of_day)
+      .where("email_reminded_at IS NULL OR email_reminded_at < ?", Time.current.beginning_of_day)
+      .order(starts_at: :asc)
   }
 
   def mark_as_informed!
@@ -73,7 +73,7 @@ class Activity < ApplicationRecord
 
       next if new_activities.empty? && reminder_activities.empty?
 
-      residents_with_email = residence.residents.active.where.not(email: [ nil, "" ])
+      residents_with_email = residence.residents.active.where.not(email: [nil, ""])
 
       if residents_with_email.any?
         residents_with_email.find_each do |resident|
@@ -173,7 +173,11 @@ class Activity < ApplicationRecord
     if recurrence_end_date.blank?
       errors.add(:recurrence_end_date, :blank)
     else
-      end_date = parsed_recurrence_end_date rescue nil
+      end_date = begin
+        parsed_recurrence_end_date
+      rescue
+        nil
+      end
       if end_date.nil?
         errors.add(:recurrence_end_date, :invalid)
       elsif end_date <= starts_at.to_date

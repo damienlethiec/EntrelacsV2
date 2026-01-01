@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Activities", type: :request do
   let(:residence) { create(:residence) }
@@ -25,7 +25,7 @@ RSpec.describe "Activities", type: :request do
 
       it "shows upcoming activities" do
         upcoming = create(:activity, :upcoming, residence: residence)
-        past = create(:activity, :past, residence: residence)
+        create(:activity, :past, residence: residence)
 
         get residence_activities_path(residence)
         expect(response.body).to include(upcoming.activity_type)
@@ -130,7 +130,7 @@ RSpec.describe "Activities", type: :request do
       end
 
       it "renders new with invalid params" do
-        post residence_activities_path(residence), params: { activity: { activity_type: "" } }
+        post residence_activities_path(residence), params: {activity: {activity_type: ""}}
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -165,13 +165,13 @@ RSpec.describe "Activities", type: :request do
       before { sign_in weaver }
 
       it "updates activity with valid params" do
-        patch residence_activity_path(residence, activity), params: { activity: { description: "Updated" } }
+        patch residence_activity_path(residence, activity), params: {activity: {description: "Updated"}}
         expect(response).to redirect_to(residence_activities_path(residence))
         expect(activity.reload.description).to eq("Updated")
       end
 
       it "renders edit with invalid params" do
-        patch residence_activity_path(residence, activity), params: { activity: { activity_type: "" } }
+        patch residence_activity_path(residence, activity), params: {activity: {activity_type: ""}}
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
