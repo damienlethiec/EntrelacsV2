@@ -223,15 +223,26 @@ fr:
       title: "Résidences"
       new: "Nouvelle résidence"
       empty: "Aucune résidence pour le moment."
+      empty_hint: "Commencez par créer une résidence."
+      weavers: "Tisseurs"
+      show_deleted: "Afficher les supprimées"
+      hide_deleted: "Masquer les supprimées"
     new:
       title: "Nouvelle résidence"
     edit:
       title: "Modifier la résidence"
     show:
       title: "Détails de la résidence"
-    form:
-      submit_create: "Créer la résidence"
-      submit_update: "Mettre à jour"
+      details: "Informations"
+      weavers: "Tisseurs assignés"
+      no_weaver: "Aucun tisseur assigné"
+    status:
+      deleted: "Supprimée"
+    actions:
+      restore: "Restaurer"
+    confirm_delete: "Êtes-vous sûr de vouloir supprimer cette résidence ?"
+    flash:
+      restored: "La résidence a été restaurée avec succès."
 
   # Residents
   residents:

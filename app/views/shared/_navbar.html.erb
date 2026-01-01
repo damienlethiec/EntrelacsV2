@@ -8,10 +8,10 @@
           <% end %>
         </div>
         <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-          <%= nav_link_to "Résidences", residences_path if defined?(residences_path) rescue nil %>
+          <%= nav_link_to t("nav.residences"), residences_path %>
           <% if current_user.admin? %>
-            <%= nav_link_to "Utilisateurs", users_path if defined?(users_path) rescue nil %>
-            <%= nav_link_to "Statistiques", statistics_path if defined?(statistics_path) rescue nil %>
+            <%# TODO: Phase Users - nav_link_to t("nav.users"), users_path %>
+            <%# TODO: Phase Stats - nav_link_to t("nav.stats"), stats_path %>
           <% end %>
         </div>
       </div>
@@ -44,10 +44,10 @@
 
   <div class="hidden sm:hidden" data-mobile-menu-target="menu">
     <div class="space-y-1 pt-2 pb-3">
-      <%= mobile_nav_link_to "Résidences", residences_path if defined?(residences_path) rescue nil %>
+      <%= mobile_nav_link_to t("nav.residences"), residences_path %>
       <% if current_user.admin? %>
-        <%= mobile_nav_link_to "Utilisateurs", users_path if defined?(users_path) rescue nil %>
-        <%= mobile_nav_link_to "Statistiques", statistics_path if defined?(statistics_path) rescue nil %>
+        <%# TODO: Phase Users - mobile_nav_link_to t("nav.users"), users_path %>
+        <%# TODO: Phase Stats - mobile_nav_link_to t("nav.stats"), stats_path %>
       <% end %>
     </div>
     <div class="border-t border-gray-200 pt-4 pb-3">

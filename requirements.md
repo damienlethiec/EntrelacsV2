@@ -132,7 +132,7 @@ Application permettant de gérer une entreprise d'habitat partagé :
 
 ---
 
-### Phase 3 : Gestion des Résidences
+### Phase 3 : Gestion des Résidences ✅
 
 | Action | Route | Accès | Description |
 |--------|-------|-------|-------------|
