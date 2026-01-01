@@ -1,0 +1,34 @@
+<div class="w-full max-w-md space-y-8">
+  <div class="text-center">
+    <img src="/logo.png" alt="Entrelacs" class="mx-auto h-16 w-auto" />
+    <h2 class="mt-6 text-2xl font-bold tracking-tight text-gray-900">
+      <%= t("devise.passwords.new.forgot_password") %>
+    </h2>
+    <p class="mt-2 text-sm text-gray-600">
+      <%= t("devise.passwords.new.send_instructions") %>
+    </p>
+  </div>
+
+  <div class="rounded-lg bg-white px-8 py-10 shadow">
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "space-y-6" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div>
+        <%= f.label :email, t("activerecord.attributes.user.email"), class: "block text-sm font-medium text-gray-900" %>
+        <div class="mt-2">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email",
+              class: "block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm" %>
+        </div>
+      </div>
+
+      <div>
+        <%= f.submit t("devise.passwords.new.send_me_reset_password_instructions"),
+            class: "flex w-full justify-center rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal cursor-pointer" %>
+      </div>
+
+      <div class="text-center">
+        <%= link_to t("devise.shared.links.back_to_sign_in"), new_session_path(resource_name), class: "text-sm font-medium text-tisseurs-teal hover:text-tisseurs-teal-dark" %>
+      </div>
+    <% end %>
+  </div>
+</div>

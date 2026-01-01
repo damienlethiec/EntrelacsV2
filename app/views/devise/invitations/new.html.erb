@@ -1,0 +1,62 @@
+<% content_for :page_header do %>
+  <h1 class="text-3xl font-bold tracking-tight text-gray-900"><%= t("devise.invitations.new.header") %></h1>
+<% end %>
+
+<div class="max-w-2xl">
+  <div class="rounded-lg bg-white px-8 py-10 shadow">
+    <%= form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post, class: "space-y-6" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2">
+        <div>
+          <%= f.label :first_name, t("activerecord.attributes.user.first_name"), class: "block text-sm font-medium text-gray-900" %>
+          <div class="mt-2">
+            <%= f.text_field :first_name, autofocus: true,
+                class: "block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm" %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.label :last_name, t("activerecord.attributes.user.last_name"), class: "block text-sm font-medium text-gray-900" %>
+          <div class="mt-2">
+            <%= f.text_field :last_name,
+                class: "block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm" %>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <%= f.label :email, t("activerecord.attributes.user.email"), class: "block text-sm font-medium text-gray-900" %>
+        <div class="mt-2">
+          <%= f.email_field :email, autocomplete: "email",
+              class: "block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm" %>
+        </div>
+      </div>
+
+      <div>
+        <%= f.label :role, t("activerecord.attributes.user.role"), class: "block text-sm font-medium text-gray-900" %>
+        <div class="mt-2">
+          <%= f.select :role, User.roles.keys.map { |r| [t("activerecord.attributes.user.roles.#{r}"), r] },
+              {},
+              class: "block w-full rounded-md bg-white py-2 pl-3 pr-10 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm" %>
+        </div>
+      </div>
+
+      <div id="residence-field">
+        <%= f.label :residence_id, t("activerecord.attributes.user.residence"), class: "block text-sm font-medium text-gray-900" %>
+        <div class="mt-2">
+          <%= f.collection_select :residence_id, Residence.active.order(:name), :id, :name,
+              { include_blank: t("helpers.select.prompt") },
+              class: "block w-full rounded-md bg-white py-2 pl-3 pr-10 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm" %>
+        </div>
+        <p class="mt-1 text-xs text-gray-500"><%= t("devise.invitations.new.residence_hint") %></p>
+      </div>
+
+      <div class="flex items-center justify-end gap-x-4 pt-4 border-t border-gray-200">
+        <%= link_to t("helpers.cancel"), :back, class: "text-sm font-semibold text-gray-900 hover:text-gray-700" %>
+        <%= f.submit t("devise.invitations.new.submit_button"),
+            class: "rounded-md bg-tisseurs-teal px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+</div>

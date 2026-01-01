@@ -1,0 +1,49 @@
+<div class="w-full max-w-md space-y-8">
+  <div class="text-center">
+    <img src="/logo.png" alt="Entrelacs" class="mx-auto h-16 w-auto" />
+    <h2 class="mt-6 text-2xl font-bold tracking-tight text-gray-900">
+      <%= t("devise.sessions.new.sign_in") %>
+    </h2>
+    <p class="mt-2 text-sm text-gray-600">
+      Bienvenue sur Entrelacs
+    </p>
+  </div>
+
+  <div class="rounded-lg bg-white px-8 py-10 shadow">
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
+      <div>
+        <%= f.label :email, t("activerecord.attributes.user.email"), class: "block text-sm font-medium text-gray-900" %>
+        <div class="mt-2">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email",
+              class: "block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm" %>
+        </div>
+      </div>
+
+      <div>
+        <%= f.label :password, t("activerecord.attributes.user.password"), class: "block text-sm font-medium text-gray-900" %>
+        <div class="mt-2">
+          <%= f.password_field :password, autocomplete: "current-password",
+              class: "block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm" %>
+        </div>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <%= f.check_box :remember_me, class: "size-4 rounded border-gray-300 text-tisseurs-teal focus:ring-tisseurs-teal" %>
+            <%= f.label :remember_me, t("devise.sessions.new.remember_me"), class: "text-sm text-gray-600" %>
+          </div>
+
+          <% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+            <%= link_to t("devise.shared.links.forgot_password"), new_password_path(resource_name), class: "text-sm font-medium text-tisseurs-teal hover:text-tisseurs-teal-dark" %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div>
+        <%= f.submit t("devise.sessions.new.sign_in"),
+            class: "flex w-full justify-center rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+</div>
