@@ -1,7 +1,7 @@
 class Residence < ApplicationRecord
   has_many :users, dependent: :nullify
   has_many :activities, dependent: :destroy
-  # TODO: Phase 4 - has_many :residents, dependent: :destroy
+  has_many :residents, dependent: :destroy
 
   validates :name, presence: true
   validates :address, presence: true
