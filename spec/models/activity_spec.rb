@@ -87,6 +87,44 @@ RSpec.describe Activity, type: :model do
         expect(result).to be_empty
       end
     end
+
+    describe ".needing_notification" do
+      let!(:notifiable) { create(:activity, :upcoming, notify_residents: true, email_status: :none) }
+      let!(:already_informed) { create(:activity, :upcoming, notify_residents: true, email_status: :informed) }
+      let!(:no_notification) { create(:activity, :upcoming, notify_residents: false, email_status: :none) }
+
+      it "returns only activities needing notification" do
+        expect(Activity.needing_notification).to contain_exactly(notifiable)
+      end
+    end
+
+    describe ".needing_reminder" do
+      let!(:needs_reminder) do
+        create(:activity,
+          notify_residents: true,
+          email_status: :informed,
+          starts_at: 24.hours.from_now,
+          ends_at: 26.hours.from_now)
+      end
+      let!(:too_far) do
+        create(:activity,
+          notify_residents: true,
+          email_status: :informed,
+          starts_at: 3.days.from_now,
+          ends_at: 3.days.from_now + 2.hours)
+      end
+      let!(:already_reminded) do
+        create(:activity,
+          notify_residents: true,
+          email_status: :reminded,
+          starts_at: 24.hours.from_now,
+          ends_at: 26.hours.from_now)
+      end
+
+      it "returns only activities within 48h that need reminder" do
+        expect(Activity.needing_reminder).to contain_exactly(needs_reminder)
+      end
+    end
   end
 
   describe "#past?" do

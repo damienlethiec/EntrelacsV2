@@ -379,6 +379,15 @@ fr:
       this_month: "Ce mois"
       this_year: "Cette année"
 
+  # Activity Mailer
+  activity_mailer:
+    daily_notification:
+      subject: "Activités à venir - %{residence}"
+      new_activities: "Nouvelles activités"
+      reminders: "Rappels (dans moins de 48h)"
+      when: "Quand :"
+      see_you_soon: "À bientôt !"
+
   # Users
   users:
     index:

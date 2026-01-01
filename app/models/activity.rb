@@ -37,6 +37,19 @@ class Activity < ApplicationRecord
   scope :pending_completion, -> { planned.where("starts_at <= ?", Time.current).order(starts_at: :asc) }
   scope :completed_in_period, ->(start_date, end_date) { completed.where(starts_at: start_date..end_date) }
 
+  # Email notification scopes
+  scope :needing_notification, -> {
+    planned.where(notify_residents: true, email_status: :none)
+           .where("starts_at > ?", Time.current)
+           .order(starts_at: :asc)
+  }
+  scope :needing_reminder, -> {
+    planned.where(notify_residents: true, email_status: :informed)
+           .where("starts_at > ?", Time.current)
+           .where("starts_at <= ?", 48.hours.from_now)
+           .order(starts_at: :asc)
+  }
+
   def past?
     starts_at <= Time.current
   end

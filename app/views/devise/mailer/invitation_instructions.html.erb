@@ -1,13 +1,17 @@
-<p><%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %></p>
+<p>Bonjour,</p>
 
-<p><%= t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url) %></p>
+<p>Vous avez été invité(e) à rejoindre <strong>Entrelacs</strong>, l'application de gestion d'habitat partagé.</p>
 
-<p>
-  <%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, invitation_token: @token) %>
+<p>Cliquez sur le bouton ci-dessous pour créer votre compte et définir votre mot de passe :</p>
+
+<p style="text-align: center;">
+  <a href="<%= accept_invitation_url(@resource, invitation_token: @token) %>" class="button">
+    Accepter l'invitation
+  </a>
 </p>
 
 <% if @resource.invitation_due_at %>
-  <p><%= t("devise.mailer.invitation_instructions.accept_until", due_date: l(@resource.invitation_due_at, format: :long)) %></p>
+  <p><em>Cette invitation expire le <%= l(@resource.invitation_due_at, format: :long) %>.</em></p>
 <% end %>
 
-<p><%= t("devise.mailer.invitation_instructions.ignore") %></p>
+<p>Si vous n'avez pas demandé cette invitation, vous pouvez ignorer cet email.</p>

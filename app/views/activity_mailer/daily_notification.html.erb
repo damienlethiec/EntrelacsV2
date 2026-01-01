@@ -1,0 +1,29 @@
+<p>Bonjour<%= @resident.first_name.present? ? " #{@resident.first_name}" : "" %>,</p>
+
+<p>Voici les dernières nouvelles des activités de votre résidence <strong><%= @residence.name %></strong>.</p>
+
+<% if @new_activities.any? %>
+  <h2 class="section-title"><%= t("activity_mailer.daily_notification.new_activities") %></h2>
+
+  <% @new_activities.each do |activity| %>
+    <div class="activity-card">
+      <h3><%= activity.activity_type %></h3>
+      <p><strong><%= t("activity_mailer.daily_notification.when") %></strong> <%= l(activity.starts_at, format: :long) %></p>
+      <p><%= activity.description %></p>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @reminder_activities.any? %>
+  <h2 class="section-title"><%= t("activity_mailer.daily_notification.reminders") %></h2>
+
+  <% @reminder_activities.each do |activity| %>
+    <div class="activity-card reminder-card">
+      <h3><%= activity.activity_type %></h3>
+      <p><strong><%= t("activity_mailer.daily_notification.when") %></strong> <%= l(activity.starts_at, format: :long) %></p>
+      <p><%= activity.description %></p>
+    </div>
+  <% end %>
+<% end %>
+
+<p><%= t("activity_mailer.daily_notification.see_you_soon") %></p>
