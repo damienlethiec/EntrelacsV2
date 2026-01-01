@@ -66,6 +66,41 @@
   </div>
 
   <% unless activity.persisted? %>
+    <div class="border-t border-gray-200 pt-6" data-controller="recurring-activity">
+      <div class="flex items-center gap-x-3">
+        <%= f.check_box :recurring, class: "size-4 rounded border-gray-300 text-tisseurs-teal focus:ring-tisseurs-teal",
+            data: { action: "change->recurring-activity#toggle", recurring_activity_target: "checkbox" } %>
+        <%= f.label :recurring, t("activities.form.recurring"), class: "text-sm/6 font-medium text-gray-900" %>
+      </div>
+
+      <div class="hidden mt-4 space-y-4" data-recurring-activity-target="fields">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div>
+            <%= f.label :recurrence_frequency, t("activities.form.recurrence_frequency"), class: "block text-sm/6 font-medium text-gray-900" %>
+            <div class="mt-2">
+              <%= f.select :recurrence_frequency,
+                  options_for_select([
+                    [t("activities.form.frequencies.weekly"), "weekly"],
+                    [t("activities.form.frequencies.monthly"), "monthly"]
+                  ], activity.recurrence_frequency),
+                  { include_blank: t("helpers.select.prompt") },
+                  class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
+            </div>
+          </div>
+
+          <div>
+            <%= f.label :recurrence_end_date, t("activities.form.recurrence_end_date"), class: "block text-sm/6 font-medium text-gray-900" %>
+            <div class="mt-2">
+              <%= f.date_field :recurrence_end_date,
+                  max: (Date.current + 1.year).to_s,
+                  class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
+            </div>
+            <p class="mt-1 text-xs text-gray-500"><%= t("activities.form.recurrence_max_hint") %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <p class="text-sm text-gray-500"><%= t("activities.form.completion_notice") %></p>
   <% end %>
 

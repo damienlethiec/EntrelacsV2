@@ -6,12 +6,12 @@ class ActivitiesController < ApplicationController
     authorize Activity.new(residence: @residence)
 
     @activities = policy_scope(Activity).where(residence: @residence)
+    @pending_completion = @activities.pending_completion if policy(Activity.new(residence: @residence)).create?
 
     if params[:past] == "true"
       @activities = @activities.past
       @showing_past = true
     else
-      @pending_completion = @activities.pending_completion if policy(Activity.new(residence: @residence)).create?
       @activities = @activities.upcoming
       @showing_past = false
     end
@@ -32,10 +32,10 @@ class ActivitiesController < ApplicationController
     @activity = @residence.activities.build(activity_params)
     authorize @activity
 
-    if @activity.save
-      redirect_to residence_activities_path(@residence), notice: t("flash.actions.create.success", resource_name: Activity.model_name.human)
+    if @activity.recurring?
+      create_recurring_activities
     else
-      render :new, status: :unprocessable_entity
+      create_single_activity
     end
   end
 
@@ -84,7 +84,34 @@ class ActivitiesController < ApplicationController
   end
 
   def activity_params
-    params.require(:activity).permit(:activity_type, :description, :starts_at, :ends_at, :notify_residents)
+    params.require(:activity).permit(:activity_type, :description, :starts_at, :ends_at, :notify_residents,
+                                     :recurring, :recurrence_end_date, :recurrence_frequency)
+  end
+
+  def create_single_activity
+    if @activity.save
+      redirect_to residence_activities_path(@residence), notice: t("flash.actions.create.success", resource_name: Activity.model_name.human)
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def create_recurring_activities
+    occurrences = @activity.generate_occurrences
+
+    if occurrences.empty?
+      render :new, status: :unprocessable_entity
+      return
+    end
+
+    Activity.transaction do
+      occurrences.each(&:save!)
+    end
+
+    redirect_to residence_activities_path(@residence),
+                notice: t("activities.flash.recurring_created", count: occurrences.size)
+  rescue ActiveRecord::RecordInvalid
+    render :new, status: :unprocessable_entity
   end
 
   def calculate_stats
