@@ -1,0 +1,149 @@
+<% content_for :page_header do %>
+  <div class="md:flex md:items-center md:justify-between">
+    <div class="min-w-0 flex-1">
+      <h1 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+        <%= t("activities.index.title") %> - <%= @residence.name %>
+      </h1>
+    </div>
+    <% if policy(Activity.new(residence: @residence)).create? %>
+      <div class="mt-4 flex md:mt-0 md:ml-4">
+        <%= link_to t("activities.index.new"), new_residence_activity_path(@residence),
+            class: "inline-flex items-center rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<%# Stats section %>
+<div class="mb-6">
+  <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow ring-1 ring-black/5 sm:p-6">
+      <dt class="truncate text-sm font-medium text-gray-500"><%= t("activities.index.stats.last_30_days") %></dt>
+      <dd class="mt-1 flex items-baseline gap-x-2">
+        <span class="text-3xl font-semibold tracking-tight text-gray-900"><%= @stats[:completed_count] %></span>
+        <span class="text-sm text-gray-500"><%= t("activities.index.stats.completed") %></span>
+      </dd>
+    </div>
+    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow ring-1 ring-black/5 sm:p-6">
+      <dt class="truncate text-sm font-medium text-gray-500"><%= t("activities.index.stats.last_30_days") %></dt>
+      <dd class="mt-1 flex items-baseline gap-x-2">
+        <span class="text-3xl font-semibold tracking-tight text-gray-900"><%= @stats[:participants_count] %></span>
+        <span class="text-sm text-gray-500"><%= t("activities.index.stats.participants") %></span>
+      </dd>
+    </div>
+  </dl>
+</div>
+
+<%# Pending completion section (weaver only) %>
+<% if @pending_completion&.any? %>
+  <div class="mb-8">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4"><%= t("activities.index.pending_completion") %></h2>
+    <div class="overflow-hidden bg-amber-50 shadow ring-1 ring-amber-200 sm:rounded-lg">
+      <ul role="list" class="divide-y divide-amber-200">
+        <% @pending_completion.each do |activity| %>
+          <li class="px-4 py-4 sm:px-6">
+            <%= form_with url: complete_residence_activity_path(@residence, activity), method: :patch, class: "space-y-4" do |f| %>
+              <div class="flex items-center justify-between gap-x-4">
+                <div class="min-w-0 flex-1">
+                  <p class="text-sm font-semibold text-gray-900"><%= activity.activity_type %></p>
+                  <p class="text-xs text-gray-500"><%= l(activity.starts_at, format: :short) %></p>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div class="sm:col-span-2">
+                  <%= f.text_area :review, rows: 2, required: true,
+                      placeholder: Activity.human_attribute_name(:review),
+                      class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
+                </div>
+                <div class="flex items-end gap-x-2">
+                  <%= f.number_field :participants_count, min: 1, required: true,
+                      placeholder: Activity.human_attribute_name(:participants_count),
+                      class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
+                  <%= f.submit t("activities.actions.complete"),
+                      class: "rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark cursor-pointer" %>
+                </div>
+              </div>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<%# Toggle past/upcoming %>
+<div class="mb-6 flex items-center justify-between">
+  <h2 class="text-lg font-semibold text-gray-900">
+    <%= @showing_past ? t("activities.index.past") : t("activities.index.upcoming") %>
+  </h2>
+  <% if @showing_past %>
+    <%= link_to t("activities.index.show_upcoming"), residence_activities_path(@residence), class: "text-sm text-tisseurs-teal hover:text-tisseurs-teal-dark" %>
+  <% else %>
+    <%= link_to t("activities.index.show_past"), residence_activities_path(@residence, past: true), class: "text-sm text-gray-500 hover:text-gray-700" %>
+  <% end %>
+</div>
+
+<%# Activities list %>
+<% if @activities.any? %>
+  <div class="overflow-hidden bg-white shadow ring-1 ring-black/5 sm:rounded-lg">
+    <ul role="list" class="divide-y divide-gray-100">
+      <% @activities.each do |activity| %>
+        <li class="flex items-center justify-between gap-x-6 py-5 px-4 sm:px-6 <%= 'bg-gray-50' if activity.canceled? %>">
+          <div class="min-w-0">
+            <div class="flex items-start gap-x-3">
+              <p class="text-sm/6 font-semibold text-gray-900"><%= activity.activity_type %></p>
+              <% if activity.completed? %>
+                <span class="mt-0.5 rounded-md bg-green-100 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/10"><%= t("activities.status.completed") %></span>
+              <% elsif activity.canceled? %>
+                <span class="mt-0.5 rounded-md bg-red-100 px-1.5 py-0.5 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10"><%= t("activities.status.canceled") %></span>
+              <% end %>
+            </div>
+            <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
+              <p><%= l(activity.starts_at, format: :short) %> - <%= l(activity.ends_at, format: :short) %></p>
+              <% if activity.completed? && activity.participants_count.present? %>
+                <svg viewBox="0 0 2 2" class="size-0.5 fill-current">
+                  <circle r="1" cx="1" cy="1" />
+                </svg>
+                <p><%= activity.participants_count %> participants</p>
+              <% end %>
+            </div>
+            <p class="mt-1 text-sm text-gray-600 line-clamp-2"><%= activity.description %></p>
+          </div>
+          <% if policy(activity).edit? || policy(activity).cancel? %>
+            <%= render "shared/action_menu" do %>
+              <%= link_to t("helpers.show"), residence_activity_path(@residence, activity),
+                  class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50" %>
+              <% if policy(activity).edit? && activity.planned? %>
+                <%= link_to t("helpers.edit"), edit_residence_activity_path(@residence, activity),
+                    class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50" %>
+              <% end %>
+              <% if policy(activity).cancel? %>
+                <%= button_to t("activities.actions.cancel"), cancel_residence_activity_path(@residence, activity), method: :patch,
+                    form: { data: { turbo_confirm: t("activities.confirm_cancel") } },
+                    class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-coral hover:bg-gray-50" %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% else %>
+  <div class="text-center py-12">
+    <svg class="mx-auto size-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+    </svg>
+    <h3 class="mt-2 text-sm font-semibold text-gray-900"><%= t("activities.index.empty") %></h3>
+    <% if policy(Activity.new(residence: @residence)).create? %>
+      <p class="mt-1 text-sm text-gray-500"><%= t("activities.index.empty_hint") %></p>
+      <div class="mt-6">
+        <%= link_to new_residence_activity_path(@residence), class: "inline-flex items-center rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark" do %>
+          <svg class="-ml-0.5 mr-1.5 size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+          </svg>
+          <%= t("activities.index.new") %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

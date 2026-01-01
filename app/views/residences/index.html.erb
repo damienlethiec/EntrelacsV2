@@ -44,21 +44,21 @@
               <% end %>
             </div>
           </div>
-          <% if policy(residence).edit? || policy(residence).destroy? %>
-            <%= render "shared/action_menu" do %>
-              <% if policy(residence).edit? %>
-                <%= link_to t("helpers.edit"), edit_residence_path(residence),
-                    class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50" %>
-              <% end %>
-              <% if policy(residence).destroy? && !residence.deleted? %>
-                <%= button_to t("helpers.delete"), residence_path(residence), method: :delete,
-                    form: { data: { turbo_confirm: t("residences.confirm_delete", name: residence.name) } },
-                    class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-coral hover:bg-gray-50" %>
-              <% end %>
-              <% if residence.deleted? && policy(residence).restore? %>
-                <%= button_to t("residences.restore"), restore_residence_path(residence), method: :patch,
-                    class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-teal hover:bg-gray-50" %>
-              <% end %>
+          <%= render "shared/action_menu" do %>
+            <%= link_to t("nav.activities"), residence_activities_path(residence),
+                class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50" %>
+            <% if policy(residence).edit? %>
+              <%= link_to t("helpers.edit"), edit_residence_path(residence),
+                  class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50" %>
+            <% end %>
+            <% if policy(residence).destroy? && !residence.deleted? %>
+              <%= button_to t("helpers.delete"), residence_path(residence), method: :delete,
+                  form: { data: { turbo_confirm: t("residences.confirm_delete", name: residence.name) } },
+                  class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-coral hover:bg-gray-50" %>
+            <% end %>
+            <% if residence.deleted? && policy(residence).restore? %>
+              <%= button_to t("residences.restore"), restore_residence_path(residence), method: :patch,
+                  class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-teal hover:bg-gray-50" %>
             <% end %>
           <% end %>
         </li>

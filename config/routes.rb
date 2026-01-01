@@ -7,6 +7,13 @@ Rails.application.routes.draw do
     member do
       patch :restore
     end
+
+    resources :activities, except: [:destroy] do
+      member do
+        patch :cancel
+        patch :complete
+      end
+    end
   end
 
   # Health check

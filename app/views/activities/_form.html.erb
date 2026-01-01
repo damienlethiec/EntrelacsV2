@@ -1,0 +1,77 @@
+<%= form_with model: [@residence, activity], class: "space-y-6" do |f| %>
+  <% if activity.errors.any? %>
+    <div class="rounded-md bg-red-50 p-4">
+      <div class="flex">
+        <div class="shrink-0">
+          <svg class="size-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800"><%= t("errors.messages.not_saved", count: activity.errors.count) %></h3>
+          <div class="mt-2 text-sm text-red-700">
+            <ul role="list" class="list-disc space-y-1 pl-5">
+              <% activity.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :activity_type, class: "block text-sm/6 font-medium text-gray-900" %>
+    <div class="mt-2">
+      <%= f.text_field :activity_type, list: "activity_types",
+          class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
+      <datalist id="activity_types">
+        <% Activity::SUGGESTED_TYPES.each do |type| %>
+          <option value="<%= type %>">
+        <% end %>
+      </datalist>
+    </div>
+  </div>
+
+  <div>
+    <%= f.label :description, class: "block text-sm/6 font-medium text-gray-900" %>
+    <div class="mt-2">
+      <%= f.text_area :description, rows: 4,
+          class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <div>
+      <%= f.label :starts_at, class: "block text-sm/6 font-medium text-gray-900" %>
+      <div class="mt-2">
+        <%= f.datetime_local_field :starts_at,
+            class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
+      </div>
+    </div>
+
+    <div>
+      <%= f.label :ends_at, class: "block text-sm/6 font-medium text-gray-900" %>
+      <div class="mt-2">
+        <%= f.datetime_local_field :ends_at,
+            class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-x-3">
+    <%= f.check_box :notify_residents, class: "size-4 rounded border-gray-300 text-tisseurs-teal focus:ring-tisseurs-teal" %>
+    <%= f.label :notify_residents, class: "text-sm/6 font-medium text-gray-900" %>
+  </div>
+
+  <% unless activity.persisted? %>
+    <p class="text-sm text-gray-500"><%= t("activities.form.completion_notice") %></p>
+  <% end %>
+
+  <div class="flex items-center justify-end gap-x-4">
+    <%= link_to t("helpers.cancel"), residence_activities_path(@residence),
+        class: "text-sm/6 font-semibold text-gray-900 hover:text-gray-700" %>
+    <%= f.submit class: "rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal cursor-pointer" %>
+  </div>
+<% end %>

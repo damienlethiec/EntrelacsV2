@@ -169,13 +169,24 @@ fr:
         notes: "Notes"
 
       activity:
-        title: "Titre"
-        description: "Description"
         activity_type: "Type d'activité"
-        scheduled_at: "Date et heure"
+        description: "Description"
+        review: "Bilan"
         participants_count: "Nombre de participants"
-        notes: "Notes"
+        status: "Statut"
+        starts_at: "Début"
+        ends_at: "Fin"
+        notify_residents: "Notifier les habitants"
+        email_status: "Statut email"
         residence: "Résidence"
+        statuses:
+          planned: "Planifiée"
+          completed: "Complétée"
+          canceled: "Annulée"
+        email_statuses:
+          none: "Non envoyé"
+          informed: "Informé"
+          reminded: "Rappelé"
 
     errors:
       models:
@@ -188,12 +199,25 @@ fr:
               too_short: "est trop court (minimum %{count} caractères)"
             residence:
               blank: "doit être renseignée pour un tisseur"
+        activity:
+          attributes:
+            ends_at:
+              after_starts_at: "doit être après la date de début"
 
     enums:
       user:
         role:
           admin: "Administrateur"
           weaver: "Tisseur"
+      activity:
+        status:
+          planned: "Planifiée"
+          completed: "Complétée"
+          canceled: "Annulée"
+        email_status:
+          none: "Non envoyé"
+          informed: "Informé"
+          reminded: "Rappelé"
 
   # Navigation
   nav:
@@ -269,25 +293,36 @@ fr:
       title: "Activités"
       new: "Nouvelle activité"
       empty: "Aucune activité pour le moment."
+      empty_hint: "Commencez par créer une activité."
       upcoming: "À venir"
       past: "Passées"
+      show_past: "Voir les activités passées"
+      show_upcoming: "Voir les activités à venir"
+      pending_completion: "Activités à compléter"
+      pending_empty: "Aucune activité à compléter."
+      stats:
+        last_30_days: "Ces 30 derniers jours"
+        completed: "activités complétées"
+        participants: "participants"
     new:
       title: "Nouvelle activité"
     edit:
       title: "Modifier l'activité"
     show:
       title: "Détails de l'activité"
-    types:
-      shared_meal: "Repas partagé"
-      workshop: "Atelier"
-      outing: "Sortie"
-      game: "Jeu"
-      gardening: "Jardinage"
-      cleaning: "Nettoyage collectif"
-      meeting: "Réunion"
-      celebration: "Fête / Célébration"
-      sport: "Sport"
-      other: "Autre"
+    status:
+      planned: "Planifiée"
+      completed: "Complétée"
+      canceled: "Annulée"
+    actions:
+      cancel: "Annuler l'activité"
+      complete: "Compléter"
+    confirm_cancel: "Êtes-vous sûr de vouloir annuler cette activité ?"
+    flash:
+      canceled: "L'activité a été annulée."
+      completed: "L'activité a été complétée."
+    form:
+      completion_notice: "Le bilan et le nombre de participants pourront être renseignés une fois l'activité passée."
 
   # Stats
   stats:

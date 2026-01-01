@@ -1,0 +1,68 @@
+<% content_for :page_header do %>
+  <div class="md:flex md:items-center md:justify-between">
+    <div class="min-w-0 flex-1">
+      <h1 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+        <%= @activity.activity_type %>
+      </h1>
+    </div>
+    <div class="mt-4 flex gap-x-3 md:mt-0 md:ml-4">
+      <% if policy(@activity).edit? && @activity.planned? %>
+        <%= link_to t("helpers.edit"), edit_residence_activity_path(@residence, @activity),
+            class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50" %>
+      <% end %>
+      <% if policy(@activity).cancel? %>
+        <%= button_to t("activities.actions.cancel"), cancel_residence_activity_path(@residence, @activity), method: :patch,
+            form: { data: { turbo_confirm: t("activities.confirm_cancel") } },
+            class: "inline-flex items-center rounded-md bg-tisseurs-coral px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-coral-dark" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<div class="overflow-hidden bg-white shadow ring-1 ring-black/5 sm:rounded-lg">
+  <div class="border-b border-gray-100 px-4 py-5 sm:px-6">
+    <div class="flex items-center gap-x-3">
+      <% if @activity.completed? %>
+        <span class="rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/10"><%= t("activities.status.completed") %></span>
+      <% elsif @activity.canceled? %>
+        <span class="rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10"><%= t("activities.status.canceled") %></span>
+      <% else %>
+        <span class="rounded-md bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/10"><%= t("activities.status.planned") %></span>
+      <% end %>
+      <% if @activity.notify_residents? %>
+        <span class="rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+          <%= Activity.human_attribute_name(:notify_residents) %>
+        </span>
+      <% end %>
+    </div>
+  </div>
+
+  <dl class="divide-y divide-gray-100">
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+      <dt class="text-sm font-medium text-gray-900"><%= Activity.human_attribute_name(:starts_at) %></dt>
+      <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0"><%= l(@activity.starts_at, format: :long) %></dd>
+    </div>
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+      <dt class="text-sm font-medium text-gray-900"><%= Activity.human_attribute_name(:ends_at) %></dt>
+      <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0"><%= l(@activity.ends_at, format: :long) %></dd>
+    </div>
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+      <dt class="text-sm font-medium text-gray-900"><%= Activity.human_attribute_name(:description) %></dt>
+      <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0 whitespace-pre-wrap"><%= @activity.description %></dd>
+    </div>
+    <% if @activity.completed? %>
+      <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-900"><%= Activity.human_attribute_name(:participants_count) %></dt>
+        <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @activity.participants_count %></dd>
+      </div>
+      <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-900"><%= Activity.human_attribute_name(:review) %></dt>
+        <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0 whitespace-pre-wrap"><%= @activity.review %></dd>
+      </div>
+    <% end %>
+  </dl>
+</div>
+
+<div class="mt-6">
+  <%= link_to t("helpers.back"), residence_activities_path(@residence), class: "text-sm text-tisseurs-teal hover:text-tisseurs-teal-dark" %>
+</div>
