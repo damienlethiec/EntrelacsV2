@@ -14,8 +14,8 @@
           <% end %>
           <%= nav_link_to t("nav.residences"), residences_path %>
           <% if current_user.admin? %>
-            <%= nav_link_to t("nav.users"), admin_users_path %>
             <%= nav_link_to t("nav.stats"), stats_path %>
+            <%= nav_link_to t("nav.users"), admin_users_path %>
           <% end %>
         </div>
       </div>
@@ -54,8 +54,8 @@
       <% end %>
       <%= mobile_nav_link_to t("nav.residences"), residences_path %>
       <% if current_user.admin? %>
-        <%= mobile_nav_link_to t("nav.users"), admin_users_path %>
         <%= mobile_nav_link_to t("nav.stats"), stats_path %>
+        <%= mobile_nav_link_to t("nav.users"), admin_users_path %>
       <% end %>
     </div>
     <div class="border-t border-gray-200 pt-4 pb-3">
