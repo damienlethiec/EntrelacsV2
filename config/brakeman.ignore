@@ -1,0 +1,17 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Mass Assignment",
+      "fingerprint": "305831bfa48ab148f511e955dbb05d84b3bda85a70a7ce1ad8aeef9daf8b92cd",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/users_controller.rb",
+      "line": 52,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user).permit(:first_name, :last_name, :email, :phone, :role, :residence_id)",
+      "note": "False positive: UserPolicy ensures only admins can access this controller. Admins are allowed to set user roles."
+    }
+  ],
+  "updated": "2026-01-01",
+  "brakeman_version": "7.1.2"
+}
