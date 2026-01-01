@@ -29,7 +29,8 @@
         <li class="flex items-center justify-between gap-x-6 py-5 px-4 sm:px-6 <%= 'bg-red-50' if residence.deleted? %>">
           <div class="min-w-0">
             <div class="flex items-start gap-x-3">
-              <p class="text-sm/6 font-semibold text-gray-900"><%= residence.name %></p>
+              <%= link_to residence.name, residence_activities_path(residence),
+                  class: "text-sm/6 font-semibold text-tisseurs-teal hover:text-tisseurs-teal-dark" %>
               <% if residence.deleted? %>
                 <span class="mt-0.5 rounded-md bg-red-100 px-1.5 py-0.5 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10"><%= t("residences.status.deleted") %></span>
               <% end %>
@@ -44,9 +45,8 @@
               <% end %>
             </div>
           </div>
+          <% if policy(residence).edit? || policy(residence).destroy? %>
           <%= render "shared/action_menu" do %>
-            <%= link_to t("nav.activities"), residence_activities_path(residence),
-                class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50" %>
             <% if policy(residence).edit? %>
               <%= link_to t("helpers.edit"), edit_residence_path(residence),
                   class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50" %>
@@ -60,6 +60,7 @@
               <%= button_to t("residences.restore"), restore_residence_path(residence), method: :patch,
                   class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-teal hover:bg-gray-50" %>
             <% end %>
+          <% end %>
           <% end %>
         </li>
       <% end %>

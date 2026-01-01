@@ -7,6 +7,7 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <div class="overflow-hidden bg-white shadow ring-1 ring-black/5 sm:rounded-lg px-6 py-8">
     <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "space-y-6" }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
       <%= f.hidden_field :reset_password_token %>
@@ -35,6 +36,7 @@
             class: "flex w-full justify-center rounded-md bg-tisseurs-teal px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal cursor-pointer" %>
       </div>
     <% end %>
+    </div>
 
     <p class="mt-10 text-center text-sm/6 text-gray-500">
       <%= link_to t("devise.shared.links.back_to_sign_in"), new_session_path(resource_name), class: "font-semibold text-tisseurs-teal hover:text-tisseurs-teal-dark" %>

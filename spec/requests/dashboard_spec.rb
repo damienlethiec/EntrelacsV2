@@ -25,9 +25,9 @@ RSpec.describe "Dashboard", type: :request do
 
       before { sign_in user }
 
-      it "returns http success" do
+      it "redirects to residence activities" do
         get root_path
-        expect(response).to have_http_status(:success)
+        expect(response).to redirect_to(residence_activities_path(user.residence))
       end
     end
   end

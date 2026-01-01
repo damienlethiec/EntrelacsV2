@@ -68,9 +68,10 @@ RSpec.describe ResidencePolicy, type: :policy do
       expect(scope).to include(residence1, residence2, deleted_residence)
     end
 
-    it "returns only own active residence for weaver" do
+    it "returns all active residences for weaver" do
       scope = Pundit.policy_scope(weaver_with_residence, Residence)
-      expect(scope).to contain_exactly(residence1)
+      expect(scope).to include(residence1, residence2)
+      expect(scope).not_to include(deleted_residence)
     end
   end
 end

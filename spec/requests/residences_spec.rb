@@ -46,12 +46,12 @@ RSpec.describe "Residences", type: :request do
         expect(response).to have_http_status(:success)
       end
 
-      it "only shows own residence" do
+      it "shows all residences" do
         other_residence = create(:residence)
 
         get residences_path
         expect(response.body).to include(weaver.residence.name)
-        expect(response.body).not_to include(other_residence.name)
+        expect(response.body).to include(other_residence.name)
       end
     end
   end

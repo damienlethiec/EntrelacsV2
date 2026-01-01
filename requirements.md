@@ -248,11 +248,11 @@ Un seul email par habitant contenant 2 sections :
 - Répartition par jour de la semaine (nombre + participants)
 - Répartition par moment de la journée : matin (<12h), après-midi (12h-18h), soir (>18h)
 
-**Export CSV** : bouton pour exporter les données de la plage sélectionnée
+**Export CSV** : bouton pour exporter la liste des activités avec toutes leurs informations sur la place sélectionnée
 
 **Show stats résidence** : GET /statistics/:residence_id
 - Mêmes métriques mais filtrées sur une résidence
-- Liste des résidences dans l'index pour y accéder
+- Liste des résidences dans l'index des stats pour y accéder
 
 ---
 

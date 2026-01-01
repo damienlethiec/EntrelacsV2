@@ -1,14 +1,16 @@
 class ActivityPolicy < ApplicationPolicy
+  # Everyone can view activities of all residences
   def index?
-    user_has_access_to_residence?
+    true
   end
 
   def show?
-    user_has_access_to_residence?
+    true
   end
 
+  # Only weavers of the residence can manage activities
   def create?
-    user_has_access_to_residence?
+    user_is_weaver_of_residence?
   end
 
   def new?
@@ -16,7 +18,7 @@ class ActivityPolicy < ApplicationPolicy
   end
 
   def update?
-    user_has_access_to_residence?
+    user_is_weaver_of_residence?
   end
 
   def edit?
@@ -24,26 +26,22 @@ class ActivityPolicy < ApplicationPolicy
   end
 
   def cancel?
-    user_has_access_to_residence? && record.planned?
+    user_is_weaver_of_residence? && record.planned?
   end
 
   def complete?
-    user_has_access_to_residence? && record.completable?
+    user_is_weaver_of_residence? && record.completable?
   end
 
   private
 
-  def user_has_access_to_residence?
-    user.admin? || user.residence_id == record.residence_id
+  def user_is_weaver_of_residence?
+    user.weaver? && user.residence_id == record.residence_id
   end
 
   class Scope < ApplicationPolicy::Scope
     def resolve
-      if user.admin?
-        scope.all
-      else
-        scope.where(residence_id: user.residence_id)
-      end
+      scope.all
     end
   end
 end

@@ -19,14 +19,14 @@ RSpec.describe ActivityPolicy, type: :policy do
       expect(subject).to permit(weaver, activity)
     end
 
-    it "denies access to weaver of another residence" do
-      expect(subject).not_to permit(other_weaver, activity)
+    it "grants access to weaver of another residence" do
+      expect(subject).to permit(other_weaver, activity)
     end
   end
 
   permissions :create?, :new? do
-    it "grants access to admin" do
-      expect(subject).to permit(admin, Activity.new(residence: residence))
+    it "denies access to admin" do
+      expect(subject).not_to permit(admin, Activity.new(residence: residence))
     end
 
     it "grants access to weaver of the residence" do
@@ -39,8 +39,8 @@ RSpec.describe ActivityPolicy, type: :policy do
   end
 
   permissions :update?, :edit? do
-    it "grants access to admin" do
-      expect(subject).to permit(admin, activity)
+    it "denies access to admin" do
+      expect(subject).not_to permit(admin, activity)
     end
 
     it "grants access to weaver of the residence" do
@@ -56,8 +56,8 @@ RSpec.describe ActivityPolicy, type: :policy do
     let(:planned_activity) { create(:activity, residence: residence) }
     let(:completed_activity) { create(:activity, :completed, residence: residence) }
 
-    it "grants access to admin for planned activity" do
-      expect(subject).to permit(admin, planned_activity)
+    it "denies access to admin" do
+      expect(subject).not_to permit(admin, planned_activity)
     end
 
     it "grants access to weaver of the residence for planned activity" do
@@ -65,7 +65,7 @@ RSpec.describe ActivityPolicy, type: :policy do
     end
 
     it "denies access for completed activity" do
-      expect(subject).not_to permit(admin, completed_activity)
+      expect(subject).not_to permit(weaver, completed_activity)
     end
 
     it "denies access to weaver of another residence" do
@@ -78,8 +78,8 @@ RSpec.describe ActivityPolicy, type: :policy do
     let(:upcoming_activity) { create(:activity, :upcoming, residence: residence) }
     let(:completed_activity) { create(:activity, :completed, residence: residence) }
 
-    it "grants access to admin for past planned activity" do
-      expect(subject).to permit(admin, past_activity)
+    it "denies access to admin" do
+      expect(subject).not_to permit(admin, past_activity)
     end
 
     it "grants access to weaver of the residence for past planned activity" do
@@ -108,9 +108,9 @@ RSpec.describe ActivityPolicy, type: :policy do
       expect(scope).to include(activity1, activity2)
     end
 
-    it "returns only residence activities for weaver" do
+    it "returns all activities for weaver" do
       scope = Pundit.policy_scope(weaver, Activity)
-      expect(scope).to contain_exactly(activity1)
+      expect(scope).to include(activity1, activity2)
     end
   end
 end

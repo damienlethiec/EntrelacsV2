@@ -47,9 +47,9 @@ RSpec.describe "Activities", type: :request do
         expect(response).to have_http_status(:success)
       end
 
-      it "is not authorized for other residence" do
+      it "returns http success for other residence" do
         get residence_activities_path(other_residence)
-        expect(response).to redirect_to(root_path)
+        expect(response).to have_http_status(:success)
       end
     end
   end
@@ -69,14 +69,23 @@ RSpec.describe "Activities", type: :request do
     context "when authenticated as other weaver" do
       before { sign_in other_weaver }
 
-      it "is not authorized" do
+      it "returns http success for other residence activity" do
         get residence_activity_path(residence, activity)
-        expect(response).to redirect_to(root_path)
+        expect(response).to have_http_status(:success)
       end
     end
   end
 
   describe "GET /residences/:residence_id/activities/new" do
+    context "when authenticated as admin" do
+      before { sign_in admin }
+
+      it "is not authorized" do
+        get new_residence_activity_path(residence)
+        expect(response).to redirect_to(root_path)
+      end
+    end
+
     context "when authenticated as weaver" do
       before { sign_in weaver }
 

@@ -32,7 +32,7 @@ class ResidencePolicy < ApplicationPolicy
       if user.admin?
         scope.all
       else
-        scope.active.where(id: user.residence_id)
+        scope.active
       end
     end
   end
