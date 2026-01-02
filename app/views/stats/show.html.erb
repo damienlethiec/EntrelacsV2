@@ -121,32 +121,3 @@
     <p class="text-gray-500"><%= t("stats.no_data") %></p>
   </div>
 <% end %>
-
-<!-- Activities List -->
-<div class="bg-white rounded-xl shadow-sm border border-gray-100">
-  <div class="px-6 py-4 border-b border-gray-100">
-    <h2 class="text-lg font-semibold text-gray-900"><%= t("stats.activities_list") %></h2>
-  </div>
-  <% if @activities.any? %>
-    <div class="divide-y divide-gray-100">
-      <% @activities.order(starts_at: :desc).each do |activity| %>
-        <div class="px-6 py-4">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="font-medium text-gray-900"><%= activity.activity_type %></p>
-              <p class="text-sm text-gray-500"><%= I18n.l(activity.starts_at, format: :long) %></p>
-            </div>
-            <div class="text-right">
-              <p class="text-lg font-semibold text-tisseurs-teal"><%= activity.participants_count %></p>
-              <p class="text-xs text-gray-500"><%= t("stats.participants") %></p>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  <% else %>
-    <div class="px-6 py-8 text-center text-gray-500">
-      <p><%= t("stats.no_activities") %></p>
-    </div>
-  <% end %>
-</div>

@@ -23,6 +23,7 @@ class Activity < ApplicationRecord
   enum :status, {planned: 0, completed: 1, canceled: 2}
   enum :email_status, {none: 0, informed: 1, reminded: 2}, prefix: :email
 
+  validates :title, presence: true
   validates :activity_type, presence: true
   validates :description, presence: true
   validates :starts_at, presence: true
@@ -32,12 +33,12 @@ class Activity < ApplicationRecord
   validate :ends_at_after_starts_at
   validate :recurrence_params_valid, if: :recurring?
 
-  scope :upcoming, -> { planned.where("starts_at > ?", Time.current).order(starts_at: :asc) }
-  scope :past, -> { where("starts_at <= ?", Time.current).order(starts_at: :desc) }
-  scope :pending_completion, -> { planned.where("starts_at <= ?", Time.current).order(starts_at: :asc) }
+  scope :upcoming, -> { planned.where("ends_at > ?", Time.current).order(starts_at: :asc) }
+  scope :past, -> { where("ends_at <= ?", Time.current).order(starts_at: :desc) }
+  scope :pending_completion, -> { planned.where("ends_at <= ?", Time.current).order(starts_at: :asc) }
   scope :completed_in_period, ->(start_date, end_date) { completed.where(starts_at: start_date..end_date) }
   scope :by_type, ->(type) { where(activity_type: type) if type.present? }
-  scope :search, ->(query) { where("description ILIKE ?", "%#{query}%") if query.present? }
+  scope :search, ->(query) { where("title ILIKE ? OR description ILIKE ?", "%#{query}%", "%#{query}%") if query.present? }
   scope :for_calendar, ->(month) {
     start_date = month.beginning_of_month.beginning_of_week(:monday)
     end_date = month.end_of_month.end_of_week(:monday)
@@ -110,7 +111,7 @@ class Activity < ApplicationRecord
   end
 
   def past?
-    starts_at <= Time.current
+    ends_at <= Time.current
   end
 
   def completable?
@@ -143,6 +144,7 @@ class Activity < ApplicationRecord
 
     while (current_start = next_occurrence_date(current_start)) <= parsed_recurrence_end_date
       occurrence = residence.activities.build(
+        title: title,
         activity_type: activity_type,
         description: description,
         starts_at: current_start,

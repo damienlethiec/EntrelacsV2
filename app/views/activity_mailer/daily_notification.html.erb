@@ -7,7 +7,8 @@
 
   <% @new_activities.each do |activity| %>
     <div class="activity-card">
-      <h3><%= activity.activity_type %></h3>
+      <h3><%= activity.title %></h3>
+      <p><strong><%= activity.activity_type %></strong></p>
       <p><strong><%= t("activity_mailer.daily_notification.when") %></strong> <%= l(activity.starts_at, format: :long) %></p>
       <p><%= activity.description %></p>
     </div>
@@ -19,7 +20,8 @@
 
   <% @reminder_activities.each do |activity| %>
     <div class="activity-card reminder-card">
-      <h3><%= activity.activity_type %></h3>
+      <h3><%= activity.title %></h3>
+      <p><strong><%= activity.activity_type %></strong></p>
       <p><strong><%= t("activity_mailer.daily_notification.when") %></strong> <%= l(activity.starts_at, format: :long) %></p>
       <p><%= activity.description %></p>
     </div>

@@ -1,6 +1,37 @@
 module ApplicationHelper
   include Pagy::Loader
 
+  # Generate pagination series with gaps (e.g., [1, 2, 3, :gap, 8, 9, 10])
+  def pagination_series(current_page, total_pages, window: 1)
+    return (1..total_pages).to_a if total_pages <= 7
+
+    pages = []
+
+    # Always show first page
+    pages << 1
+
+    # Pages around current
+    ((current_page - window)..(current_page + window)).each do |p|
+      pages << p if p > 1 && p < total_pages
+    end
+
+    # Always show last 3 pages
+    ((total_pages - 2)..total_pages).each do |p|
+      pages << p if p > 1
+    end
+
+    pages = pages.uniq.sort
+
+    # Build series with gaps
+    series = []
+    pages.each_with_index do |page, i|
+      series << :gap if i > 0 && page > pages[i - 1] + 1
+      series << page
+    end
+
+    series
+  end
+
   def nav_link_to(name, path)
     current = current_page?(path)
     classes = if current

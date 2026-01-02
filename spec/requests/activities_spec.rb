@@ -23,18 +23,18 @@ RSpec.describe "Activities", type: :request do
         expect(response).to have_http_status(:success)
       end
 
-      it "shows upcoming activities" do
+      it "shows upcoming activities in list view" do
         upcoming = create(:activity, :upcoming, residence: residence)
         create(:activity, :past, residence: residence)
 
-        get residence_activities_path(residence)
+        get residence_activities_path(residence, view: "list")
         expect(response.body).to include(upcoming.activity_type)
       end
 
-      it "shows past activities when requested" do
+      it "shows past activities when requested in list view" do
         past = create(:activity, :past, residence: residence)
 
-        get residence_activities_path(residence, past: true)
+        get residence_activities_path(residence, period: "past", view: "list")
         expect(response.body).to include(past.activity_type)
       end
     end
@@ -109,6 +109,7 @@ RSpec.describe "Activities", type: :request do
     let(:valid_params) do
       {
         activity: {
+          title: "Dîner de Noël",
           activity_type: "Repas partagé",
           description: "Un bon moment ensemble",
           starts_at: 1.day.from_now,

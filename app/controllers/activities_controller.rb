@@ -9,7 +9,7 @@ class ActivitiesController < ApplicationController
 
     @activities = filtered_activities
     @pending_completion = pending_activities if can_create_activity?
-    @view_mode = params[:view].presence || "list"
+    @view_mode = params[:view].presence || "calendar"
     @current_period = (params[:period] == "past") ? "past" : "upcoming"
 
     if calendar_view?
@@ -28,6 +28,7 @@ class ActivitiesController < ApplicationController
 
   def new
     @activity = @residence.activities.build
+    prefill_dates_from_calendar
     authorize @activity
   end
 
@@ -87,7 +88,7 @@ class ActivitiesController < ApplicationController
   end
 
   def activity_params
-    params.require(:activity).permit(:activity_type, :description, :starts_at, :ends_at, :notify_residents,
+    params.require(:activity).permit(:title, :activity_type, :description, :starts_at, :ends_at, :notify_residents,
       :recurring, :recurrence_end_date, :recurrence_frequency)
   end
 
@@ -104,6 +105,16 @@ class ActivitiesController < ApplicationController
 
   def can_create_activity?
     policy(Activity.new(residence: @residence)).create?
+  end
+
+  def prefill_dates_from_calendar
+    return unless params[:date].present?
+
+    date = Date.parse(params[:date])
+    @activity.starts_at = date.to_datetime.change(hour: 14)
+    @activity.ends_at = date.to_datetime.change(hour: 15)
+  rescue ArgumentError
+    # Invalid date format, ignore
   end
 
   def calendar_view?

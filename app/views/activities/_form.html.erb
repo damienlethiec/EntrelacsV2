@@ -21,16 +21,53 @@
     </div>
   <% end %>
 
+  <fieldset data-controller="activity-type">
+    <legend class="text-sm/6 font-semibold text-gray-900"><%= Activity.human_attribute_name(:activity_type) %></legend>
+    <%= f.hidden_field :activity_type, data: { activity_type_target: "hiddenInput" } %>
+
+    <% is_other = activity.activity_type.present? && !Activity::SUGGESTED_TYPES.include?(activity.activity_type) %>
+    <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <% Activity::SUGGESTED_TYPES.each_with_index do |type, index| %>
+        <div class="flex items-center">
+          <input id="activity_type_<%= index %>"
+                 type="radio"
+                 name="activity_type_selection"
+                 value="<%= type %>"
+                 <%= "checked" if activity.activity_type == type %>
+                 data-activity-type-target="radio"
+                 data-action="change->activity-type#select"
+                 class="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-tisseurs-teal checked:bg-tisseurs-teal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal" />
+          <label for="activity_type_<%= index %>" class="ml-2 block text-sm/6 font-medium text-gray-900"><%= type %></label>
+        </div>
+      <% end %>
+      <div class="flex items-center">
+        <input id="activity_type_other"
+               type="radio"
+               name="activity_type_selection"
+               value="other"
+               <%= "checked" if is_other %>
+               data-activity-type-target="radio"
+               data-action="change->activity-type#select"
+               class="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-tisseurs-teal checked:bg-tisseurs-teal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal" />
+        <label for="activity_type_other" class="ml-2 block text-sm/6 font-medium text-gray-900"><%= t("activities.form.other_type") %></label>
+      </div>
+    </div>
+
+    <div class="mt-3 <%= 'hidden' unless is_other %>" data-activity-type-target="otherField">
+      <input type="text"
+             value="<%= activity.activity_type if is_other %>"
+             placeholder="<%= t('activities.form.other_type_placeholder') %>"
+             data-activity-type-target="otherInput"
+             data-action="input->activity-type#updateOther"
+             class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" />
+    </div>
+  </fieldset>
+
   <div>
-    <%= f.label :activity_type, class: "block text-sm/6 font-medium text-gray-900" %>
+    <%= f.label :title, class: "block text-sm/6 font-medium text-gray-900" %>
     <div class="mt-2">
-      <%= f.text_field :activity_type, list: "activity_types",
+      <%= f.text_field :title,
           class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
-      <datalist id="activity_types">
-        <% Activity::SUGGESTED_TYPES.each do |type| %>
-          <option value="<%= type %>">
-        <% end %>
-      </datalist>
     </div>
   </div>
 

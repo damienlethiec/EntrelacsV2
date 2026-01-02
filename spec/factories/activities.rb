@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :activity do
+    sequence(:title) { |n| "Activité #{n}" }
     activity_type { Activity::SUGGESTED_TYPES.sample }
     description { "Description de l'activité" }
     starts_at { 1.day.from_now }

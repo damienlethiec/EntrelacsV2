@@ -112,8 +112,8 @@ end
 # Create activities for the last 6 months
 puts "\n🎭 Création des activités passées..."
 
-# Descriptions additionnelles par type d'activité
-activity_descriptions = {
+# Titres par type d'activité
+activity_titles = {
   "Repas partagé" => [
     "Repas de quartier",
     "Dîner thématique italien",
@@ -177,6 +177,17 @@ activity_descriptions = {
   ]
 }
 
+activity_descriptions = [
+  "Venez nombreux pour ce moment de partage et de convivialité !",
+  "Ouvert à tous les habitants de la résidence.",
+  "N'hésitez pas à inviter vos voisins.",
+  "Merci de vous inscrire auprès du tisseur.",
+  "Apportez votre bonne humeur !",
+  "Prévoir des vêtements adaptés.",
+  "Matériel fourni sur place.",
+  "Participation libre et gratuite."
+]
+
 reviews = [
   "Très bonne ambiance, les résidents ont beaucoup apprécié.",
   "Belle participation, à renouveler !",
@@ -203,7 +214,7 @@ residences.each do |residence|
 
     activities_count.times do
       activity_type = Activity::SUGGESTED_TYPES.sample
-      descriptions = activity_descriptions[activity_type] || [activity_type]
+      titles = activity_titles[activity_type] || [activity_type]
 
       # Random time slot
       hour = [9, 10, 11, 14, 15, 16, 17, 18, 19, 20].sample
@@ -225,8 +236,9 @@ residences.each do |residence|
 
       Activity.create!(
         residence: residence,
+        title: titles.sample,
         activity_type: activity_type,
-        description: descriptions.sample,
+        description: activity_descriptions.sample,
         starts_at: starts_at,
         ends_at: ends_at,
         status: :completed,
@@ -245,14 +257,15 @@ puts "\n📅 Création des activités à venir..."
 residences.each do |residence|
   rand(2..5).times do |i|
     activity_type = Activity::SUGGESTED_TYPES.sample
-    descriptions = activity_descriptions[activity_type] || [activity_type]
+    titles = activity_titles[activity_type] || [activity_type]
 
     starts_at = (i + 1).days.from_now.change(hour: [14, 16, 18, 20].sample)
 
     Activity.create!(
       residence: residence,
+      title: titles.sample,
       activity_type: activity_type,
-      description: descriptions.sample,
+      description: activity_descriptions.sample,
       starts_at: starts_at,
       ends_at: starts_at + 2.hours,
       status: :planned,
