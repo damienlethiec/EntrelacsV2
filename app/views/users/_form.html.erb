@@ -70,7 +70,7 @@
       </div>
     </div>
 
-    <div id="residence-field" class="<%= 'hidden' if user.admin? || user.new_record? && user.role.nil? %>">
+    <div id="residence-field" class="<%= 'hidden' if user.admin? %>">
       <%= f.label :residence_id, t("activerecord.attributes.user.residence"), class: "block text-sm/6 font-medium text-gray-900" %>
       <div class="mt-2">
         <%= f.collection_select :residence_id, Residence.active.order(:name), :id, :name,
