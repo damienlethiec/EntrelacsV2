@@ -47,7 +47,7 @@
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
           <dt class="text-sm font-medium text-gray-900"><%= Resident.human_attribute_name(:phone) %></dt>
           <dd class="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-            <%= link_to @resident.phone, "tel:#{@resident.phone}", class: "text-tisseurs-teal hover:text-tisseurs-teal-dark" %>
+            <%= link_to @resident.phone_display, "tel:#{@resident.phone}", class: "text-tisseurs-teal hover:text-tisseurs-teal-dark" %>
           </dd>
         </div>
       <% end %>
