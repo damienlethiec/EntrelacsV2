@@ -133,7 +133,7 @@ export default class extends Controller {
   }
 
   initByTimeCharts() {
-    const labels = Object.keys(this.byTimeValue).map(l => l.split(" ")[0])
+    const labels = Object.keys(this.byTimeValue)
     const activitiesData = Object.values(this.byTimeValue)
     const participantsData = Object.values(this.participantsByTimeValue)
 
@@ -151,7 +151,10 @@ export default class extends Controller {
         },
         options: {
           ...this.chartDefaults,
-          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+          scales: {
+            x: { ticks: { font: { size: 9 } } },
+            y: { beginAtZero: true, ticks: { stepSize: 1 } }
+          }
         }
       })
     }
@@ -170,7 +173,10 @@ export default class extends Controller {
         },
         options: {
           ...this.chartDefaults,
-          scales: { y: { beginAtZero: true } }
+          scales: {
+            x: { ticks: { font: { size: 9 } } },
+            y: { beginAtZero: true }
+          }
         }
       })
     }
