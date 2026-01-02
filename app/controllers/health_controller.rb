@@ -20,7 +20,7 @@ class HealthController < ApplicationController
   def database_connected?
     ActiveRecord::Base.connection.execute("SELECT 1")
     true
-  rescue StandardError
+  rescue
     false
   end
 end
