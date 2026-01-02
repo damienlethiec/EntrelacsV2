@@ -24,7 +24,7 @@ module Phoneable
       return nil if phone.blank?
 
       # Nettoyer: enlever espaces, tirets, points
-      cleaned = phone.to_s.gsub(/[\s.\-]/, "")
+      cleaned = phone.to_s.gsub(/[\s.-]/, "")
 
       # Convertir format français (06...) en international (+33...)
       if cleaned.match?(/\A0[1-9]\d{8}\z/)
