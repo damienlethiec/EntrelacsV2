@@ -66,7 +66,7 @@ Rails.application.configure do
     port: 587,
     user_name: Rails.application.credentials.dig(:brevo, :login),
     password: Rails.application.credentials.dig(:brevo, :smtp_key),
-    authentication: :plain,
+    authentication: :login,
     enable_starttls_auto: true
   }
 
