@@ -61,27 +61,45 @@ export default class extends Controller {
     }
   }
 
+  truncateLabel(label, maxLength = 12) {
+    return label.length > maxLength ? label.slice(0, maxLength) + "…" : label
+  }
+
   initByTypeCharts() {
     const labels = Object.keys(this.byTypeValue)
     const activitiesData = Object.values(this.byTypeValue)
     const participantsData = labels.map(label => this.participantsByTypeValue[label] || 0)
 
-    const rotatedLabels = {
+    const typeChartOptions = {
       scales: {
-        x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } },
+        x: {
+          ticks: {
+            maxRotation: 45,
+            minRotation: 45,
+            font: { size: 10 },
+            callback: (value, index) => this.truncateLabel(labels[index])
+          }
+        },
         y: { beginAtZero: true, ticks: { stepSize: 1 } }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: (items) => labels[items[0].dataIndex]
+          }
+        }
       }
     }
 
     this.createBarChart(
       this.activitiesByTypeChartTarget,
-      labels, activitiesData, "teal", rotatedLabels
+      labels, activitiesData, "teal", typeChartOptions
     )
 
     this.createBarChart(
       this.participantsByTypeChartTarget,
-      labels, participantsData, "coral",
-      { scales: { x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } } } }
+      labels, participantsData, "coral", typeChartOptions
     )
   }
 
