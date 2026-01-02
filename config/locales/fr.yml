@@ -408,8 +408,8 @@ fr:
       most_popular_type: "Activité la plus réalisée"
     breakdowns:
       by_type: "Par type d'activité"
-      by_day: "Par jour de la semaine"
-      by_time: "Par créneau horaire"
+      by_day: "Par jour de la semaine (début)"
+      by_time: "Par créneau horaire (début)"
       participants_by_type: "Participants par type"
     time_slots:
       morning: "Matin (6h-12h)"
