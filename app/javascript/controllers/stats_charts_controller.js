@@ -17,22 +17,48 @@ export default class extends Controller {
   }
 
   connect() {
-    this.chartDefaults = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
-      }
+    this.colors = {
+      teal: { bg: "rgba(14, 124, 124, 0.8)", border: "rgba(14, 124, 124, 1)" },
+      coral: { bg: "rgba(218, 99, 80, 0.8)", border: "rgba(218, 99, 80, 1)" }
     }
-
-    this.tealColor = "rgba(14, 124, 124, 0.8)"
-    this.tealBorder = "rgba(14, 124, 124, 1)"
-    this.coralColor = "rgba(218, 99, 80, 0.8)"
-    this.coralBorder = "rgba(218, 99, 80, 1)"
 
     this.initByTypeCharts()
     this.initByDayCharts()
     this.initByTimeCharts()
+  }
+
+  createBarChart(target, labels, data, color, options = {}) {
+    if (!target) return
+
+    const defaultOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    }
+
+    new Chart(target, {
+      type: "bar",
+      data: {
+        labels,
+        datasets: [{
+          data,
+          backgroundColor: this.colors[color].bg,
+          borderColor: this.colors[color].border,
+          borderWidth: 1
+        }]
+      },
+      options: this.mergeOptions(defaultOptions, options)
+    })
+  }
+
+  mergeOptions(defaults, overrides) {
+    return {
+      ...defaults,
+      ...overrides,
+      scales: { ...defaults.scales, ...overrides.scales },
+      plugins: { ...defaults.plugins, ...overrides.plugins }
+    }
   }
 
   initByTypeCharts() {
@@ -40,96 +66,40 @@ export default class extends Controller {
     const activitiesData = Object.values(this.byTypeValue)
     const participantsData = labels.map(label => this.participantsByTypeValue[label] || 0)
 
-    if (this.hasActivitiesByTypeChartTarget) {
-      new Chart(this.activitiesByTypeChartTarget, {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [{
-            data: activitiesData,
-            backgroundColor: this.tealColor,
-            borderColor: this.tealBorder,
-            borderWidth: 1
-          }]
-        },
-        options: {
-          ...this.chartDefaults,
-          scales: {
-            x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } },
-            y: { beginAtZero: true, ticks: { stepSize: 1 } }
-          }
-        }
-      })
+    const rotatedLabels = {
+      scales: {
+        x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } },
+        y: { beginAtZero: true, ticks: { stepSize: 1 } }
+      }
     }
 
-    if (this.hasParticipantsByTypeChartTarget) {
-      new Chart(this.participantsByTypeChartTarget, {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [{
-            data: participantsData,
-            backgroundColor: this.coralColor,
-            borderColor: this.coralBorder,
-            borderWidth: 1
-          }]
-        },
-        options: {
-          ...this.chartDefaults,
-          scales: {
-            x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } },
-            y: { beginAtZero: true }
-          }
-        }
-      })
-    }
+    this.createBarChart(
+      this.activitiesByTypeChartTarget,
+      labels, activitiesData, "teal", rotatedLabels
+    )
+
+    this.createBarChart(
+      this.participantsByTypeChartTarget,
+      labels, participantsData, "coral",
+      { scales: { x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } } } }
+    )
   }
 
   initByDayCharts() {
-    const dayData = this.byDayValue
-    const participantsData = this.participantsByDayValue
+    const labels = this.byDayValue.map(d => d[0].slice(0, 3))
+    const activitiesData = this.byDayValue.map(d => d[1])
+    const participantsData = this.participantsByDayValue.map(d => d[1])
 
-    const labels = dayData.map(d => d[0].slice(0, 3))
-    const activitiesData = dayData.map(d => d[1])
-    const participantsCounts = participantsData.map(d => d[1])
+    this.createBarChart(
+      this.activitiesByDayChartTarget,
+      labels, activitiesData, "teal",
+      { scales: { y: { ticks: { stepSize: 1 } } } }
+    )
 
-    if (this.hasActivitiesByDayChartTarget) {
-      new Chart(this.activitiesByDayChartTarget, {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [{
-            data: activitiesData,
-            backgroundColor: this.tealColor,
-            borderColor: this.tealBorder,
-            borderWidth: 1
-          }]
-        },
-        options: {
-          ...this.chartDefaults,
-          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-        }
-      })
-    }
-
-    if (this.hasParticipantsByDayChartTarget) {
-      new Chart(this.participantsByDayChartTarget, {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [{
-            data: participantsCounts,
-            backgroundColor: this.coralColor,
-            borderColor: this.coralBorder,
-            borderWidth: 1
-          }]
-        },
-        options: {
-          ...this.chartDefaults,
-          scales: { y: { beginAtZero: true } }
-        }
-      })
-    }
+    this.createBarChart(
+      this.participantsByDayChartTarget,
+      labels, participantsData, "coral"
+    )
   }
 
   initByTimeCharts() {
@@ -137,48 +107,17 @@ export default class extends Controller {
     const activitiesData = Object.values(this.byTimeValue)
     const participantsData = Object.values(this.participantsByTimeValue)
 
-    if (this.hasActivitiesByTimeChartTarget) {
-      new Chart(this.activitiesByTimeChartTarget, {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [{
-            data: activitiesData,
-            backgroundColor: this.tealColor,
-            borderColor: this.tealBorder,
-            borderWidth: 1
-          }]
-        },
-        options: {
-          ...this.chartDefaults,
-          scales: {
-            x: { ticks: { font: { size: 9 } } },
-            y: { beginAtZero: true, ticks: { stepSize: 1 } }
-          }
-        }
-      })
-    }
+    const smallFont = { scales: { x: { ticks: { font: { size: 9 } } } } }
 
-    if (this.hasParticipantsByTimeChartTarget) {
-      new Chart(this.participantsByTimeChartTarget, {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [{
-            data: participantsData,
-            backgroundColor: this.coralColor,
-            borderColor: this.coralBorder,
-            borderWidth: 1
-          }]
-        },
-        options: {
-          ...this.chartDefaults,
-          scales: {
-            x: { ticks: { font: { size: 9 } } },
-            y: { beginAtZero: true }
-          }
-        }
-      })
-    }
+    this.createBarChart(
+      this.activitiesByTimeChartTarget,
+      labels, activitiesData, "teal",
+      { ...smallFont, scales: { ...smallFont.scales, y: { ticks: { stepSize: 1 } } } }
+    )
+
+    this.createBarChart(
+      this.participantsByTimeChartTarget,
+      labels, participantsData, "coral", smallFont
+    )
   }
 }

@@ -54,7 +54,9 @@
     </div>
 
     <div class="mt-3 <%= 'hidden' unless is_other %>" data-activity-type-target="otherField">
+      <label for="activity_type_other_input" class="sr-only"><%= t('activities.form.other_type_label') %></label>
       <input type="text"
+             id="activity_type_other_input"
              value="<%= activity.activity_type if is_other %>"
              placeholder="<%= t('activities.form.other_type_placeholder') %>"
              data-activity-type-target="otherInput"

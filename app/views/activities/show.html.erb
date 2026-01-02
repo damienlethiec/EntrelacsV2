@@ -4,7 +4,6 @@
       <h1 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
         <%= @activity.title %>
       </h1>
-      <p class="mt-1 text-sm text-gray-500"><%= @activity.activity_type %></p>
     </div>
     <div class="mt-4 flex gap-x-3 md:mt-0 md:ml-4">
       <% if policy(@activity).edit? && @activity.planned? %>
@@ -22,7 +21,8 @@
 
 <div class="overflow-hidden bg-white shadow ring-1 ring-black/5 sm:rounded-lg">
   <div class="border-b border-gray-100 px-4 py-5 sm:px-6">
-    <div class="flex items-center gap-x-3">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="rounded-md bg-tisseurs-teal/10 px-2 py-1 text-xs font-medium text-tisseurs-teal ring-1 ring-inset ring-tisseurs-teal/20"><%= @activity.activity_type %></span>
       <% if @activity.completed? %>
         <span class="rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/10"><%= t("activities.status.completed") %></span>
       <% elsif @activity.canceled? %>

@@ -386,6 +386,7 @@ fr:
       recurrence_end_date: "Date de fin de récurrence"
       recurrence_max_hint: "Maximum 1 an à partir de la date de début"
       other_type: "Autre"
+      other_type_label: "Type d'activité personnalisé"
       other_type_placeholder: "Précisez le type d'activité..."
       frequencies:
         weekly: "Hebdomadaire"

@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   end
 
   # Health check
-  get "up" => "rails/health#show", :as => :rails_health_check
+  get "up" => "health#show", :as => :health_check
 
   # Root - Dashboard (redirects based on role)
   root "dashboard#index"

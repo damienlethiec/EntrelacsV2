@@ -45,15 +45,17 @@
           <% if policy(resident).edit? || policy(resident).destroy? %>
             <%= render "shared/action_menu" do %>
               <%= link_to t("helpers.show"), residence_resident_path(@residence, resident),
-                  class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50" %>
+                  class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none",
+                  role: "menuitem" %>
               <% if policy(resident).edit? %>
                 <%= link_to t("helpers.edit"), edit_residence_resident_path(@residence, resident),
-                    class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50" %>
+                    class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none",
+                    role: "menuitem" %>
               <% end %>
               <% if policy(resident).destroy? %>
                 <%= button_to t("helpers.delete"), residence_resident_path(@residence, resident), method: :delete,
                     form: { data: { turbo_confirm: t("residents.confirm_delete", name: resident.full_name) } },
-                    class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-coral hover:bg-gray-50" %>
+                    class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-coral hover:bg-gray-50 focus:bg-gray-50 focus:outline-none" %>
               <% end %>
             <% end %>
           <% end %>

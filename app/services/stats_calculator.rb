@@ -50,38 +50,38 @@ class StatsCalculator
 
   def by_day_of_week
     day_names = I18n.t("date.day_names")
-    counts = activities.group_by { |a| a.starts_at.wday }.transform_values(&:count)
+    counts = activities.group("EXTRACT(DOW FROM starts_at)::integer").count
     (0..6).map { |day| [day_names[day], counts[day] || 0] }
   end
 
   def participants_by_day
     day_names = I18n.t("date.day_names")
-    participants = activities.group_by { |a| a.starts_at.wday }
-      .transform_values { |acts| acts.sum(&:participants_count) }
+    participants = activities.group("EXTRACT(DOW FROM starts_at)::integer").sum(:participants_count)
     (0..6).map { |day| [day_names[day], participants[day] || 0] }
   end
 
   def by_time_of_day
-    calculate_time_breakdown { |acts| acts.count }
+    calculate_time_breakdown(:count)
   end
 
   def participants_by_time
-    calculate_time_breakdown { |acts| acts.sum(&:participants_count) }
+    calculate_time_breakdown(:sum)
   end
 
   private
 
-  def calculate_time_breakdown
-    slots = {
-      morning: (6..11),
-      afternoon: (12..17),
-      evening: (18..23)
-    }
+  def calculate_time_breakdown(operation)
+    slots = [
+      {key: :morning, range: (6..11), label: I18n.t("stats.time_slots.morning")},
+      {key: :afternoon, range: (12..17), label: I18n.t("stats.time_slots.afternoon")},
+      {key: :evening, range: (18..23), label: I18n.t("stats.time_slots.evening")}
+    ]
 
-    slots.transform_keys { |k| I18n.t("stats.time_slots.#{k}") }
-      .transform_values do |hours|
-        matching = activities.select { |a| hours.include?(a.starts_at.hour) }
-        yield matching
-      end
+    slots.to_h do |config|
+      hours = config[:range].to_a
+      scope = activities.where("EXTRACT(HOUR FROM starts_at)::integer IN (?)", hours)
+      value = (operation == :count) ? scope.count : scope.sum(:participants_count)
+      [config[:label], value]
+    end
   end
 end

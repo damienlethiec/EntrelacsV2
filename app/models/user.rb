@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include Phoneable
+
   devise :invitable, :database_authenticatable,
     :recoverable, :rememberable, :validatable
 
@@ -10,7 +12,6 @@ class User < ApplicationRecord
   validates :last_name, presence: true
   validates :role, presence: true
   validates :residence, presence: true, if: :weaver?
-  validates :phone, format: {with: /\A0[1-9](\d{2}){4}\z/}, allow_blank: true
 
   def full_name
     "#{first_name} #{last_name}"

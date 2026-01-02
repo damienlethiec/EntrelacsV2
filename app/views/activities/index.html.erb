@@ -140,9 +140,11 @@
       <ul role="list" class="divide-y divide-gray-100">
         <% @activities.each do |activity| %>
           <li class="flex items-center justify-between gap-x-6 py-5 px-4 sm:px-6 <%= 'bg-gray-50' if activity.canceled? %>">
-            <div class="min-w-0">
+            <div class="min-w-0 flex-1">
               <div class="flex items-start gap-x-3">
-                <p class="text-sm/6 font-semibold text-gray-900"><%= activity.title %></p>
+                <%= link_to activity.title, residence_activity_path(@residence, activity),
+                    class: "text-sm/6 font-semibold text-gray-900 hover:text-tisseurs-teal",
+                    data: { turbo_frame: "_top" } %>
                 <span class="mt-0.5 rounded-md bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"><%= activity.activity_type %></span>
                 <% if activity.completed? %>
                   <span class="mt-0.5 rounded-md bg-green-100 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/10"><%= t("activities.status.completed") %></span>
@@ -167,17 +169,19 @@
             <% if policy(activity).edit? || policy(activity).cancel? %>
               <%= render "shared/action_menu" do %>
                 <%= link_to t("helpers.show"), residence_activity_path(@residence, activity),
-                    class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50",
+                    class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none",
+                    role: "menuitem",
                     data: { turbo_frame: "_top" } %>
                 <% if policy(activity).edit? && activity.planned? %>
                   <%= link_to t("helpers.edit"), edit_residence_activity_path(@residence, activity),
-                      class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50",
+                      class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none",
+                      role: "menuitem",
                       data: { turbo_frame: "_top" } %>
                 <% end %>
                 <% if policy(activity).cancel? %>
                   <%= button_to t("activities.actions.cancel"), cancel_residence_activity_path(@residence, activity), method: :patch,
                       form: { data: { turbo_confirm: t("activities.confirm_cancel"), turbo_frame: "_top" } },
-                      class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-coral hover:bg-gray-50" %>
+                      class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-coral hover:bg-gray-50 focus:bg-gray-50 focus:outline-none" %>
                 <% end %>
               <% end %>
             <% end %>

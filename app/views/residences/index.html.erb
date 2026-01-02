@@ -52,18 +52,20 @@
           </div>
           <%= render "shared/action_menu" do %>
             <%= link_to t("residences.index.view_residents"), residence_residents_path(residence),
-                class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50" %>
+                class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none",
+                role: "menuitem" %>
             <% if current_user.admin? %>
               <%= link_to t("helpers.edit"), edit_residence_path(residence),
-                  class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50" %>
+                  class: "block px-3 py-1 text-sm/6 text-gray-900 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none",
+                  role: "menuitem" %>
               <% unless residence.deleted? %>
                 <%= button_to t("helpers.delete"), residence_path(residence), method: :delete,
                     form: { data: { turbo_confirm: t("residences.confirm_delete", name: residence.name) } },
-                    class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-coral hover:bg-gray-50" %>
+                    class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-coral hover:bg-gray-50 focus:bg-gray-50 focus:outline-none" %>
               <% end %>
               <% if residence.deleted? %>
                 <%= button_to t("residences.restore"), restore_residence_path(residence), method: :patch,
-                    class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-teal hover:bg-gray-50" %>
+                    class: "block w-full text-left px-3 py-1 text-sm/6 text-tisseurs-teal hover:bg-gray-50 focus:bg-gray-50 focus:outline-none" %>
               <% end %>
             <% end %>
           <% end %>

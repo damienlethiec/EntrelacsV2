@@ -38,6 +38,9 @@
   </head>
 
   <body class="h-full bg-tisseurs-cream font-harmattan" data-controller="service-worker">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-tisseurs-teal focus:px-4 focus:py-2 focus:text-white focus:outline-none">
+      Aller au contenu principal
+    </a>
     <% if user_signed_in? %>
       <div class="min-h-full">
         <%= render "shared/navbar" %>
@@ -51,7 +54,7 @@
             </header>
           <% end %>
 
-          <main>
+          <main id="main-content">
             <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
               <%= yield %>
             </div>
@@ -59,7 +62,7 @@
         </div>
       </div>
     <% else %>
-      <main>
+      <main id="main-content">
         <%= yield %>
       </main>
     <% end %>
