@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Pagy::Loader
+
   def nav_link_to(name, path)
     current = current_page?(path)
     classes = if current

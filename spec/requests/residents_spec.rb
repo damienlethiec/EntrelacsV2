@@ -117,7 +117,7 @@ RSpec.describe "Residents", type: :request do
 
       it "renders new with invalid params" do
         post residence_residents_path(residence), params: {resident: {first_name: "", last_name: ""}}
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
 
@@ -181,7 +181,7 @@ RSpec.describe "Residents", type: :request do
 
       it "renders edit with invalid params" do
         patch residence_resident_path(residence, resident), params: {resident: {first_name: ""}}
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
 

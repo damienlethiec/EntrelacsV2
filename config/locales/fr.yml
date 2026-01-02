@@ -332,10 +332,22 @@ fr:
       show_upcoming: "Voir les activités à venir"
       pending_completion: "Activités à compléter"
       pending_empty: "Aucune activité à compléter."
+      view_list: "Liste"
+      view_calendar: "Calendrier"
+      search_placeholder: "Rechercher..."
+      filter_type: "Type"
+      all_types: "Tous les types"
+      period: "Période"
+      filter: "Filtrer"
+      clear_filters: "Effacer"
+      search: "Recherche"
       stats:
         last_30_days: "Ces 30 derniers jours"
         completed: "activités complétées"
         participants: "participants"
+    calendar:
+      today: "Aujourd'hui"
+      more: "autre(s)"
     new:
       title: "Nouvelle activité"
     edit:
@@ -451,3 +463,8 @@ fr:
     form:
       invitation_notice: "Un email d'invitation sera envoyé à cet utilisateur pour qu'il puisse définir son mot de passe."
     confirm_delete: "Êtes-vous sûr de vouloir supprimer %{name} ?"
+
+  # Pagination
+  pagy:
+    prev: "Précédent"
+    next: "Suivant"

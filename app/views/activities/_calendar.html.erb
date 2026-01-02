@@ -1,0 +1,107 @@
+<%# Calendar navigation %>
+<div class="flex items-center justify-between mb-4">
+  <h2 class="text-lg font-semibold text-gray-900">
+    <%= l(month, format: "%B %Y").capitalize %>
+  </h2>
+  <div class="flex items-center gap-x-2">
+    <%= link_to residence_activities_path(residence, view: "calendar", month: (month - 1.month).to_s),
+        class: "rounded-md bg-white p-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 hover:text-gray-500" do %>
+      <svg class="size-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+      </svg>
+    <% end %>
+    <%= link_to residence_activities_path(residence, view: "calendar", month: Date.current.beginning_of_month.to_s),
+        class: "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50" do %>
+      <%= t("activities.calendar.today") %>
+    <% end %>
+    <%= link_to residence_activities_path(residence, view: "calendar", month: (month + 1.month).to_s),
+        class: "rounded-md bg-white p-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 hover:text-gray-500" do %>
+      <svg class="size-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+      </svg>
+    <% end %>
+  </div>
+</div>
+
+<%# Calendar grid %>
+<div class="bg-white shadow ring-1 ring-black/5 sm:rounded-lg overflow-hidden">
+  <%# Days of week header %>
+  <div class="grid grid-cols-7 border-b border-gray-200 bg-gray-50 text-center text-xs font-semibold text-gray-700">
+    <% I18n.t("date.abbr_day_names").rotate(1).each do |day_name| %>
+      <div class="py-2"><%= day_name.capitalize %></div>
+    <% end %>
+  </div>
+
+  <%# Calendar days %>
+  <div class="grid grid-cols-7 divide-x divide-y divide-gray-200">
+    <%
+      start_date = month.beginning_of_month.beginning_of_week(:monday)
+      end_date = month.end_of_month.end_of_week(:monday)
+      activities_by_date = activities.group_by { |a| a.starts_at.to_date }
+    %>
+
+    <% (start_date..end_date).each do |date| %>
+      <%
+        is_current_month = date.month == month.month
+        is_today = date == Date.current
+        day_activities = activities_by_date[date] || []
+      %>
+      <div class="min-h-[100px] p-2 <%= is_current_month ? 'bg-white' : 'bg-gray-50' %>">
+        <div class="flex items-center justify-between">
+          <span class="<%= is_today ? 'flex size-7 items-center justify-center rounded-full bg-tisseurs-teal text-white font-semibold' : '' %> <%= is_current_month ? 'text-gray-900' : 'text-gray-400' %> text-sm">
+            <%= date.day %>
+          </span>
+          <% if day_activities.any? && policy(Activity.new(residence: residence)).create? %>
+            <%= link_to new_residence_activity_path(residence, starts_at: date),
+                class: "text-tisseurs-teal hover:text-tisseurs-teal-dark",
+                title: t("activities.index.new") do %>
+              <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            <% end %>
+          <% end %>
+        </div>
+
+        <% if day_activities.any? %>
+          <div class="mt-1 space-y-1">
+            <% day_activities.first(3).each do |activity| %>
+              <%= link_to residence_activity_path(residence, activity),
+                  class: "block truncate rounded px-1 py-0.5 text-xs #{activity_calendar_class(activity)}" do %>
+                <span class="font-medium"><%= l(activity.starts_at, format: "%H:%M") %></span>
+                <%= activity.activity_type %>
+              <% end %>
+            <% end %>
+            <% if day_activities.size > 3 %>
+              <p class="text-xs text-gray-500 px-1">
+                + <%= day_activities.size - 3 %> <%= t("activities.calendar.more") %>
+              </p>
+            <% end %>
+          </div>
+        <% elsif is_current_month && policy(Activity.new(residence: residence)).create? %>
+          <%= link_to new_residence_activity_path(residence, starts_at: date),
+              class: "block mt-2 text-center text-xs text-gray-400 hover:text-tisseurs-teal" do %>
+            <svg class="mx-auto size-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%# Legend %>
+<div class="mt-4 flex flex-wrap gap-4 text-xs">
+  <div class="flex items-center gap-x-2">
+    <span class="inline-block size-3 rounded bg-blue-100 ring-1 ring-blue-200"></span>
+    <span class="text-gray-600"><%= t("activities.status.planned") %></span>
+  </div>
+  <div class="flex items-center gap-x-2">
+    <span class="inline-block size-3 rounded bg-green-100 ring-1 ring-green-200"></span>
+    <span class="text-gray-600"><%= t("activities.status.completed") %></span>
+  </div>
+  <div class="flex items-center gap-x-2">
+    <span class="inline-block size-3 rounded bg-red-100 ring-1 ring-red-200"></span>
+    <span class="text-gray-600"><%= t("activities.status.canceled") %></span>
+  </div>
+</div>

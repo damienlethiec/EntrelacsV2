@@ -131,7 +131,7 @@ RSpec.describe "Activities", type: :request do
 
       it "renders new with invalid params" do
         post residence_activities_path(residence), params: {activity: {activity_type: ""}}
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
 
@@ -172,7 +172,7 @@ RSpec.describe "Activities", type: :request do
 
       it "renders edit with invalid params" do
         patch residence_activity_path(residence, activity), params: {activity: {activity_type: ""}}
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end

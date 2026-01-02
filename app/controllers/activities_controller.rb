@@ -1,4 +1,6 @@
 class ActivitiesController < ApplicationController
+  include Pagy::Method
+
   before_action :set_residence
   before_action :set_activity, only: [:show, :edit, :update, :cancel, :complete]
 
@@ -8,15 +10,41 @@ class ActivitiesController < ApplicationController
     @activities = policy_scope(Activity).where(residence: @residence)
     @pending_completion = @activities.pending_completion if policy(Activity.new(residence: @residence)).create?
 
-    if params[:past] == "true"
+    # Filter by time period
+    if params[:period] == "past"
       @activities = @activities.past
-      @showing_past = true
+      @current_period = "past"
     else
       @activities = @activities.upcoming
-      @showing_past = false
+      @current_period = "upcoming"
+    end
+
+    # Filter by activity type
+    if params[:activity_type].present?
+      @activities = @activities.where(activity_type: params[:activity_type])
+    end
+
+    # Search by description
+    if params[:search].present?
+      @activities = @activities.where("description ILIKE ?", "%#{params[:search]}%")
+    end
+
+    # View mode (list or calendar)
+    @view_mode = params[:view].presence || "list"
+
+    # For calendar view, get activities for the current month
+    if @view_mode == "calendar"
+      @calendar_month = params[:month].present? ? Date.parse(params[:month]) : Date.current.beginning_of_month
+      @calendar_activities = @residence.activities
+        .where(starts_at: @calendar_month.beginning_of_month.beginning_of_week..@calendar_month.end_of_month.end_of_week)
+        .order(starts_at: :asc)
+    else
+      # Pagination for list view
+      @pagy, @activities = pagy(@activities, limit: 10)
     end
 
     @stats = calculate_stats
+    @activity_types = @residence.activities.distinct.pluck(:activity_type).sort
   end
 
   def show

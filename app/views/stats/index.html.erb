@@ -62,18 +62,6 @@
 
 <!-- Charts -->
 <% if @total_activities.positive? %>
-  <!-- Legend -->
-  <div class="flex justify-center gap-8 mb-6 text-sm">
-    <div class="flex items-center gap-2">
-      <span class="w-3 h-3 rounded-full bg-tisseurs-teal"></span>
-      <span class="text-gray-600"><%= t("stats.legend.activities") %></span>
-    </div>
-    <div class="flex items-center gap-2">
-      <span class="w-3 h-3 rounded-full bg-tisseurs-coral"></span>
-      <span class="text-gray-600"><%= t("stats.legend.participants") %></span>
-    </div>
-  </div>
-
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8" data-controller="stats-charts"
        data-stats-charts-by-type-value="<%= @by_type.to_h.to_json %>"
        data-stats-charts-participants-by-type-value="<%= @participants_by_type.to_h.to_json %>"

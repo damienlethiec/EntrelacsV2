@@ -101,7 +101,7 @@ RSpec.describe "Users", type: :request do
 
       it "renders new with invalid params" do
         post admin_users_path, params: {user: {first_name: "", email: ""}}
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
 
@@ -159,7 +159,7 @@ RSpec.describe "Users", type: :request do
 
       it "renders edit with invalid params" do
         patch admin_user_path(other_user), params: {user: {first_name: ""}}
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
 

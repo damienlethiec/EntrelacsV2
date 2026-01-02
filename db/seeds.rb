@@ -149,8 +149,8 @@ reviews = [
   "Les nouveaux résidents ont pu faire connaissance.",
   "Activité appréciée malgré la météo.",
   "Format à garder, très apprécié.",
-  nil,
-  nil
+  "Bonne participation des habitants.",
+  "Très agréable moment de partage."
 ]
 
 total_activities = 0
