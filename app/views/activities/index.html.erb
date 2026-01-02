@@ -183,8 +183,8 @@
     <% if @pagy && @pagy.pages > 1 %>
       <nav class="mt-6 flex items-center justify-between border-t border-gray-200 px-4 sm:px-0">
         <div class="-mt-px flex w-0 flex-1">
-          <% if @pagy.prev %>
-            <%= link_to residence_activities_path(@residence, page: @pagy.prev, period: @current_period, activity_type: params[:activity_type], search: params[:search], view: "list"),
+          <% if @pagy.previous %>
+            <%= link_to residence_activities_path(@residence, page: @pagy.previous, period: @current_period, activity_type: params[:activity_type], search: params[:search], view: "list"),
                 class: "inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700" do %>
               <svg class="mr-3 size-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M18 10a.75.75 0 0 1-.75.75H4.66l2.1 1.95a.75.75 0 1 1-1.02 1.1l-3.5-3.25a.75.75 0 0 1 0-1.1l3.5-3.25a.75.75 0 1 1 1.02 1.1l-2.1 1.95h12.59A.75.75 0 0 1 18 10Z" clip-rule="evenodd" />
@@ -194,13 +194,11 @@
           <% end %>
         </div>
         <div class="hidden md:-mt-px md:flex">
-          <% @pagy.series.each do |item| %>
-            <% if item == :gap %>
-              <span class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500">...</span>
-            <% elsif item == @pagy.page %>
-              <span class="inline-flex items-center border-t-2 border-tisseurs-teal px-4 pt-4 text-sm font-medium text-tisseurs-teal"><%= item %></span>
+          <% (1..@pagy.pages).each do |page_num| %>
+            <% if page_num == @pagy.page %>
+              <span class="inline-flex items-center border-t-2 border-tisseurs-teal px-4 pt-4 text-sm font-medium text-tisseurs-teal"><%= page_num %></span>
             <% else %>
-              <%= link_to item, residence_activities_path(@residence, page: item, period: @current_period, activity_type: params[:activity_type], search: params[:search], view: "list"),
+              <%= link_to page_num, residence_activities_path(@residence, page: page_num, period: @current_period, activity_type: params[:activity_type], search: params[:search], view: "list"),
                   class: "inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700" %>
             <% end %>
           <% end %>

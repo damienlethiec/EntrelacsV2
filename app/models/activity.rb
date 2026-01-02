@@ -36,6 +36,13 @@ class Activity < ApplicationRecord
   scope :past, -> { where("starts_at <= ?", Time.current).order(starts_at: :desc) }
   scope :pending_completion, -> { planned.where("starts_at <= ?", Time.current).order(starts_at: :asc) }
   scope :completed_in_period, ->(start_date, end_date) { completed.where(starts_at: start_date..end_date) }
+  scope :by_type, ->(type) { where(activity_type: type) if type.present? }
+  scope :search, ->(query) { where("description ILIKE ?", "%#{query}%") if query.present? }
+  scope :for_calendar, ->(month) {
+    start_date = month.beginning_of_month.beginning_of_week(:monday)
+    end_date = month.end_of_month.end_of_week(:monday)
+    where(starts_at: start_date..end_date).order(starts_at: :asc)
+  }
 
   # Email notification scopes
   # Uses timestamps to ensure idempotency - won't re-notify if already sent today
@@ -92,6 +99,14 @@ class Activity < ApplicationRecord
     end
 
     total_emails_sent
+  end
+
+  def self.recent_stats(days: 30)
+    recent = completed_in_period(days.days.ago, Time.current)
+    {
+      completed_count: recent.count,
+      participants_count: recent.sum(:participants_count)
+    }
   end
 
   def past?

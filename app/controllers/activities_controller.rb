@@ -7,43 +7,18 @@ class ActivitiesController < ApplicationController
   def index
     authorize Activity.new(residence: @residence)
 
-    @activities = policy_scope(Activity).where(residence: @residence)
-    @pending_completion = @activities.pending_completion if policy(Activity.new(residence: @residence)).create?
-
-    # Filter by time period
-    if params[:period] == "past"
-      @activities = @activities.past
-      @current_period = "past"
-    else
-      @activities = @activities.upcoming
-      @current_period = "upcoming"
-    end
-
-    # Filter by activity type
-    if params[:activity_type].present?
-      @activities = @activities.where(activity_type: params[:activity_type])
-    end
-
-    # Search by description
-    if params[:search].present?
-      @activities = @activities.where("description ILIKE ?", "%#{params[:search]}%")
-    end
-
-    # View mode (list or calendar)
+    @activities = filtered_activities
+    @pending_completion = pending_activities if can_create_activity?
     @view_mode = params[:view].presence || "list"
+    @current_period = (params[:period] == "past") ? "past" : "upcoming"
 
-    # For calendar view, get activities for the current month
-    if @view_mode == "calendar"
-      @calendar_month = params[:month].present? ? Date.parse(params[:month]) : Date.current.beginning_of_month
-      @calendar_activities = @residence.activities
-        .where(starts_at: @calendar_month.beginning_of_month.beginning_of_week..@calendar_month.end_of_month.end_of_week)
-        .order(starts_at: :asc)
+    if calendar_view?
+      setup_calendar_view
     else
-      # Pagination for list view
       @pagy, @activities = pagy(@activities, limit: 10)
     end
 
-    @stats = calculate_stats
+    @stats = @residence.activities.recent_stats
     @activity_types = @residence.activities.distinct.pluck(:activity_type).sort
   end
 
@@ -116,6 +91,30 @@ class ActivitiesController < ApplicationController
       :recurring, :recurrence_end_date, :recurrence_frequency)
   end
 
+  def filtered_activities
+    scope = policy_scope(Activity).where(residence: @residence)
+    scope = (params[:period] == "past") ? scope.past : scope.upcoming
+    scope = scope.by_type(params[:activity_type])
+    scope.search(params[:search])
+  end
+
+  def pending_activities
+    policy_scope(Activity).where(residence: @residence).pending_completion
+  end
+
+  def can_create_activity?
+    policy(Activity.new(residence: @residence)).create?
+  end
+
+  def calendar_view?
+    @view_mode == "calendar"
+  end
+
+  def setup_calendar_view
+    @calendar_month = params[:month].present? ? Date.parse(params[:month]) : Date.current.beginning_of_month
+    @calendar_activities = @residence.activities.for_calendar(@calendar_month)
+  end
+
   def create_single_activity
     if @activity.save
       redirect_to residence_activities_path(@residence), notice: t("flash.actions.create.success", resource_name: Activity.model_name.human)
@@ -140,13 +139,5 @@ class ActivitiesController < ApplicationController
       notice: t("activities.flash.recurring_created", count: occurrences.size)
   rescue ActiveRecord::RecordInvalid
     render :new, status: :unprocessable_entity
-  end
-
-  def calculate_stats
-    completed_activities = @residence.activities.completed_in_period(30.days.ago, Time.current)
-    {
-      completed_count: completed_activities.count,
-      participants_count: completed_activities.sum(:participants_count)
-    }
   end
 end

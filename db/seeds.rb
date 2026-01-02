@@ -12,6 +12,7 @@ admin = User.create!(
   email: "admin@entrelacs.fr",
   first_name: "Admin",
   last_name: "Entrelacs",
+  phone: "0600000000",
   password: "password123",
   role: :admin
 )
@@ -34,11 +35,11 @@ end
 
 # Create weavers for each residence
 weavers_data = [
-  {first_name: "Marie", last_name: "Dupont", email: "marie@entrelacs.fr", residence: residences[0]},
-  {first_name: "Jean", last_name: "Martin", email: "jean@entrelacs.fr", residence: residences[1]},
-  {first_name: "Sophie", last_name: "Bernard", email: "sophie@entrelacs.fr", residence: residences[2]},
-  {first_name: "Pierre", last_name: "Moreau", email: "pierre@entrelacs.fr", residence: residences[3]},
-  {first_name: "Claire", last_name: "Petit", email: "claire@entrelacs.fr", residence: residences[4]}
+  {first_name: "Marie", last_name: "Dupont", email: "marie@entrelacs.fr", phone: "0612345678", residence: residences[0]},
+  {first_name: "Jean", last_name: "Martin", email: "jean@entrelacs.fr", phone: "0623456789", residence: residences[1]},
+  {first_name: "Sophie", last_name: "Bernard", email: "sophie@entrelacs.fr", phone: "0634567890", residence: residences[2]},
+  {first_name: "Pierre", last_name: "Moreau", email: "pierre@entrelacs.fr", phone: "0645678901", residence: residences[3]},
+  {first_name: "Claire", last_name: "Petit", email: "claire@entrelacs.fr", phone: "0656789012", residence: residences[4]}
 ]
 
 weavers_data.map do |data|
@@ -46,6 +47,7 @@ weavers_data.map do |data|
     email: data[:email],
     first_name: data[:first_name],
     last_name: data[:last_name],
+    phone: data[:phone],
     password: "password123",
     role: :weaver,
     residence: data[:residence]
@@ -56,16 +58,51 @@ end
 
 # Create residents for each residence
 puts "\n📋 Création des résidents..."
-resident_first_names = %w[Alice Bruno Camille David Emma Fabien Gisèle Hugo Inès Jules]
-resident_last_names = %w[Leroy Roux Simon Laurent Michel Garcia Thomas Robert Richard Durand]
+resident_first_names = %w[Alice Bruno Camille David Emma Fabien Helene Hugo Iris Jules Karim Lea Marcel Nina Oscar]
+resident_last_names = %w[Leroy Roux Simon Laurent Michel Garcia Thomas Robert Richard Durand Petit Martin Bernard Dubois]
+
+resident_notes = [
+  "Participe régulièrement aux activités collectives.",
+  "Préfère les activités en petit comité.",
+  "Disponible le week-end uniquement.",
+  "Aime cuisiner, propose souvent des plats.",
+  "Musicien amateur, peut animer des soirées.",
+  "A des contraintes de mobilité, prévoir accessibilité.",
+  "Nouveau résident, en cours d'intégration.",
+  "Très impliqué dans la vie de la résidence.",
+  "Travaille en horaires décalés.",
+  "A un chien, vérifier compatibilité animaux.",
+  "Végétarien, à prendre en compte pour les repas.",
+  "Parle anglais et espagnol couramment.",
+  "Retraité, disponible en journée.",
+  "Étudiant, budget limité.",
+  nil, nil, nil # Certains résidents n'ont pas de notes
+]
 
 residences.each do |residence|
-  rand(8..15).times do
+  # Générer des numéros d'appartement uniques pour cette résidence
+  floors = rand(3..5)
+  apartments_per_floor = rand(3..6)
+  available_apartments = (1..floors).flat_map do |floor|
+    (1..apartments_per_floor).map { |apt| "#{floor}#{apt.to_s.rjust(2, "0")}" }
+  end.shuffle
+
+  rand(8..15).times do |i|
+    apartment = available_apartments[i] || "#{rand(1..5)}#{rand(1..10).to_s.rjust(2, "0")}"
+
+    # 70% des résidents ont un email
+    email = (rand < 0.7) ? "#{resident_first_names.sample.downcase}.#{resident_last_names.sample.downcase}#{rand(1..99)}@example.com" : nil
+
+    # 80% des résidents ont un téléphone
+    phone = (rand < 0.8) ? "06#{rand(10_000_000..99_999_999)}" : nil
+
     Resident.create!(
       first_name: resident_first_names.sample,
       last_name: resident_last_names.sample,
-      email: "#{SecureRandom.hex(4)}@example.com",
-      phone: "06#{rand(10_000_000..99_999_999)}",
+      email: email,
+      phone: phone,
+      apartment: apartment,
+      notes: resident_notes.sample,
       residence: residence
     )
   end
