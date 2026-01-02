@@ -75,59 +75,68 @@ end
 # Create activities for the last 6 months
 puts "\n🎭 Création des activités passées..."
 
-activity_types = Activity.activity_types.keys
+# Descriptions additionnelles par type d'activité
 activity_descriptions = {
-  "social_coffee" => [
-    "Café du matin entre voisins",
-    "Goûter convivial",
-    "Petit-déjeuner partagé",
-    "Pause café de l'après-midi"
-  ],
-  "shared_meal" => [
+  "Repas partagé" => [
     "Repas de quartier",
     "Dîner thématique italien",
     "Brunch du dimanche",
     "Barbecue estival",
     "Soirée crêpes"
   ],
-  "group_outing" => [
+  "Atelier cuisine" => [
+    "Cours de pâtisserie",
+    "Recettes du monde",
+    "Cuisine végétarienne",
+    "Atelier pain maison"
+  ],
+  "Jeux de société" => [
+    "Soirée jeux classiques",
+    "Tournoi de cartes",
+    "Jeux coopératifs",
+    "Soirée quiz"
+  ],
+  "Café/thé" => [
+    "Café du matin entre voisins",
+    "Goûter convivial",
+    "Petit-déjeuner partagé",
+    "Pause café de l'après-midi"
+  ],
+  "Jardinage" => [
+    "Plantation de saison",
+    "Entretien du potager",
+    "Atelier semis",
+    "Récolte collective"
+  ],
+  "Bricolage" => [
+    "Atelier réparation",
+    "Fabrication d'objets",
+    "Petit bricolage",
+    "Atelier bois"
+  ],
+  "Sortie culturelle" => [
     "Sortie au musée",
-    "Balade en forêt",
-    "Visite du marché local",
-    "Excursion à la plage",
+    "Visite du quartier",
+    "Balade en ville",
     "Sortie cinéma"
   ],
-  "workshop" => [
-    "Atelier couture",
-    "Cours de cuisine",
-    "Initiation jardinage",
-    "Atelier bricolage",
-    "Cours de yoga"
+  "Sport/bien-être" => [
+    "Séance de yoga",
+    "Marche collective",
+    "Gym douce",
+    "Méditation"
   ],
-  "cultural_event" => [
-    "Concert de jazz",
-    "Projection de film",
-    "Lecture de poésie",
-    "Exposition photo",
-    "Spectacle de danse"
+  "Échange de savoirs" => [
+    "Cours de langue",
+    "Atelier informatique",
+    "Partage de compétences",
+    "Discussion thématique"
   ],
-  "wellness" => [
-    "Séance de méditation",
-    "Atelier bien-être",
-    "Cours de relaxation",
-    "Massage collectif"
-  ],
-  "intergenerational" => [
-    "Jeux de société avec les enfants",
-    "Aide aux devoirs",
-    "Atelier contes",
-    "Jardinage avec les petits"
-  ],
-  "other" => [
-    "Réunion de résidents",
+  "Réunion habitants" => [
+    "Réunion mensuelle",
     "Assemblée générale",
-    "Fête des voisins",
-    "Anniversaire collectif"
+    "Point d'information",
+    "Organisation d'événement"
   ]
 }
 
@@ -156,8 +165,8 @@ residences.each do |residence|
     activities_count = (rand < 0.2) ? 2 : 1
 
     activities_count.times do
-      activity_type = activity_types.sample
-      descriptions = activity_descriptions[activity_type] || ["Activité"]
+      activity_type = Activity::SUGGESTED_TYPES.sample
+      descriptions = activity_descriptions[activity_type] || [activity_type]
 
       # Random time slot
       hour = [9, 10, 11, 14, 15, 16, 17, 18, 19, 20].sample
@@ -167,13 +176,11 @@ residences.each do |residence|
 
       # Participants: varies by activity type
       base_participants = case activity_type
-      when "shared_meal", "cultural_event"
+      when "Repas partagé", "Sortie culturelle"
         rand(8..20)
-      when "group_outing"
-        rand(5..12)
-      when "social_coffee", "wellness"
+      when "Café/thé", "Sport/bien-être"
         rand(4..10)
-      when "workshop", "intergenerational"
+      when "Atelier cuisine", "Jardinage", "Bricolage"
         rand(3..8)
       else
         rand(5..15)
@@ -200,8 +207,8 @@ end
 puts "\n📅 Création des activités à venir..."
 residences.each do |residence|
   rand(2..5).times do |i|
-    activity_type = activity_types.sample
-    descriptions = activity_descriptions[activity_type] || ["Activité"]
+    activity_type = Activity::SUGGESTED_TYPES.sample
+    descriptions = activity_descriptions[activity_type] || [activity_type]
 
     starts_at = (i + 1).days.from_now.change(hour: [14, 16, 18, 20].sample)
 
@@ -211,7 +218,7 @@ residences.each do |residence|
       description: descriptions.sample,
       starts_at: starts_at,
       ends_at: starts_at + 2.hours,
-      status: :scheduled,
+      status: :planned,
       notify_residents: false
     )
   end
