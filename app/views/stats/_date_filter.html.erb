@@ -1,6 +1,6 @@
 <div class="bg-white rounded-xl shadow-sm p-4 mb-8 border border-gray-100">
   <%= form_with url: request.path, method: :get, class: "space-y-4" do |f| %>
-    <div class="grid grid-cols-2 gap-3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <div>
         <%= f.label :start_date, t("stats.filters.start_date"), class: "block text-sm/6 font-medium text-gray-900 mb-1" %>
         <%= f.date_field :start_date, value: @start_date,
