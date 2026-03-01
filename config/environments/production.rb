@@ -24,11 +24,11 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  # Assume all access to the app is happening through a SSL-terminating reverse proxy.
-  config.assume_ssl = true
-
-  # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  # SSL conditionnel : activé uniquement quand un domaine est configuré
+  if ENV["APP_SSL"].present?
+    config.assume_ssl = true
+    config.force_ssl = true
+  end
 
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
@@ -57,18 +57,22 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = {host: ENV.fetch("APP_HOST", "entrelacs.osc-fr1.scalingo.io"), protocol: "https"}
+  config.action_mailer.default_url_options = {host: ENV.fetch("APP_HOST", "entrelacs.osc-fr1.scalingo.io"), protocol: ENV["APP_SSL"].present? ? "https" : "http"}
 
-  # Brevo SMTP configuration
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address: "smtp-relay.brevo.com",
-    port: 587,
-    user_name: Rails.application.credentials.dig(:brevo, :login),
-    password: Rails.application.credentials.dig(:brevo, :smtp_key),
-    authentication: :login,
-    enable_starttls_auto: true
-  }
+  # Brevo SMTP : activé uniquement quand SMTP_ENABLED est défini
+  if ENV["SMTP_ENABLED"].present?
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address: "smtp-relay.brevo.com",
+      port: 587,
+      user_name: Rails.application.credentials.dig(:brevo, :login),
+      password: Rails.application.credentials.dig(:brevo, :smtp_key),
+      authentication: :login,
+      enable_starttls_auto: true
+    }
+  else
+    config.action_mailer.delivery_method = :test
+  end
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -82,8 +86,7 @@ Rails.application.configure do
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts = [
-    ENV.fetch("APP_HOST", "entrelacs.osc-fr1.scalingo.io"),
-    /.*\.scalingo\.io/  # Allow all Scalingo subdomains
+    ENV.fetch("APP_HOST", "entrelacs.osc-fr1.scalingo.io")
   ]
 
   # Skip DNS rebinding protection for the default health check endpoint.

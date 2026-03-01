@@ -7,10 +7,12 @@ Entrelacs est une application Rails de gestion d'habitat partagé. Elle permet a
 ## Stack technique
 
 - **Ruby 4.0** / **Rails 8.1**
-- **PostgreSQL 18**
+- **PostgreSQL 17** (container Docker en prod)
 - **Tailwind CSS 4** avec thème custom
 - **Hotwire** (Turbo + Stimulus)
 - **RSpec** pour les tests
+- **Kamal 2** pour le déploiement
+- **Solid Queue** pour les jobs (intégré à Puma via `SOLID_QUEUE_IN_PUMA`)
 
 ## Conventions
 
@@ -77,6 +79,75 @@ bin/rails console
 bin/rails db:migrate
 ```
 
+## Déploiement (Kamal)
+
+### Infrastructure
+
+| Composant | Détail |
+|-----------|--------|
+| Serveur | Scaleway DEV1-S, Paris (PAR1), 2 vCPUs, 2 Go RAM + 2 Go swap, 20 Go SSD |
+| IP | 212.47.237.151 |
+| OS | Ubuntu 24.04 LTS |
+| Registry | ghcr.io/damienlethiec/entrelacs |
+| PostgreSQL | Container Docker (accessory Kamal), postgres:17-alpine |
+| SSL | Désactivé (mode IP seule) |
+| Emails | Désactivés en prod (`SMTP_ENABLED` non défini) |
+| SSH | Clé dédiée `~/.ssh/kamal_entrelacs` |
+
+### Commandes Kamal
+
+```bash
+kamal deploy          # Déployer une nouvelle version
+kamal setup           # Premier déploiement (installe Docker, proxy, DB, app)
+kamal console         # Console Rails en prod
+kamal logs            # Logs en direct
+kamal shell           # Shell bash sur le conteneur
+kamal dbc             # Console PostgreSQL
+kamal app exec "CMD"  # Exécuter une commande (ex: bin/rails db:seed)
+```
+
+### Variables d'environnement requises (locales)
+
+```bash
+export KAMAL_REGISTRY_PASSWORD=ghp_xxx  # GitHub PAT (scope write:packages)
+export POSTGRES_PASSWORD=xxx            # Mot de passe PostgreSQL prod
+```
+
+Ces variables doivent être définies dans le shell avant tout `kamal deploy`.
+`RAILS_MASTER_KEY` est lu automatiquement depuis `config/master.key`.
+
+### Fichiers clés
+
+| Fichier | Rôle |
+|---------|------|
+| `config/deploy.yml` | Configuration Kamal (serveurs, registry, accessories, env) |
+| `.kamal/secrets` | Résolution des secrets (lit master.key + env vars) |
+| `config/postgres/init.sql` | Crée les bases cache/queue/cable au premier boot PostgreSQL |
+| `config/recurring.yml` | Jobs Solid Queue récurrents (notifications quotidiennes à 8h) |
+
+### Activer le SSL (quand un domaine sera configuré)
+
+1. Configurer le DNS A → 212.47.237.151
+2. Dans `config/deploy.yml`, décommenter la section `proxy:` et renseigner le host
+3. Ajouter dans `env.clear` : `APP_SSL: true`
+4. `kamal deploy`
+
+### Activer les emails
+
+Ajouter dans `env.clear` de `config/deploy.yml` :
+```yaml
+SMTP_ENABLED: true
+```
+Puis `kamal deploy`. Les credentials Brevo sont dans `config/credentials.yml.enc`.
+
+### TODO ops
+
+- [ ] Configurer les backups PostgreSQL (cron `pg_dump` quotidien sur le serveur)
+- [ ] Migrer les données depuis Scalingo (export Scalingo → import dans PostgreSQL Kamal)
+- [ ] Configurer un domaine + SSL
+- [ ] Basculer le DNS de Scalingo vers Scaleway
+- [ ] Supprimer l'app Scalingo
+
 ## Phases de développement
 
 1. **Phase 1** : Setup (Rails, Devise, Pundit, Layout) ✅
@@ -87,7 +158,7 @@ bin/rails db:migrate
 6. **Phase 6** : Gestion des Users
 7. **Phase 7** : Notifications email
 8. **Phase 8** : Tests E2E
-9. **Phase 9** : Déploiement
+9. **Phase 9** : Déploiement ✅ (Kamal sur Scaleway)
 
 ## Règles de développement
 
