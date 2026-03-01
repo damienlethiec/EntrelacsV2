@@ -59,16 +59,20 @@ Rails.application.configure do
   # Set host to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = {host: ENV.fetch("APP_HOST", "entrelacs.osc-fr1.scalingo.io"), protocol: ENV["APP_SSL"].present? ? "https" : "http"}
 
-  # Brevo SMTP configuration
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address: "smtp-relay.brevo.com",
-    port: 587,
-    user_name: Rails.application.credentials.dig(:brevo, :login),
-    password: Rails.application.credentials.dig(:brevo, :smtp_key),
-    authentication: :login,
-    enable_starttls_auto: true
-  }
+  # Brevo SMTP : activé uniquement quand SMTP_ENABLED est défini
+  if ENV["SMTP_ENABLED"].present?
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address: "smtp-relay.brevo.com",
+      port: 587,
+      user_name: Rails.application.credentials.dig(:brevo, :login),
+      password: Rails.application.credentials.dig(:brevo, :smtp_key),
+      authentication: :login,
+      enable_starttls_auto: true
+    }
+  else
+    config.action_mailer.delivery_method = :test
+  end
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

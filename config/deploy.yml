@@ -4,7 +4,7 @@ image: ghcr.io/damienlethiec/entrelacs
 servers:
   web:
     hosts:
-      - <IP_VPS>
+      - 212.47.237.151
 
 # Pas de proxy SSL pour l'instant (mode IP seule)
 # Décommenter quand un domaine sera configuré :
@@ -25,7 +25,7 @@ env:
     DB_HOST: entrelacs-db
     POSTGRES_USER: entrelacs
     POSTGRES_DB: entrelacs_production
-    APP_HOST: <IP_VPS>
+    APP_HOST: 212.47.237.151
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
@@ -41,7 +41,7 @@ builder:
 accessories:
   db:
     image: postgres:17-alpine
-    host: <IP_VPS>
+    host: 212.47.237.151
     port: "127.0.0.1:5432:5432"
     env:
       clear:
