@@ -87,13 +87,23 @@ test:
 production:
   primary: &primary_production
     <<: *default
+    host: <%= ENV.fetch("DB_HOST", nil) %>
+    username: <%= ENV.fetch("POSTGRES_USER", nil) %>
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
+    database: <%= ENV.fetch("POSTGRES_DB", "entrelacs_production") %>
     url: <%= ENV["DATABASE_URL"] %>
   cache:
     <<: *primary_production
+    database: <%= ENV.fetch("POSTGRES_DB", "entrelacs_production") %>_cache
+    url: <%= ENV["CACHE_DATABASE_URL"] || ENV["DATABASE_URL"] %>
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
+    database: <%= ENV.fetch("POSTGRES_DB", "entrelacs_production") %>_queue
+    url: <%= ENV["QUEUE_DATABASE_URL"] || ENV["DATABASE_URL"] %>
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
+    database: <%= ENV.fetch("POSTGRES_DB", "entrelacs_production") %>_cable
+    url: <%= ENV["CABLE_DATABASE_URL"] || ENV["DATABASE_URL"] %>
     migrations_paths: db/cable_migrate

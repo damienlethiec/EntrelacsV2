@@ -1,0 +1,3 @@
+CREATE DATABASE entrelacs_production_cache;
+CREATE DATABASE entrelacs_production_queue;
+CREATE DATABASE entrelacs_production_cable;
