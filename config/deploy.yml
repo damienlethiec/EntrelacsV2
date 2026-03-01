@@ -37,6 +37,7 @@ asset_path: /rails/public/assets
 
 builder:
   arch: amd64
+  remote: ssh://root@212.47.237.151
 
 accessories:
   db:
