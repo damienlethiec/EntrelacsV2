@@ -2,4 +2,6 @@
 # CVEs that are not relevant to the application can be enumerated on the ignore list below.
 
 ignore:
-  - CVE-THAT-DOES-NOT-APPLY
+  # Devise Confirmable race condition — ne s'applique pas : User n'inclut pas :confirmable.
+  # Fix serait devise >= 5.0.3 (major version, breaking).
+  - CVE-2026-32700

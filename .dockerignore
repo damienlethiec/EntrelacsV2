@@ -49,3 +49,7 @@
 # Ignore Docker-related files
 /.dockerignore
 /Dockerfile*
+
+# Ignore native mobile projects (Hotwire Native)
+/ios/
+/android/
