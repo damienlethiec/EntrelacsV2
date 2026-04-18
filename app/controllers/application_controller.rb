@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   helper_method :native_app?
 
   def native_app?
-    request.user_agent&.include?("Hotwire Native")
+    cookies[:hotwire_native].present? || request.user_agent&.include?("Hotwire Native")
   end
 
   private

@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Entrelacs brand colors -->
+    <color name="tisseurs_teal">#FF0E7C7C</color>
+    <color name="tisseurs_teal_dark">#FF065E5E</color>
+    <color name="tisseurs_coral">#FFF26851</color>
+    <color name="tisseurs_cream">#FFFDF6EB</color>
 </resources>

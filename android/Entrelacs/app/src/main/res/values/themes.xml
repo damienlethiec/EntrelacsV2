@@ -1,9 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Entrelacs" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">@color/tisseurs_teal</item>
+        <item name="android:navigationBarColor">@color/tisseurs_cream</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorPrimary">@color/tisseurs_teal</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/tisseurs_coral</item>
     </style>
 
     <style name="Theme.Entrelacs" parent="Base.Theme.Entrelacs" />
+
+    <!-- Splash screen theme (API 12+ via androidx.core:core-splashscreen) -->
+    <style name="Theme.Entrelacs.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/tisseurs_teal</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.Entrelacs</item>
+    </style>
 </resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Logo Entrelacs placeholder — à remplacer par un import vectoriel du SVG officiel plus tard. -->
+    <path
+        android:fillColor="#FDF6EB"
+        android:pathData="M54,14 C76.1,14 94,31.9 94,54 C94,76.1 76.1,94 54,94 C31.9,94 14,76.1 14,54 C14,31.9 31.9,14 54,14 Z M54,30 C42.4,30 35,40.7 35,54 C35,67.3 42.4,78 54,78 C64.3,78 72.5,70.4 73.7,60 L64.6,60 C63.7,65.1 59.4,69 54,69 C47.4,69 44,63.1 44,54 C44,44.9 47.4,39 54,39 C59.4,39 63.7,42.9 64.6,48 L73.7,48 C72.5,37.6 64.3,30 54,30 Z" />
+</vector>

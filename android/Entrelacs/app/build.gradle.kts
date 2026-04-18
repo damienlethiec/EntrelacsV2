@@ -13,7 +13,9 @@ android {
     defaultConfig {
         applicationId = "fr.entrelacs.app"
         minSdk = 28
-        targetSdk = 36
+        // targetSdk 34 conservé volontairement : les API 35+ ignorent
+        // android:statusBarColor au profit d'edge-to-edge, non géré dans ce scope.
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -43,6 +45,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.hotwire.core)
     implementation(libs.hotwire.navigation.fragments)
+    implementation(libs.androidx.core.splashscreen)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
