@@ -1,5 +1,7 @@
 package fr.entrelacs.app.util
 
+import fr.entrelacs.app.BuildConfig
+
 object Config {
-    const val BASE_URL = "https://macbook-pro-de-damien.tail854d17.ts.net"
+    val BASE_URL: String = BuildConfig.BASE_URL
 }
