@@ -1,11 +1,12 @@
 # Entrelacs — App mobile (Hotwire Native)
 
-Coque Android qui affiche Entrelacs via Hotwire Native avec native feel (bottom nav par rôle, splash/icône brandés, bridge haptique).
+Coque Android qui affiche Entrelacs via Hotwire Native avec native feel (bottom nav par rôle, splash/icône brandés, bridge haptique). Prod sur `https://entrelacs.dlet.fr`, distribution via Play Console Internal Testing.
 
 ## État
 
-- **Android** : fonctionnel avec bottom nav, splash + icône Entrelacs, status bar teal, bridge haptique, page Compte avec déconnexion.
+- **Android** : app fonctionnelle, AAB release signable via `./gradlew bundleRelease`, en attente de la vérification d'identité Google pour publier sur Internal Testing.
 - **iOS** : différé. Nécessite Xcode 16+ compatible macOS 15, ou une mise à jour macOS vers 26+.
+- **Prod Rails** : `https://entrelacs.dlet.fr` (HTTPS via Kamal proxy + Let's Encrypt).
 
 ## Architecture mobile
 
@@ -51,8 +52,46 @@ et mettre à jour `BASE_URL`. Rebuild.
 
 ## Identifiants
 
-- **applicationId** : `fr.entrelacs.app` (figé pour compatibilité Play Store futur)
+- **applicationId** : `fr.entrelacs.app` (figé pour compatibilité Play Store)
 - **Compte test Rails** : `marie@entrelacs.fr` / `password123` (après `bin/rails db:seed`)
+- **Domaine prod** : `entrelacs.dlet.fr` (sous-domaine de dlet.fr, cert Let's Encrypt)
+
+## Release Play Store Internal Testing
+
+### Prérequis (une seule fois)
+
+- Compte Google Play Console actif (vérification d'identité validée par Google)
+- Keystore upload : `android/Entrelacs/app/entrelacs-upload.jks` (gitignored)
+- `android/Entrelacs/keystore.properties` avec les mots de passe (gitignored)
+- Backup du keystore + mot de passe dans 1Password
+
+### Procédure à chaque release
+
+```bash
+# 1. Incrémenter versionCode dans android/Entrelacs/app/build.gradle.kts
+# 2. Build l'AAB release signée
+cd android/Entrelacs
+./gradlew bundleRelease
+# 3. L'AAB est à : app/build/outputs/bundle/release/app-release.aab
+```
+
+Puis sur Play Console :
+1. `Testing > Internal testing > Create new release`
+2. Upload `app-release.aab`
+3. Remplir les release notes
+4. `Review release` → `Start rollout`
+
+Les testeurs déjà opt-in reçoivent la mise à jour automatiquement via Play Store.
+
+### Si keystore perdu
+
+Contacter Google Play Console support, demander un reset de la clé d'upload. Ils fournissent une nouvelle clé, régénérer `entrelacs-upload.jks` localement, re-uploader.
+
+## Secrets locaux requis
+
+- **`config/master.key`** : clé Rails pour déchiffrer credentials.yml.enc. Backup dans 1Password.
+- **`.envrc`** (auto-chargé par direnv) : `KAMAL_REGISTRY_PASSWORD` (GitHub PAT) + `POSTGRES_PASSWORD`. Backup dans 1Password.
+- **`android/Entrelacs/keystore.properties`** + **`.jks`** : voir section release.
 
 ## Known issues
 
@@ -62,8 +101,9 @@ et mettre à jour `BASE_URL`. Rebuild.
 
 ## Suite prévue
 
-1. **iOS** : après update macOS ou install Xcode 16
-2. **Distribution privée Play Store** : build signé, Play Console Closed Testing, invitation de testeurs
-3. **Flash messages → toasts natifs** : nouveau bridge component
-4. **Listener de navigation** pour fix propre du refresh tabs post-login
-5. **Adapter certaines vues au mobile** : formulaires, page activité
+1. **Publier sur Play Console Internal Testing** : dès validation identité Google
+2. **iOS** : après update macOS ou install Xcode 16
+3. **Closed Testing** puis Production : une fois l'Internal stabilisée
+4. **Flash messages → toasts natifs** : nouveau bridge component
+5. **Listener de navigation** pour fix propre du refresh tabs post-login
+6. **Adapter certaines vues au mobile** : formulaires, page activité
