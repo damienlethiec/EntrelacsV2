@@ -60,7 +60,8 @@
                       placeholder: Activity.human_attribute_name(:participants_count),
                       class: "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-tisseurs-teal sm:text-sm/6" %>
                   <%= f.submit t("activities.actions.complete"),
-                      class: "rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark cursor-pointer" %>
+                      class: "rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark cursor-pointer",
+                      data: { controller: "bridge--haptic", action: "click->bridge--haptic#vibrate", "bridge--haptic-style-param": "light" } %>
                 </div>
               </div>
             <% end %>

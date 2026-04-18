@@ -146,6 +146,7 @@
   <div class="flex items-center justify-end gap-x-4">
     <%= link_to t("helpers.cancel"), residence_activities_path(@residence),
         class: "text-sm/6 font-semibold text-gray-900 hover:text-gray-700" %>
-    <%= f.submit class: "rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal cursor-pointer" %>
+    <%= f.submit class: "rounded-md bg-tisseurs-teal px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tisseurs-teal cursor-pointer",
+        data: { controller: "bridge--haptic", action: "click->bridge--haptic#vibrate", "bridge--haptic-style-param": "medium" } %>
   </div>
 <% end %>

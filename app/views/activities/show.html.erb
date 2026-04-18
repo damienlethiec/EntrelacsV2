@@ -13,6 +13,7 @@
       <% if policy(@activity).cancel? %>
         <%= button_to t("activities.actions.cancel"), cancel_residence_activity_path(@residence, @activity), method: :patch,
             form: { data: { turbo_confirm: t("activities.confirm_cancel") } },
+            data: { controller: "bridge--haptic", action: "click->bridge--haptic#vibrate", "bridge--haptic-style-param": "heavy" },
             class: "inline-flex items-center rounded-md bg-tisseurs-coral px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-coral-dark" %>
       <% end %>
     </div>
