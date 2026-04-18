@@ -39,3 +39,12 @@
 
 # Notes de travail (plans, sessions TDD)
 /.notes
+
+# macOS metadata
+.DS_Store
+
+# SimpleCov test coverage output
+/coverage/
+
+# Specs et plans locaux (non trackés par choix)
+/docs/
