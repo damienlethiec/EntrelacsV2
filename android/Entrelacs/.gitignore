@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Keystore upload (jamais committé, backup dans 1Password)
+/app/*.jks
+/keystore.properties
