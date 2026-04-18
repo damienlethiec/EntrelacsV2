@@ -6,9 +6,11 @@ import android.webkit.CookieManager
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dev.hotwire.core.bridge.BridgeComponentFactory
 import dev.hotwire.core.config.Hotwire
 import dev.hotwire.navigation.activities.HotwireActivity
 import dev.hotwire.navigation.navigator.NavigatorConfiguration
+import fr.entrelacs.app.bridge.HapticComponent
 import fr.entrelacs.app.util.Config
 import fr.entrelacs.app.util.MobileTab
 import fr.entrelacs.app.util.RemoteConfig
@@ -24,6 +26,11 @@ class MainActivity : HotwireActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Enregistrer les bridge components (déclenche vibrate depuis Stimulus).
+        Hotwire.config.registeredBridgeComponentFactories = listOf(
+            BridgeComponentFactory("haptic", ::HapticComponent)
+        )
 
         // Cookie indiquant au serveur qu'on est en contexte Hotwire Native.
         CookieManager.getInstance().apply {
