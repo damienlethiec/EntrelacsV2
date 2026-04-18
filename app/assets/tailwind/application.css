@@ -23,3 +23,24 @@
 .font-harmattan {
   font-family: var(--font-family-harmattan);
 }
+
+/* Hotwire Native — safe area insets (notch iOS, home indicator Android) */
+/* Sur desktop ces valeurs valent 0, no-op */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Touch targets minimum 48px sur devices tactiles uniquement */
+/* @media (pointer: coarse) n'affecte pas les navigateurs desktop */
+@media (pointer: coarse) {
+  button,
+  a[role="button"],
+  input[type="submit"],
+  input[type="button"] {
+    min-height: 48px;
+    min-width: 48px;
+  }
+}
