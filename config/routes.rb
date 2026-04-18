@@ -23,6 +23,9 @@ Rails.application.routes.draw do
   # Health check
   get "up" => "health#show", :as => :health_check
 
+  # Mobile app configuration (path configuration + tabs par rôle)
+  get "/mobile/config" => "mobile#show"
+
   # Root - Dashboard (redirects based on role)
   root "dashboard#index"
 end
