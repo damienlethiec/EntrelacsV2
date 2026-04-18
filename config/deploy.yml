@@ -6,12 +6,10 @@ servers:
     hosts:
       - 212.47.237.151
 
-# Pas de proxy SSL pour l'instant (mode IP seule)
-# Décommenter quand un domaine sera configuré :
-# proxy:
-#   ssl: true
-#   host: entrelacs.example.com
-#   app_port: 80
+proxy:
+  ssl: true
+  host: entrelacs.dlet.fr
+  app_port: 80
 
 registry:
   server: ghcr.io
@@ -25,7 +23,8 @@ env:
     DB_HOST: entrelacs-db
     POSTGRES_USER: entrelacs
     POSTGRES_DB: entrelacs_production
-    APP_HOST: 212.47.237.151
+    APP_HOST: entrelacs.dlet.fr
+    APP_SSL: true
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
