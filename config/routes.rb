@@ -29,6 +29,9 @@ Rails.application.routes.draw do
   # Page compte utilisateur (cible du tab "Compte" de l'app mobile)
   get "/account" => "account#show"
 
+  # Page politique de confidentialité (publique, pour Play Console)
+  get "/privacy" => "pages#privacy"
+
   # Root - Dashboard (redirects based on role)
   root "dashboard#index"
 end
