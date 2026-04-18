@@ -250,6 +250,13 @@ fr:
     stats: "Statistiques"
     sign_out: "Déconnexion"
     profile: "Profil"
+    account: "Compte"
+
+  account:
+    show:
+      title: "Mon compte"
+      residence: "Résidence"
+      confirm_sign_out: "Êtes-vous sûr de vouloir vous déconnecter ?"
 
   # Flash messages
   flash:

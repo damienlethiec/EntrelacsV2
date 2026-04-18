@@ -35,13 +35,15 @@ class MobileController < ApplicationController
   def tabs_for(user)
     return [] unless user
 
-    if user.admin?
+    role_tabs = if user.admin?
       admin_tabs
     elsif user.weaver?
       weaver_tabs(user)
     else
       []
     end
+
+    role_tabs + [account_tab]
   end
 
   def admin_tabs
@@ -61,5 +63,9 @@ class MobileController < ApplicationController
       {label: "Activités", path: "/residences/#{user.residence_id}/activities", icon: "ic_event"},
       {label: "Habitants", path: "/residences/#{user.residence_id}/residents", icon: "ic_person"}
     ]
+  end
+
+  def account_tab
+    {label: "Compte", path: "/account", icon: "ic_account"}
   end
 end

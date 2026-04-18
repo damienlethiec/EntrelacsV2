@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Menu placeholder avec un seul item. Les vrais items sont construits dynamiquement
+     depuis /mobile/config dans MainActivity.wireBottomNav(). -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tab_placeholder"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="Accueil" />
+</menu>

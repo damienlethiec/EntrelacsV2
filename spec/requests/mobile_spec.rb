@@ -23,12 +23,12 @@ RSpec.describe "MobileController", type: :request do
 
       before { sign_in admin }
 
-      it "retourne les 3 tabs admin" do
+      it "retourne les 3 tabs admin + le tab compte" do
         make_request
 
         body = JSON.parse(response.body)
         tab_paths = body["tabs"].map { |t| t["path"] }
-        expect(tab_paths).to eq(["/stats", "/residences", "/admin/users"])
+        expect(tab_paths).to eq(["/stats", "/residences", "/admin/users", "/account"])
       end
 
       it "contient les rules de path configuration" do
@@ -47,7 +47,7 @@ RSpec.describe "MobileController", type: :request do
 
       before { sign_in weaver }
 
-      it "retourne les 3 tabs tisseur avec residence_id injecté" do
+      it "retourne les 3 tabs tisseur + le tab compte avec residence_id injecté" do
         make_request
 
         body = JSON.parse(response.body)
@@ -55,7 +55,8 @@ RSpec.describe "MobileController", type: :request do
         expect(tab_paths).to eq([
           "/",
           "/residences/#{residence.id}/activities",
-          "/residences/#{residence.id}/residents"
+          "/residences/#{residence.id}/residents",
+          "/account"
         ])
       end
     end
@@ -69,12 +70,12 @@ RSpec.describe "MobileController", type: :request do
 
       before { sign_in weaver }
 
-      it "ne retourne que le tab Accueil" do
+      it "ne retourne que le tab Accueil + le tab compte" do
         make_request
 
         body = JSON.parse(response.body)
         tab_paths = body["tabs"].map { |t| t["path"] }
-        expect(tab_paths).to eq(["/"])
+        expect(tab_paths).to eq(["/", "/account"])
       end
     end
   end

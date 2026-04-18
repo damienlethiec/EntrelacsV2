@@ -26,6 +26,9 @@ Rails.application.routes.draw do
   # Mobile app configuration (path configuration + tabs par rôle)
   get "/mobile/config" => "mobile#show"
 
+  # Page compte utilisateur (cible du tab "Compte" de l'app mobile)
+  get "/account" => "account#show"
+
   # Root - Dashboard (redirects based on role)
   root "dashboard#index"
 end

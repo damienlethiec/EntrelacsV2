@@ -37,7 +37,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="h-full bg-tisseurs-cream font-harmattan" data-controller="service-worker">
+  <body class="h-full bg-tisseurs-cream font-harmattan <%= "native" if native_app? %>" data-controller="service-worker">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-tisseurs-teal focus:px-4 focus:py-2 focus:text-white focus:outline-none">
       Aller au contenu principal
     </a>
@@ -47,7 +47,7 @@
           <%= render "shared/navbar" %>
         <% end %>
 
-        <div class="py-10">
+        <div class="<%= native_app? ? "py-4" : "py-10" %>">
           <% if content_for?(:page_header) %>
             <header>
               <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -57,7 +57,7 @@
           <% end %>
 
           <main id="main-content">
-            <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl px-4 <%= native_app? ? "py-2" : "py-8" %> sm:px-6 lg:px-8">
               <%= yield %>
             </div>
           </main>

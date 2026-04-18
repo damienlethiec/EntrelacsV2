@@ -1,0 +1,21 @@
+<% content_for :title, t("account.show.title") %>
+
+<div class="mx-auto max-w-md space-y-6">
+  <div class="overflow-hidden bg-white shadow ring-1 ring-black/5 sm:rounded-lg">
+    <div class="px-6 py-5">
+      <h2 class="text-lg font-semibold text-gray-900"><%= current_user.full_name %></h2>
+      <p class="mt-1 text-sm text-gray-500"><%= current_user.email %></p>
+      <% if current_user.residence %>
+        <p class="mt-1 text-sm text-gray-500">
+          <%= t("account.show.residence") %> :
+          <span class="font-medium text-gray-700"><%= current_user.residence.name %></span>
+        </p>
+      <% end %>
+    </div>
+  </div>
+
+  <%= button_to t("devise.shared.links.sign_out"), destroy_user_session_path,
+        method: :delete,
+        class: "block w-full rounded-md bg-tisseurs-coral px-4 py-3 text-center text-sm font-semibold text-white shadow-xs hover:bg-tisseurs-coral-dark",
+        data: { turbo_confirm: t("account.show.confirm_sign_out") } %>
+</div>
