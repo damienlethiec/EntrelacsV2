@@ -1,5 +1,12 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
+}
+
+val keystorePropsFile = rootProject.file("keystore.properties")
+val keystoreProps = Properties().apply {
+    if (keystorePropsFile.exists()) load(keystorePropsFile.inputStream())
 }
 
 android {
@@ -26,6 +33,17 @@ android {
         buildConfig = true
     }
 
+    signingConfigs {
+        create("release") {
+            if (keystorePropsFile.exists()) {
+                storeFile = file("${keystoreProps["storeFile"]}")
+                storePassword = "${keystoreProps["storePassword"]}"
+                keyAlias = "${keystoreProps["keyAlias"]}"
+                keyPassword = "${keystoreProps["keyPassword"]}"
+            }
+        }
+    }
+
     buildTypes {
         debug {
             buildConfigField(
@@ -45,6 +63,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
