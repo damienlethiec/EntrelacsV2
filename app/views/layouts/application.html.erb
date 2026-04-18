@@ -43,7 +43,9 @@
     </a>
     <% if user_signed_in? %>
       <div class="min-h-full">
-        <%= render "shared/navbar" %>
+        <% unless native_app? %>
+          <%= render "shared/navbar" %>
+        <% end %>
 
         <div class="py-10">
           <% if content_for?(:page_header) %>

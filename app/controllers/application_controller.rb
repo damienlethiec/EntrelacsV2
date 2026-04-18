@@ -19,6 +19,12 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:accept_invitation, keys: [:first_name, :last_name])
   end
 
+  helper_method :native_app?
+
+  def native_app?
+    request.user_agent&.include?("Hotwire Native")
+  end
+
   private
 
   def user_not_authorized
